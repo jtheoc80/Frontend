@@ -12,19 +12,79 @@ const MaintenancePanel = () => {
   const [reportHash, setReportHash] = useState("");
 
   const handleLogMaintenance = async () => {
-    if (!window.ethereum) return toast({ title: "No wallet", status: "error" });
+    if (!window.ethereum) {
+      toast({
+        title: "Wallet Required",
+        description: "Please install MetaMask or another Web3 wallet to perform this action.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (!serial.trim() || !desc.trim() || !reportHash.trim()) {
+      toast({
+        title: "Invalid Input",
+        description: "Please fill in all required fields (serial number, description, and report hash).",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum as any);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+      
       const tx = await contract.logMaintenance(serial, desc, reportHash);
+      
+      toast({
+        title: "Transaction Submitted",
+        description: "Maintenance log transaction has been submitted to the blockchain.",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+      
       await tx.wait();
-      toast({ title: "Maintenance logged!", status: "success" });
+      
+      toast({
+        title: "Success",
+        description: "Maintenance logged successfully on the blockchain.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      
       setSerial("");
       setDesc("");
       setReportHash("");
+      
     } catch (error: any) {
-      toast({ title: "Error", description: error.message, status: "error" });
+      console.error('Failed to log maintenance:', error);
+      
+      let errorMessage = 'Failed to log maintenance event.';
+      
+      if (error.code === 4001) {
+        errorMessage = 'Transaction was rejected by user.';
+      } else if (error.code === -32603) {
+        errorMessage = 'Network error. Please check your connection.';
+      } else if (error.message?.includes('insufficient funds')) {
+        errorMessage = 'Insufficient funds to complete the transaction.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 

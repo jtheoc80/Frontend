@@ -1,1 +1,119 @@
-"import React, { useState, useEffect } from 'react';\nimport { Box, Button, Text, VStack, useToast } from '@chakra-ui/react';\n\nconst VendorOnboardingDashboard: React.FC = () => {\n  const [vendors, setVendors] = useState([]);\n  const toast = useToast();\n\n  useEffect(() => {\n    // Fetch vendor data from API\n    fetch('/api/vendors').then(response => response.json()).then(data => setVendors(data));\n  }, []);\n\n  const handleAccept = (vendorId, msaVersion) => {\n    // Logic to send POST request to accept MSA\n    fetch('/accept_msa', {\n      method: 'POST',\n      headers: {\n        'Content-Type': 'application/json'\n      },\n      body: JSON.stringify({ vendorId, msaVersion })\n    }).then(response => {\n      if (response.ok) {\n        toast({\n          title: 'MSA Accepted.',\n          description: \"You have successfully accepted the MSA.\",\n          status: 'success',\n          duration: 5000,\n          isClosable: true,\n        });\n        // Update vendor state\n        setVendors(vendors.map(v => v.id === vendorId ? { ...v, status: 'Accepted' } : v));\n      }\n    });\n  };\n\n  return (\n    <VStack spacing={4} align=\"stretch\">\n      {vendors.map(vendor => (\n        <Box key={vendor.id} p={5} shadow=\"md\" borderWidth=\"1px\">\n          <Text mt={4}>Vendor: {vendor.name}</Text>\n          <Text>Status: {vendor.status}</Text>\n          <Text>MSA Version: {vendor.msaVersion}</Text>\n          <Text>Effective Date: {vendor.effectiveDate}</Text>\n          {vendor.status === 'Pending' && <Button mt={4} colorScheme=\"green\" onClick={() => handleAccept(vendor.id, vendor.msaVersion)}>Review & Accept MSA</Button>}\n        </Box>\n      ))}\n    </VStack>\n  );\n};\n\nexport default VendorOnboardingDashboard;\n" 
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Text, VStack, useToast } from '@chakra-ui/react';
+
+interface Vendor {
+  id: string;
+  name: string;
+  status: string;
+  msaVersion: string;
+  effectiveDate: string;
+}
+
+const VendorOnboardingDashboard: React.FC = () => {
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const toast = useToast();
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/vendors');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setVendors(data);
+        
+      } catch (error) {
+        console.error('Failed to fetch vendors:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load vendor data. Please try again later.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVendors();
+  }, [toast]);
+
+  const handleAccept = async (vendorId: string, msaVersion: string) => {
+    try {
+      const response = await fetch('/accept_msa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ vendorId, msaVersion })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      toast({
+        title: 'MSA Accepted',
+        description: 'You have successfully accepted the MSA.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Update vendor state
+      setVendors(prevVendors => 
+        prevVendors.map(v => 
+          v.id === vendorId ? { ...v, status: 'Accepted' } : v
+        )
+      );
+      
+    } catch (error) {
+      console.error('Failed to accept MSA:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to accept MSA. Please try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <VStack spacing={4} align="stretch">
+        <Text>Loading vendor data...</Text>
+      </VStack>
+    );
+  }
+
+  return (
+    <VStack spacing={4} align="stretch">
+      {vendors.map(vendor => (
+        <Box key={vendor.id} p={5} shadow="md" borderWidth="1px">
+          <Text mt={4}>Vendor: {vendor.name}</Text>
+          <Text>Status: {vendor.status}</Text>
+          <Text>MSA Version: {vendor.msaVersion}</Text>
+          <Text>Effective Date: {vendor.effectiveDate}</Text>
+          {vendor.status === 'Pending' && (
+            <Button 
+              mt={4} 
+              colorScheme="green" 
+              onClick={() => handleAccept(vendor.id, vendor.msaVersion)}
+            >
+              Review & Accept MSA
+            </Button>
+          )}
+        </Box>
+      ))}
+    </VStack>
+  );
+};
+
+export default VendorOnboardingDashboard;

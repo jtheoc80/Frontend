@@ -1,57 +1,64 @@
-Write-Output "##active_line2##"
 import React, { useState, useEffect } from 'react';
-Write-Output "##active_line3##"
-import { Box, Text, VStack } from '@chakra-ui/react';
-Write-Output "##active_line4##"
-Write-Output "##active_line5##"
+import { Box, Text, VStack, useToast } from '@chakra-ui/react';
+
 const ValveHistorySummaryWidget: React.FC = () => {
-Write-Output "##active_line6##"
+  const toast = useToast();
   const [summary, setSummary] = useState({
-Write-Output "##active_line7##"
     totalValves: 0,
-Write-Output "##active_line8##"
     dueForService: 0,
-Write-Output "##active_line9##"
     underWarranty: 0,
-Write-Output "##active_line10##"
     outOfService: 0,
-Write-Output "##active_line11##"
   });
-Write-Output "##active_line12##"
-Write-Output "##active_line13##"
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-Write-Output "##active_line14##"
-    fetch('/valve_history_summary')
-Write-Output "##active_line15##"
-      .then(response => response.json())
-Write-Output "##active_line16##"
-      .then(data => setSummary(data));
-Write-Output "##active_line17##"
-  }, []);
-Write-Output "##active_line18##"
-Write-Output "##active_line19##"
+    const fetchSummary = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/valve_history_summary');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setSummary(data);
+        
+      } catch (error) {
+        console.error('Failed to fetch valve summary:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load valve summary data. Please try again later.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [toast]);
+
+  if (loading) {
+    return (
+      <Box p={5} borderWidth="1px" borderRadius="lg" shadow="md">
+        <Text>Loading valve summary...</Text>
+      </Box>
+    );
+  }
+
   return (
-Write-Output "##active_line20##"
     <Box p={5} borderWidth="1px" borderRadius="lg" shadow="md">
-Write-Output "##active_line21##"
       <VStack spacing={4} align="stretch">
-Write-Output "##active_line22##"
         <Text>Total Number of Valves: {summary.totalValves}</Text>
-Write-Output "##active_line23##"
         <Text>Number Due for Service in Next 60 Days: {summary.dueForService}</Text>
-Write-Output "##active_line24##"
         <Text>Number Under Warranty: {summary.underWarranty}</Text>
-Write-Output "##active_line25##"
         <Text>Number Out of Service: {summary.outOfService}</Text>
-Write-Output "##active_line26##"
       </VStack>
-Write-Output "##active_line27##"
     </Box>
-Write-Output "##active_line28##"
   );
-Write-Output "##active_line29##"
 };
-Write-Output "##active_line30##"
-Write-Output "##active_line31##"
+
 export default ValveHistorySummaryWidget;
-Write-Output "##active_line32##"

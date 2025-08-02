@@ -7,7 +7,10 @@ import {
   TableRow, 
   TableColumnHeader, 
   TableCell, 
-  Input 
+  Input,
+  useToast,
+  Text,
+  VStack 
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -15,6 +18,8 @@ const AuditLogDashboard: React.FC = () => {
     const [logs, setLogs] = useState([]);
     const [filterUser, setFilterUser] = useState('');
     const [filterAction, setFilterAction] = useState('');
+    const [loading, setLoading] = useState(true);
+    const toast = useToast();
     
     useEffect(() => {
         fetchLogs();
@@ -22,15 +27,42 @@ const AuditLogDashboard: React.FC = () => {
 
     const fetchLogs = async () => {
         try {
+            setLoading(true);
             const response = await axios.get('/api/audit_logs', {
                 params: {
                     user: filterUser,
                     action: filterAction,
                 },
             });
-            setLogs(response.data);
-        } catch (err) {
-            console.error('Failed to fetch audit logs:', err);
+            
+            if (response.status === 200) {
+                setLogs(response.data);
+            }
+            
+        } catch (error: any) {
+            console.error('Failed to fetch audit logs:', error);
+            
+            let errorMessage = 'Failed to load audit logs. Please try again later.';
+            
+            if (error.response?.status === 403) {
+                errorMessage = 'You do not have permission to view audit logs.';
+            } else if (error.response?.status === 500) {
+                errorMessage = 'Server error. Please try again later.';
+            } else if (error.response?.data?.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+
+            toast({
+                title: 'Error',
+                description: errorMessage,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+        } finally {
+            setLoading(false);
         }
     };
 
