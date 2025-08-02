@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/table";
 import dayjs from "dayjs";
 
 const valves = [
