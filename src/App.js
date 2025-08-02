@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import {
   ChakraProvider,
@@ -8,12 +7,6 @@ import {
   Text,
   Button,
   SimpleGrid,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   HStack,
   Spacer,
 } from "@chakra-ui/react";
@@ -86,49 +79,51 @@ function Dashboard() {
           <Heading fontSize="lg" mb={4}>
             Valve Inventory
           </Heading>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Serial Number</Th>
-                <Th>Type</Th>
-                <Th>Manufacturer</Th>
-                <Th>Owner</Th>
-                <Th>Status</Th>
-                <Th>Action</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {valves.map((v, i) => (
-                <Tr key={i}>
-                  <Td>{v.sn}</Td>
-                  <Td>{v.type}</Td>
-                  <Td>{v.mfr}</Td>
-                  <Td>{v.owner}</Td>
-                  <Td>
-                    <Box
-                      px={2}
-                      py={1}
-                      bg={v.status === "In Repair" ? "orange.200" : "green.200"}
-                      color="black"
-                      rounded="md"
-                      display="inline-block"
-                      fontSize="sm"
-                    >
-                      {v.status}
-                    </Box>
-                  </Td>
-                  <Td>
-                    <Button size="sm" colorScheme="purple" variant="outline" mr={2}>
-                      View
-                    </Button>
-                    <Button size="sm" colorScheme="purple">
-                      Repair
-                    </Button>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <Box overflowX="auto">
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ backgroundColor: "#f7fafc" }}>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Serial Number</th>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Type</th>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Manufacturer</th>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Owner</th>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Status</th>
+                  <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {valves.map((v, i) => (
+                  <tr key={i}>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{v.sn}</td>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{v.type}</td>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{v.mfr}</td>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{v.owner}</td>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>
+                      <Box
+                        px={2}
+                        py={1}
+                        bg={v.status === "In Repair" ? "orange.200" : "green.200"}
+                        color="black"
+                        rounded="md"
+                        display="inline-block"
+                        fontSize="sm"
+                      >
+                        {v.status}
+                      </Box>
+                    </td>
+                    <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>
+                      <Button size="sm" colorScheme="purple" variant="outline" mr={2}>
+                        View
+                      </Button>
+                      <Button size="sm" colorScheme="purple">
+                        Repair
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Box>
         </Box>
       </Box>
     </Box>

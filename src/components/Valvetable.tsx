@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { Box, Table, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 const valves = [
@@ -52,56 +52,58 @@ function getStatusColor(daysUntil: number) {
 
 const ValveTable = () => (
   <Box p={4}>
-    <Table variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Valve ID</Th>
-          <Th>Serial #</Th>
-          <Th>Manufacturer</Th>
-          <Th>Model</Th>
-          <Th>Location</Th>
-          <Th>Status</Th>
-          <Th>Last Service</Th>
-          <Th>Process Conditions</Th>
-          <Th>Next Service</Th>
-          <Th>Interval (months)</Th>
-          <Th>Due Status</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {valves.map((valve) => {
-          const nextService = getNextServiceDate(valve);
-          const daysUntil = nextService.diff(dayjs(), "day");
-          const interval = getRecommendedInterval(valve);
-          const statusMsg =
-            daysUntil < 0
-              ? `Overdue by ${-daysUntil} days`
-              : daysUntil < 30
-              ? `Due in ${daysUntil} days`
-              : "OK";
-          return (
-            <Tr key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
-              <Td>{valve.id}</Td>
-              <Td>{valve.serial}</Td>
-              <Td>{valve.manufacturer}</Td>
-              <Td>{valve.model}</Td>
-              <Td>{valve.location}</Td>
-              <Td>{valve.status}</Td>
-              <Td>{valve.lastServiceDate}</Td>
-              <Td>{valve.processConditions}</Td>
-              <Td>{nextService.format("YYYY-MM-DD")}</Td>
-              <Td>
-                {interval}
-                {valve.plantOverrideMonths
-                  ? " (Plant override)"
-                  : " (Manufacturer)"}
-              </Td>
-              <Td>{statusMsg}</Td>
-            </Tr>
-          );
-        })}
-      </Tbody>
-    </Table>
+    <Box overflowX="auto">
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f7fafc" }}>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Valve ID</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Serial #</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Manufacturer</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Model</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Location</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Status</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Last Service</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Process Conditions</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Next Service</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Interval (months)</th>
+            <th style={{ padding: "12px", textAlign: "left", border: "1px solid #e2e8f0" }}>Due Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {valves.map((valve) => {
+            const nextService = getNextServiceDate(valve);
+            const daysUntil = nextService.diff(dayjs(), "day");
+            const interval = getRecommendedInterval(valve);
+            const statusMsg =
+              daysUntil < 0
+                ? `Overdue by ${-daysUntil} days`
+                : daysUntil < 30
+                ? `Due in ${daysUntil} days`
+                : "OK";
+            return (
+              <tr key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.id}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.serial}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.manufacturer}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.model}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.location}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.status}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.lastServiceDate}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{valve.processConditions}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{nextService.format("YYYY-MM-DD")}</td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>
+                  {interval}
+                  {valve.plantOverrideMonths
+                    ? " (Plant override)"
+                    : " (Manufacturer)"}
+                </td>
+                <td style={{ padding: "12px", border: "1px solid #e2e8f0" }}>{statusMsg}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </Box>
   </Box>
 );
 
