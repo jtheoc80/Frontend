@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
 import ValveTable from "./components/Valvetable.tsx";
+import { ValveProvider } from "./contexts/ValveContext.tsx";
 import system from "./theme.ts";
 
 function App() {
@@ -23,8 +24,9 @@ function App() {
 
   return (
     <ChakraProvider value={system}>
-      <Box minH="100vh" bg="gray.50">
-        {/* Header */}
+      <ValveProvider>
+        <Box minH="100vh" bg="gray.50">
+          {/* Header */}
         <Flex 
           as="header" 
           bg="purple.700" 
@@ -119,8 +121,7 @@ function App() {
                 <Heading fontSize="lg" mb={4}>
                   Quick Valve Summary
                 </Heading>
-                <Text>3 valves due for service, 1 overdue.</Text>
-                {/* You could add a small preview table or chart here if desired */}
+                <Text>Valve data now fetched from API service with React Context management.</Text>
               </Box>
             </Box>
           </TabsContent>
@@ -148,6 +149,7 @@ function App() {
             </TabsContent>
         </TabsRoot>
       </Box>
+      </ValveProvider>
     </ChakraProvider>
   );
 }

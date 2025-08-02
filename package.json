@@ -7,6 +7,7 @@
     "@csstools/normalize.css": "^12.1.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "axios": "^1.11.0",
     "dayjs": "^1.11.13",
     "ethers": "^6.15.0",
     "framer-motion": "^10.18.0",
