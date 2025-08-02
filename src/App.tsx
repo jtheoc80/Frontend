@@ -13,7 +13,7 @@ import {
   TabsRoot,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable.tsx";
+import ValveTable from "./components/Valvetable";
 import { ValveProvider } from "./contexts/ValveContext";
 import system from "./theme.ts";
 
