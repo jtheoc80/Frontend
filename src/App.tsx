@@ -12,6 +12,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
+import system from "./theme";
 
 function App() {
   const [activeTab, setActiveTab] = useState(0);
@@ -19,7 +20,7 @@ function App() {
   const bg = "white";
 
   return (
-    <ChakraProvider>
+    <ChakraProvider value={system}>
       <Box minH="100vh" bg="gray.50">
         {/* Header */}
         <Flex as="header" bg="purple.700" p={4} align="center" color="white">
@@ -27,37 +28,37 @@ function App() {
             ValveChain Dashboard
           </Heading>
           <Spacer />
-          <HStack spacing={4}>
+          <HStack gap={4}>
             <Button
-              leftIcon={<FaTable />}
               colorScheme={activeTab === 1 ? "purple" : "gray"}
               variant={activeTab === 1 ? "solid" : "outline"}
               onClick={() => setActiveTab(1)}
             >
+              <FaTable style={{ marginRight: '8px' }} />
               Valve Inventory
             </Button>
             <Button
-              leftIcon={<FaTools />}
               colorScheme={activeTab === 2 ? "purple" : "gray"}
               variant={activeTab === 2 ? "solid" : "outline"}
               onClick={() => setActiveTab(2)}
             >
+              <FaTools style={{ marginRight: '8px' }} />
               Repairs
             </Button>
             <Button
-              leftIcon={<FaHistory />}
               colorScheme={activeTab === 3 ? "purple" : "gray"}
               variant={activeTab === 3 ? "solid" : "outline"}
               onClick={() => setActiveTab(3)}
             >
+              <FaHistory style={{ marginRight: '8px' }} />
               Valve History
             </Button>
             <Button
-              leftIcon={<FaWallet />}
               colorScheme={activeTab === 4 ? "purple" : "gray"}
               variant={activeTab === 4 ? "solid" : "outline"}
               onClick={() => setActiveTab(4)}
             >
+              <FaWallet style={{ marginRight: '8px' }} />
               Payments
             </Button>
           </HStack>
@@ -73,7 +74,7 @@ function App() {
                   <Heading fontSize="lg">Welcome, Jimmy!</Heading>
                   <Text color="gray.500">Your role: Admin</Text>
                 </Box>
-                <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+                <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
                   <StatCard label="Valves" value="250" />
                   <StatCard label="In Repair" value="3" />
                   <StatCard label="Owed" value="$12,500" />
@@ -84,7 +85,7 @@ function App() {
                 <Heading fontSize="lg" mb={4}>
                   System Status
                 </Heading>
-                <VStack spacing={4} align="start">
+                <VStack gap={4} align="start">
                   <Text color="green.500">✅ Frontend: Connected</Text>
                   <Text color="orange.500">⏳ Express API: Running on port 8080</Text>
                   <Text color="orange.500">⏳ FastAPI Service: Running on port 8000</Text>
