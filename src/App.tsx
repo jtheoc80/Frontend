@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
 import LoadingPanel from "./components/LoadingPanel.tsx";
-import LazyLoadErrorBoundary from "./components/LazyLoadErrorBoundary.tsx";
+import LazyLoadErrorBoundary from "./components/LazyLoadErrorBoundary";
 
 // Lazy load tab panel components
 const DashboardPanel = React.lazy(() => import("./components/DashboardPanel.tsx"));
