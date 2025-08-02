@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { Box, Table, TableHeader, TableBody, TableRow, TableColumnHeader, TableCell, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 const valves = [
@@ -53,22 +53,22 @@ function getStatusColor(daysUntil: number) {
 const ValveTable = () => (
   <Box p={4}>
     <Table variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Valve ID</Th>
-          <Th>Serial #</Th>
-          <Th>Manufacturer</Th>
-          <Th>Model</Th>
-          <Th>Location</Th>
-          <Th>Status</Th>
-          <Th>Last Service</Th>
-          <Th>Process Conditions</Th>
-          <Th>Next Service</Th>
-          <Th>Interval (months)</Th>
-          <Th>Due Status</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+      <TableHeader>
+        <TableRow>
+          <TableColumnHeader>Valve ID</TableColumnHeader>
+          <TableColumnHeader>Serial #</TableColumnHeader>
+          <TableColumnHeader>Manufacturer</TableColumnHeader>
+          <TableColumnHeader>Model</TableColumnHeader>
+          <TableColumnHeader>Location</TableColumnHeader>
+          <TableColumnHeader>Status</TableColumnHeader>
+          <TableColumnHeader>Last Service</TableColumnHeader>
+          <TableColumnHeader>Process Conditions</TableColumnHeader>
+          <TableColumnHeader>Next Service</TableColumnHeader>
+          <TableColumnHeader>Interval (months)</TableColumnHeader>
+          <TableColumnHeader>Due Status</TableColumnHeader>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {valves.map((valve) => {
           const nextService = getNextServiceDate(valve);
           const daysUntil = nextService.diff(dayjs(), "day");
@@ -80,27 +80,27 @@ const ValveTable = () => (
               ? `Due in ${daysUntil} days`
               : "OK";
           return (
-            <Tr key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
-              <Td>{valve.id}</Td>
-              <Td>{valve.serial}</Td>
-              <Td>{valve.manufacturer}</Td>
-              <Td>{valve.model}</Td>
-              <Td>{valve.location}</Td>
-              <Td>{valve.status}</Td>
-              <Td>{valve.lastServiceDate}</Td>
-              <Td>{valve.processConditions}</Td>
-              <Td>{nextService.format("YYYY-MM-DD")}</Td>
-              <Td>
+            <TableRow key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
+              <TableCell>{valve.id}</TableCell>
+              <TableCell>{valve.serial}</TableCell>
+              <TableCell>{valve.manufacturer}</TableCell>
+              <TableCell>{valve.model}</TableCell>
+              <TableCell>{valve.location}</TableCell>
+              <TableCell>{valve.status}</TableCell>
+              <TableCell>{valve.lastServiceDate}</TableCell>
+              <TableCell>{valve.processConditions}</TableCell>
+              <TableCell>{nextService.format("YYYY-MM-DD")}</TableCell>
+              <TableCell>
                 {interval}
                 {valve.plantOverrideMonths
                   ? " (Plant override)"
                   : " (Manufacturer)"}
-              </Td>
-              <Td>{statusMsg}</Td>
-            </Tr>
+              </TableCell>
+              <TableCell>{statusMsg}</TableCell>
+            </TableRow>
           );
         })}
-      </Tbody>
+      </TableBody>
     </Table>
   </Box>
 );
