@@ -54,7 +54,7 @@ const ValveHistoryTable: React.FC = () => {
       handleCloseModal();
     } catch (error) {
       toast({
-        title: 'TableRowansaction Error',
+        title: 'Transaction Error',
         description: error.message || 'An error occurred during the transaction.',
         status: 'error',
         duration: 5000,
