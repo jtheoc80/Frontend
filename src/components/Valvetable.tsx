@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useValves } from "../contexts/ValveContext.tsx";
-import { Valve } from "../types/valve.ts";
+import { Valve } from "../types/valve";
 
 function getRecommendedInterval(valve: Valve, manufacturerIntervals: any) {
   if (valve.plantOverrideMonths) return valve.plantOverrideMonths;
