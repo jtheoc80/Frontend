@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
 import system from "./theme";
+import APITestComponent from "./components/APITestComponent";
 
 function App() {
   const [activeTab, setActiveTab] = useState(0);
@@ -87,8 +88,8 @@ function App() {
                 </Heading>
                 <VStack gap={4} align="start">
                   <Text color="green.500">✅ Frontend: Connected</Text>
-                  <Text color="orange.500">⏳ Express API: Running on port 8080</Text>
-                  <Text color="orange.500">⏳ FastAPI Service: Running on port 8000</Text>
+                  <Text color="green.500">✅ Express API: Running on port 8081</Text>
+                  <Text color="green.500">✅ FastAPI Service: Running on port 8001</Text>
                 </VStack>
               </Box>
             </Box>
@@ -96,8 +97,8 @@ function App() {
           
           {activeTab === 1 && (
             <Box p={6}>
-              <Heading size="md">Valve Inventory</Heading>
-              <Text mt={4}>Valve table will be displayed here once components are properly configured.</Text>
+              <Heading size="md" mb={4}>Valve Inventory</Heading>
+              <APITestComponent />
             </Box>
           )}
           
