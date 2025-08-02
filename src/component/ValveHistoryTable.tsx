@@ -1,10 +1,26 @@
-Write-Output "##active_line2##"
 import React, { useState, useEffect } from 'react';
-Write-Output "##active_line3##"
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Button, Input, Select, VStack, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
-Write-Output "##active_line4##"
+import { 
+  Box, 
+  TableRoot, 
+  TableHeader, 
+  TableBody, 
+  TableRow, 
+  TableColumnHeader, 
+  TableCell, 
+  Button, 
+  Input, 
+  Select, 
+  VStack, 
+  useToast, 
+  Modal, 
+  ModalOverlay, 
+  ModalContent, 
+  ModalHeader, 
+  ModalFooter, 
+  ModalBody, 
+  ModalCloseButton 
+} from '@chakra-ui/react';
 import { ethers } from 'ethers';
-Write-Output "##active_line5##"
 Write-Output "##active_line6##"
 // Replace with actual contract ABI and address
 Write-Output "##active_line7##"
@@ -169,66 +185,36 @@ Write-Output "##active_line92##"
       <Input placeholder="Filter by Service Vendor" name="serviceVendor" onChange={handleFilterChange} />
 Write-Output "##active_line93##"
 Write-Output "##active_line94##"
-      <Table variant="simple">
-Write-Output "##active_line95##"
-        <Thead>
-Write-Output "##active_line96##"
-          <Tr>
-Write-Output "##active_line97##"
-            <Th>Serial Number</Th>
-Write-Output "##active_line98##"
-            <Th>Location</Th>
-Write-Output "##active_line99##"
-            <Th>Date Installed</Th>
-Write-Output "##active_line100##"
-            <Th>Last Service Date</Th>
-Write-Output "##active_line101##"
-            <Th>Service Vendor</Th>
-Write-Output "##active_line102##"
-            <Th>Warranty Expiration Date</Th>
-Write-Output "##active_line103##"
-            <Th>Status</Th>
-Write-Output "##active_line104##"
-            <Th>Action</Th>
-Write-Output "##active_line105##"
-          </Tr>
-Write-Output "##active_line106##"
-        </Thead>
-Write-Output "##active_line107##"
-        <Tbody>
-Write-Output "##active_line108##"
+      <TableRoot variant="simple">
+        <TableHeader>
+          <TableRow>
+            <TableColumnHeader>Serial Number</TableColumnHeader>
+            <TableColumnHeader>Location</TableColumnHeader>
+            <TableColumnHeader>Date Installed</TableColumnHeader>
+            <TableColumnHeader>Last Service Date</TableColumnHeader>
+            <TableColumnHeader>Service Vendor</TableColumnHeader>
+            <TableColumnHeader>Warranty Expiration Date</TableColumnHeader>
+            <TableColumnHeader>Status</TableColumnHeader>
+            <TableColumnHeader>Action</TableColumnHeader>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {filteredValves.map(valve => (
-Write-Output "##active_line109##"
-            <Tr key={valve.serialNumber}>
-Write-Output "##active_line110##"
-              <Td>{valve.serialNumber}</Td>
-Write-Output "##active_line111##"
-              <Td>{valve.location}</Td>
-Write-Output "##active_line112##"
-              <Td>{valve.dateInstalled}</Td>
-Write-Output "##active_line113##"
-              <Td>{valve.lastServiceDate}</Td>
-Write-Output "##active_line114##"
-              <Td>{valve.serviceVendor}</Td>
-Write-Output "##active_line115##"
-              <Td>{valve.warrantyExpirationDate}</Td>
-Write-Output "##active_line116##"
-              <Td>{valve.status}</Td>
-Write-Output "##active_line117##"
-              <Td>
-Write-Output "##active_line118##"
+            <TableRow key={valve.serialNumber}>
+              <TableCell>{valve.serialNumber}</TableCell>
+              <TableCell>{valve.location}</TableCell>
+              <TableCell>{valve.dateInstalled}</TableCell>
+              <TableCell>{valve.lastServiceDate}</TableCell>
+              <TableCell>{valve.serviceVendor}</TableCell>
+              <TableCell>{valve.warrantyExpirationDate}</TableCell>
+              <TableCell>{valve.status}</TableCell>
+              <TableCell>
                 <Button colorScheme="blue" onClick={() => handleOpenModal(valve)}>Update Status</Button>
-Write-Output "##active_line119##"
-              </Td>
-Write-Output "##active_line120##"
-            </Tr>
-Write-Output "##active_line121##"
+              </TableCell>
+            </TableRow>
           ))}
-Write-Output "##active_line122##"
-        </Tbody>
-Write-Output "##active_line123##"
-      </Table>
-Write-Output "##active_line124##"
+        </TableBody>
+      </TableRoot>
 Write-Output "##active_line125##"
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
 Write-Output "##active_line126##"

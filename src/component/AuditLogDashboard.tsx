@@ -1,1 +1,76 @@
-"import React, { useEffect, useState } from 'react';\nimport { Box, Table, Thead, Tbody, Tr, Th, Td, Input } from '@chakra-ui/react';\nimport axios from 'axios';\n\nconst AuditLogDashboard: React.FC = () => {\n    const [logs, setLogs] = useState([]);\n    const [filterUser, setFilterUser] = useState('');\n    const [filterAction, setFilterAction] = useState('');\n    \n    useEffect(() => {\n        fetchLogs();\n    }, [filterUser, filterAction]);\n\n    const fetchLogs = async () => {\n        try {\n            const response = await axios.get('/api/audit_logs', {\n                params: {\n                    user: filterUser,\n                    action: filterAction,\n                },\n            });\n            setLogs(response.data);\n        } catch (err) {\n            console.error('Failed to fetch audit logs:', err);\n        }\n    };\n\n    retur..." 
+import React, { useEffect, useState } from 'react';
+import { 
+  Box, 
+  TableRoot, 
+  TableHeader, 
+  TableBody, 
+  TableRow, 
+  TableColumnHeader, 
+  TableCell, 
+  Input 
+} from '@chakra-ui/react';
+import axios from 'axios';
+
+const AuditLogDashboard: React.FC = () => {
+    const [logs, setLogs] = useState([]);
+    const [filterUser, setFilterUser] = useState('');
+    const [filterAction, setFilterAction] = useState('');
+    
+    useEffect(() => {
+        fetchLogs();
+    }, [filterUser, filterAction]);
+
+    const fetchLogs = async () => {
+        try {
+            const response = await axios.get('/api/audit_logs', {
+                params: {
+                    user: filterUser,
+                    action: filterAction,
+                },
+            });
+            setLogs(response.data);
+        } catch (err) {
+            console.error('Failed to fetch audit logs:', err);
+        }
+    };
+
+    return (
+        <Box p={5}>
+            <Input 
+                placeholder="Filter by User" 
+                value={filterUser} 
+                onChange={(e) => setFilterUser(e.target.value)} 
+                mb={3}
+            />
+            <Input 
+                placeholder="Filter by Action" 
+                value={filterAction} 
+                onChange={(e) => setFilterAction(e.target.value)} 
+                mb={3}
+            />
+            
+            <TableRoot variant="simple">
+                <TableHeader>
+                    <TableRow>
+                        <TableColumnHeader>User</TableColumnHeader>
+                        <TableColumnHeader>Action</TableColumnHeader>
+                        <TableColumnHeader>Timestamp</TableColumnHeader>
+                        <TableColumnHeader>Details</TableColumnHeader>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {logs.map((log: any, index: number) => (
+                        <TableRow key={index}>
+                            <TableCell>{log.user}</TableCell>
+                            <TableCell>{log.action}</TableCell>
+                            <TableCell>{log.timestamp}</TableCell>
+                            <TableCell>{log.details}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </TableRoot>
+        </Box>
+    );
+};
+
+export default AuditLogDashboard;

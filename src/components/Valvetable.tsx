@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Table,
   TableRoot,
   TableHeader,
   TableBody,
@@ -61,22 +60,31 @@ function getStatusColor(daysUntil: number) {
 }
 
 const ValveTable = () => (
-  <Box p={4} overflow="auto">
-    <TableRoot variant="simple">
-      <Table>
+  <Box p={{ base: 2, md: 4 }}>
+    {/* Mobile-first responsive table container */}
+    <Box
+      overflowX="auto"
+      overflowY="visible"
+      bg="white"
+      rounded="lg"
+      shadow="sm"
+      border="1px solid"
+      borderColor="gray.200"
+    >
+      <TableRoot variant="simple" size={{ base: "sm", md: "md" }}>
         <TableHeader>
           <TableRow>
-            <TableColumnHeader>Valve ID</TableColumnHeader>
-            <TableColumnHeader>Serial #</TableColumnHeader>
-            <TableColumnHeader>Manufacturer</TableColumnHeader>
-            <TableColumnHeader>Model</TableColumnHeader>
-            <TableColumnHeader>Location</TableColumnHeader>
-            <TableColumnHeader>Status</TableColumnHeader>
-            <TableColumnHeader>Last Service</TableColumnHeader>
-            <TableColumnHeader>Process Conditions</TableColumnHeader>
-            <TableColumnHeader>Next Service</TableColumnHeader>
-            <TableColumnHeader>Interval (months)</TableColumnHeader>
-            <TableColumnHeader>Due Status</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="80px">Valve ID</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="100px">Serial #</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="120px">Manufacturer</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="80px">Model</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="100px">Location</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="100px">Status</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="120px">Last Service</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="140px">Process Conditions</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="120px">Next Service</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="140px">Interval (months)</TableColumnHeader>
+            <TableColumnHeader whiteSpace="nowrap" minW="150px">Due Status</TableColumnHeader>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -92,28 +100,28 @@ const ValveTable = () => (
                 : "OK";
             return (
               <TableRow key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
-                <TableCell>{valve.id}</TableCell>
-                <TableCell>{valve.serial}</TableCell>
-                <TableCell>{valve.manufacturer}</TableCell>
-                <TableCell>{valve.model}</TableCell>
-                <TableCell>{valve.location}</TableCell>
-                <TableCell>{valve.status}</TableCell>
-                <TableCell>{valve.lastServiceDate}</TableCell>
-                <TableCell>{valve.processConditions}</TableCell>
-                <TableCell>{nextService.format("YYYY-MM-DD")}</TableCell>
-                <TableCell>
+                <TableCell whiteSpace="nowrap">{valve.id}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.serial}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.manufacturer}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.model}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.location}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.status}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.lastServiceDate}</TableCell>
+                <TableCell whiteSpace="nowrap">{valve.processConditions}</TableCell>
+                <TableCell whiteSpace="nowrap">{nextService.format("YYYY-MM-DD")}</TableCell>
+                <TableCell whiteSpace="nowrap">
                   {interval}
                   {valve.plantOverrideMonths
                     ? " (Plant override)"
                     : " (Manufacturer)"}
                 </TableCell>
-                <TableCell>{statusMsg}</TableCell>
+                <TableCell whiteSpace="nowrap">{statusMsg}</TableCell>
               </TableRow>
             );
           })}
         </TableBody>
-      </Table>
-    </TableRoot>
+      </TableRoot>
+    </Box>
   </Box>
 );
 

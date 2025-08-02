@@ -17,7 +17,8 @@ import {
   TabsTrigger,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable";
+import ValveTable from "./components/Valvetable.tsx";
+import system from "./theme.ts";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -25,20 +26,36 @@ function App() {
   const bg = "white";
 
   return (
-    <ChakraProvider>
+    <ChakraProvider value={system}>
       <Box minH="100vh" bg="gray.50">
         {/* Header */}
-        <Flex as="header" bg="purple.700" p={4} align="center" color="white">
-          <Heading fontSize="2xl" fontWeight="bold">
+        <Flex 
+          as="header" 
+          bg="purple.700" 
+          p={4} 
+          align="center" 
+          color="white"
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 3, md: 0 }}
+        >
+          <Heading fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">
             ValveChain Dashboard
           </Heading>
-          <Spacer />
-          <HStack spacing={4}>
+          <Spacer display={{ base: "none", md: "block" }} />
+          {/* Navigation Buttons - Responsive Layout */}
+          <HStack 
+            spacing={{ base: 2, md: 4 }} 
+            flexWrap={{ base: "wrap", md: "nowrap" }}
+            justify={{ base: "center", md: "flex-end" }}
+            w={{ base: "100%", md: "auto" }}
+          >
             <Button
               leftIcon={<FaTable />}
               colorScheme={tabIndex === 1 ? "purple" : "gray"}
               variant={tabIndex === 1 ? "solid" : "outline"}
               onClick={() => setTabIndex(1)}
+              size={{ base: "sm", md: "md" }}
+              fontSize={{ base: "xs", md: "sm" }}
             >
               Valve Inventory
             </Button>
@@ -47,6 +64,8 @@ function App() {
               colorScheme={tabIndex === 2 ? "purple" : "gray"}
               variant={tabIndex === 2 ? "solid" : "outline"}
               onClick={() => setTabIndex(2)}
+              size={{ base: "sm", md: "md" }}
+              fontSize={{ base: "xs", md: "sm" }}
             >
               Repairs
             </Button>
@@ -55,6 +74,8 @@ function App() {
               colorScheme={tabIndex === 3 ? "purple" : "gray"}
               variant={tabIndex === 3 ? "solid" : "outline"}
               onClick={() => setTabIndex(3)}
+              size={{ base: "sm", md: "md" }}
+              fontSize={{ base: "xs", md: "sm" }}
             >
               Valve History
             </Button>
@@ -63,6 +84,8 @@ function App() {
               colorScheme={tabIndex === 4 ? "purple" : "gray"}
               variant={tabIndex === 4 ? "solid" : "outline"}
               onClick={() => setTabIndex(4)}
+              size={{ base: "sm", md: "md" }}
+              fontSize={{ base: "xs", md: "sm" }}
             >
               Payments
             </Button>
@@ -72,28 +95,39 @@ function App() {
         {/* Main Tabs */}
         <TabsRoot value={tabIndex.toString()} onValueChange={(value) => setTabIndex(parseInt(value.value))}>
           <TabsContent value="0">
-              <Box maxW="7xl" mx="auto" p={6}>
-                {/* Welcome and Stats */}
-                <Flex align="center" justify="space-between" mb={8}>
-                  <Box>
-                    <Heading fontSize="lg">Welcome, Jimmy!</Heading>
-                    <Text color="gray.500">Your role: Admin</Text>
-                  </Box>
-                  <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                    <StatCard label="Valves" value="250" />
-                    <StatCard label="In Repair" value="3" />
-                    <StatCard label="Owed" value="$12,500" />
-                  </SimpleGrid>
-                </Flex>
-                {/* Add a quick summary from Valve Table */}
-                <Box bg={bg} rounded="2xl" shadow="md" p={6}>
-                  <Heading fontSize="lg" mb={4}>
-                    Quick Valve Summary
-                  </Heading>
-                  <Text>3 valves due for service, 1 overdue.</Text>
-                  {/* You could add a small preview table or chart here if desired */}
+            <Box maxW="7xl" mx="auto" p={{ base: 4, md: 6 }}>
+              {/* Welcome and Stats */}
+              <Flex 
+                align="center" 
+                justify="space-between" 
+                mb={8}
+                direction={{ base: "column", lg: "row" }}
+                gap={{ base: 4, lg: 0 }}
+              >
+                <Box textAlign={{ base: "center", lg: "left" }}>
+                  <Heading fontSize="lg">Welcome, Jimmy!</Heading>
+                  <Text color="gray.500">Your role: Admin</Text>
                 </Box>
-              </TabsContent>
+                <SimpleGrid 
+                  columns={{ base: 1, sm: 3 }} 
+                  spacing={4}
+                  w={{ base: "100%", lg: "auto" }}
+                >
+                  <StatCard label="Valves" value="250" />
+                  <StatCard label="In Repair" value="3" />
+                  <StatCard label="Owed" value="$12,500" />
+                </SimpleGrid>
+              </Flex>
+              {/* Add a quick summary from Valve Table */}
+              <Box bg={bg} rounded="2xl" shadow="md" p={{ base: 4, md: 6 }}>
+                <Heading fontSize="lg" mb={4}>
+                  Quick Valve Summary
+                </Heading>
+                <Text>3 valves due for service, 1 overdue.</Text>
+                {/* You could add a small preview table or chart here if desired */}
+              </Box>
+            </Box>
+          </TabsContent>
             {/* Valve Inventory Tab */}
             <TabsContent value="1">
               <ValveTable />
