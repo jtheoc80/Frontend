@@ -42,7 +42,7 @@ const manufacturerIntervals = {
   default: 12,
 };
 
-const calculateServiceDueDate = (valve) => {
+const calculateServiceDueDate = (valve: Valve) => {
   const interval = valve.plantOverrideMonths || manufacturerIntervals[valve.manufacturer] || manufacturerIntervals.default;
   return dayjs(valve.lastServiceDate).add(interval, "month").format("YYYY-MM-DD");
 };
