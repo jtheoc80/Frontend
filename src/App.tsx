@@ -7,17 +7,14 @@ import {
   Text,
   Button,
   SimpleGrid,
-  VStack,
   HStack,
   Spacer,
   Tabs,
-  Tab,
-  TabList,
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/ValveTable";
+import ValveTable from "./components/Valvetable.tsx";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
