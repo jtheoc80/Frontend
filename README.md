@@ -1,70 +1,172 @@
-# Getting Started with Create React App
+# ValveChain Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React/TypeScript web application for managing industrial valve inventory, repairs, and maintenance tracking. Built with blockchain integration capabilities for secure and transparent valve lifecycle management.
 
-## Available Scripts
+## Project Overview
 
-In the project directory, you can run:
+ValveChain Dashboard is a comprehensive valve management system designed for industrial plants and maintenance teams. It provides real-time tracking of valve status, maintenance schedules, repair workflows, and payment management.
 
-### `npm start`
+### Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Valve Inventory Management**: Track valve specifications, locations, and operational status
+- **Maintenance Scheduling**: Automated service interval calculations based on manufacturer recommendations and plant overrides
+- **Repair Workflow**: Manage repair vendor assignments and track repair status
+- **Payment Tracking**: Handle maintenance and repair cost management
+- **Role-based Access**: Admin and operator role support
+- **Responsive Design**: Mobile-first interface built with Chakra UI
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Technology Stack
 
-### `npm test`
+- **Frontend**: React 18 + TypeScript
+- **UI Framework**: Chakra UI v3 with Ark UI components
+- **Styling**: Emotion CSS-in-JS
+- **Date Handling**: Day.js
+- **Blockchain**: Ethers.js for Web3 integration
+- **Testing**: Jest + React Testing Library
+- **Build Tool**: Create React App
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js 16+ and npm
+- Modern web browser with ES6+ support
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+```bash
+git clone https://github.com/jtheoc80/Frontend.git
+cd Frontend
+```
 
-### `npm run eject`
+2. Install dependencies:
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Start the development server:
+```bash
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application will open at [http://localhost:3000](http://localhost:3000).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Available Scripts
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (one-way operation)
 
-## Learn More
+## Backend Connection
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### API Configuration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The frontend is designed to connect to a backend API for data persistence and blockchain operations. Configure the backend connection by setting environment variables:
 
-### Code Splitting
+```bash
+# .env.local (create this file in the project root)
+REACT_APP_API_BASE_URL=http://localhost:8000/api
+REACT_APP_BLOCKCHAIN_NETWORK=localhost
+REACT_APP_CONTRACT_ADDRESS=0x...
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Backend Requirements
 
-### Analyzing the Bundle Size
+The backend should provide the following API endpoints:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Valve Management
+- `GET /api/valves` - Retrieve all valves
+- `POST /api/valves` - Create new valve record
+- `PUT /api/valves/:id` - Update valve information
+- `DELETE /api/valves/:id` - Remove valve record
 
-### Making a Progressive Web App
+#### Maintenance & Repairs
+- `GET /api/maintenance/:valveId` - Get maintenance history
+- `POST /api/maintenance` - Schedule new maintenance
+- `GET /api/repairs` - List repair requests
+- `POST /api/repairs` - Create repair request
+- `PUT /api/repairs/:id` - Update repair status
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### Payments
+- `GET /api/payments` - Retrieve payment records
+- `POST /api/payments` - Process payment
+- `GET /api/invoices/:vendorId` - Get vendor invoices
 
-### Advanced Configuration
+### Blockchain Integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+For blockchain features, ensure your backend supports:
 
-### Deployment
+- Web3 wallet connection (MetaMask, WalletConnect)
+- Smart contract interaction for valve registration
+- Transaction signing for maintenance records
+- IPFS integration for document storage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Authentication
 
-### `npm run build` fails to minify
+Configure authentication by implementing these endpoints:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `POST /api/auth/login` - User authentication
+- `GET /api/auth/profile` - Get user profile
+- `POST /api/auth/logout` - User logout
+
+## Testing
+
+The application includes comprehensive unit tests using React Testing Library and Jest:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Generate coverage report
+npm test -- --coverage
+```
+
+### Test Coverage
+
+- **Component Tests**: StatCard, ValveTable components
+- **Integration Tests**: App navigation and dashboard functionality  
+- **Helper Function Tests**: Date calculations, status logic, interval management
+
+## Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Valvetable.tsx  # Main valve inventory table
+│   └── *.test.js       # Component tests
+├── App.tsx             # Main application component
+├── index.tsx           # Application entry point
+├── theme.ts            # Chakra UI theme configuration
+└── __tests__/          # Test utilities and mocks
+```
+
+## Contributing
+
+1. Create a feature branch from `main`
+2. Make your changes with appropriate tests
+3. Ensure all tests pass: `npm test`
+4. Build successfully: `npm run build`
+5. Submit a pull request
+
+## Deployment
+
+Build the application for production:
+
+```bash
+npm run build
+```
+
+The build folder contains the optimized production files ready for deployment to any static hosting service (Netlify, Vercel, AWS S3, etc.).
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For questions or support, please contact the development team or create an issue in the repository.
