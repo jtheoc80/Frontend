@@ -1,28 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import {
   ChakraProvider,
   Box,
   Flex,
   Heading,
-  Text,
-  Button,
-  SimpleGrid,
-  VStack,
   HStack,
   Spacer,
   Tabs,
-  Tab,
-  TabList,
   TabPanels,
   TabPanel,
+  Button,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable";
+import LoadingPanel from "./components/LoadingPanel.tsx";
+
+// Lazy load tab panel components
+const DashboardPanel = React.lazy(() => import("./components/DashboardPanel.tsx"));
+const ValveTable = React.lazy(() => import("./components/Valvetable.tsx"));
+const RepairsPanel = React.lazy(() => import("./components/RepairsPanel.tsx"));
+const ValveHistoryViewerPanel = React.lazy(() => import("./components/ValveHistoryViewerPanel.tsx"));
+const PaymentsPanel = React.lazy(() => import("./components/PaymentsPanel.tsx"));
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
-
-  const bg = "white";
 
   return (
     <ChakraProvider>
@@ -74,75 +74,38 @@ function App() {
           <TabPanels>
             {/* Dashboard */}
             <TabPanel>
-              <Box maxW="7xl" mx="auto" p={6}>
-                {/* Welcome and Stats */}
-                <Flex align="center" justify="space-between" mb={8}>
-                  <Box>
-                    <Heading fontSize="lg">Welcome, Jimmy!</Heading>
-                    <Text color="gray.500">Your role: Admin</Text>
-                  </Box>
-                  <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                    <StatCard label="Valves" value="250" />
-                    <StatCard label="In Repair" value="3" />
-                    <StatCard label="Owed" value="$12,500" />
-                  </SimpleGrid>
-                </Flex>
-                {/* Add a quick summary from Valve Table */}
-                <Box bg={bg} rounded="2xl" shadow="md" p={6}>
-                  <Heading fontSize="lg" mb={4}>
-                    Quick Valve Summary
-                  </Heading>
-                  <Text>3 valves due for service, 1 overdue.</Text>
-                  {/* You could add a small preview table or chart here if desired */}
-                </Box>
-              </Box>
+              <Suspense fallback={<LoadingPanel />}>
+                <DashboardPanel />
+              </Suspense>
             </TabPanel>
             {/* Valve Inventory Tab */}
             <TabPanel>
-              <ValveTable />
+              <Suspense fallback={<LoadingPanel />}>
+                <ValveTable />
+              </Suspense>
             </TabPanel>
             {/* Repairs Tab */}
             <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Repairs Panel (Coming Soon)</Heading>
-              </Box>
+              <Suspense fallback={<LoadingPanel />}>
+                <RepairsPanel />
+              </Suspense>
             </TabPanel>
             {/* Valve History Tab */}
             <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Valve History Viewer (Coming Soon)</Heading>
-              </Box>
+              <Suspense fallback={<LoadingPanel />}>
+                <ValveHistoryViewerPanel />
+              </Suspense>
             </TabPanel>
             {/* Payments Tab */}
             <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Payments Panel (Coming Soon)</Heading>
-              </Box>
+              <Suspense fallback={<LoadingPanel />}>
+                <PaymentsPanel />
+              </Suspense>
             </TabPanel>
           </TabPanels>
         </Tabs>
       </Box>
     </ChakraProvider>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <Box
-      bg="purple.50"
-      color="purple.900"
-      rounded="2xl"
-      px={6}
-      py={4}
-      shadow="sm"
-      textAlign="center"
-      minW="110px"
-    >
-      <Text fontSize="2xl" fontWeight="bold">
-        {value}
-      </Text>
-      <Text fontSize="sm">{label}</Text>
-    </Box>
   );
 }
 

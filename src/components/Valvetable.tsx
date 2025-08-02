@@ -8,7 +8,7 @@ import {
   Tr, 
   Th, 
   Td 
-} from "@chakra-ui/table";
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 const valves = [
