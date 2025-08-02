@@ -13,12 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
 import LoadingPanel from "./components/LoadingPanel.tsx";
+import LazyLoadErrorBoundary from "./components/LazyLoadErrorBoundary.tsx";
 
 // Lazy load tab panel components
 const DashboardPanel = React.lazy(() => import("./components/DashboardPanel.tsx"));
 const ValveTable = React.lazy(() => import("./components/Valvetable.tsx"));
 const RepairsPanel = React.lazy(() => import("./components/RepairsPanel.tsx"));
-const ValveHistoryViewerPanel = React.lazy(() => import("./components/ValveHistoryViewerPanel.tsx"));
+const AdvancedValveHistoryPanel = React.lazy(() => import("./components/AdvancedValveHistoryPanel.tsx"));
 const PaymentsPanel = React.lazy(() => import("./components/PaymentsPanel.tsx"));
 
 function App() {
@@ -74,33 +75,43 @@ function App() {
           <TabPanels>
             {/* Dashboard */}
             <TabPanel>
-              <Suspense fallback={<LoadingPanel />}>
-                <DashboardPanel />
-              </Suspense>
+              <LazyLoadErrorBoundary>
+                <Suspense fallback={<LoadingPanel />}>
+                  <DashboardPanel />
+                </Suspense>
+              </LazyLoadErrorBoundary>
             </TabPanel>
             {/* Valve Inventory Tab */}
             <TabPanel>
-              <Suspense fallback={<LoadingPanel />}>
-                <ValveTable />
-              </Suspense>
+              <LazyLoadErrorBoundary>
+                <Suspense fallback={<LoadingPanel />}>
+                  <ValveTable />
+                </Suspense>
+              </LazyLoadErrorBoundary>
             </TabPanel>
             {/* Repairs Tab */}
             <TabPanel>
-              <Suspense fallback={<LoadingPanel />}>
-                <RepairsPanel />
-              </Suspense>
+              <LazyLoadErrorBoundary>
+                <Suspense fallback={<LoadingPanel />}>
+                  <RepairsPanel />
+                </Suspense>
+              </LazyLoadErrorBoundary>
             </TabPanel>
             {/* Valve History Tab */}
             <TabPanel>
-              <Suspense fallback={<LoadingPanel />}>
-                <ValveHistoryViewerPanel />
-              </Suspense>
+              <LazyLoadErrorBoundary>
+                <Suspense fallback={<LoadingPanel />}>
+                  <AdvancedValveHistoryPanel />
+                </Suspense>
+              </LazyLoadErrorBoundary>
             </TabPanel>
             {/* Payments Tab */}
             <TabPanel>
-              <Suspense fallback={<LoadingPanel />}>
-                <PaymentsPanel />
-              </Suspense>
+              <LazyLoadErrorBoundary>
+                <Suspense fallback={<LoadingPanel />}>
+                  <PaymentsPanel />
+                </Suspense>
+              </LazyLoadErrorBoundary>
             </TabPanel>
           </TabPanels>
         </Tabs>
