@@ -44,7 +44,7 @@ const ValveHistoryPanel = () => {
 
   // Helper to pretty-print states (if needed)
   const stateToStr = (s: number) => {
-    const stateNames = Object.keys(ValveState).filter(key => isNaN(Number(key)));
+    const stateNames = Object.values(ValveState).slice(0, Object.keys(ValveState).length / 2);
     return stateNames[s] || "Unknown";
   };
 
