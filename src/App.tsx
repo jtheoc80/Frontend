@@ -7,17 +7,13 @@ import {
   Text,
   Button,
   SimpleGrid,
-  VStack,
   HStack,
   Spacer,
-  Tabs,
   TabsContent,
-  TabsList,
   TabsRoot,
-  TabsTrigger,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable.tsx";
+import ValveTable from "./components/ValveTable.tsx";
 import system from "./theme.ts";
 
 function App() {
