@@ -11,7 +11,7 @@ import {
   Alert,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useValves } from "../contexts/ValveContext.tsx";
+import { useValves } from "../contexts/ValveContext";
 import { Valve } from "../types/valve";
 
 function getRecommendedInterval(valve: Valve, manufacturerIntervals: any) {
