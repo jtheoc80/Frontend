@@ -8,8 +8,9 @@ import {
   SimpleGrid,
   HStack,
   Spacer,
+  ChakraProvider,
+  defaultSystem,
 } from "@chakra-ui/react";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import {
   Table,
   Thead,
