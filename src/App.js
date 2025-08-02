@@ -8,15 +8,17 @@ import {
   Text,
   Button,
   SimpleGrid,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   HStack,
   Spacer,
 } from "@chakra-ui/react";
+import { 
+  Table, 
+  Thead, 
+  Tbody, 
+  Tr, 
+  Th, 
+  Td 
+} from "@chakra-ui/table";
 import { FaTools, FaHistory, FaWallet } from "react-icons/fa";
 
 const valves = [

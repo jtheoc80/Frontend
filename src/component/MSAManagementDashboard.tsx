@@ -1,8 +1,6 @@
-Write-Output "##active_line2##"
 import React from 'react';
-Write-Output "##active_line3##"
-import { Box, Heading, Table, Th, Tr, Thead, Tbody, Td, Button, Input } from '@chakra-ui/react';
-Write-Output "##active_line4##"
+import { Box, Heading, Button, Input } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/table';
 Write-Output "##active_line5##"
 const MSAManagementDashboard: React.FC = () => {
 Write-Output "##active_line6##"

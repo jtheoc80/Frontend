@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
+import { 
+  Table, 
+  TableContainer,
+  Thead, 
+  Tbody, 
+  Tr, 
+  Th, 
+  Td 
+} from "@chakra-ui/table";
 import dayjs from "dayjs";
 
 const valves = [
@@ -28,80 +37,71 @@ const valves = [
 ];
 
 const manufacturerIntervals = {
-  Emerson: { A100: 12 },
-  Kitz: { B200: 18 },
+  Emerson: 18,
+  Kitz: 24,
+  default: 12,
 };
 
-function getRecommendedInterval(valve: any) {
-  if (valve.plantOverrideMonths) return valve.plantOverrideMonths;
-  const manu = manufacturerIntervals[valve.manufacturer];
-  if (manu && manu[valve.model]) return manu[valve.model];
-  return 12;
-}
-
-function getNextServiceDate(valve: any) {
-  const intervalMonths = getRecommendedInterval(valve);
-  return dayjs(valve.lastServiceDate).add(intervalMonths, "month");
-}
-
-function getStatusColor(daysUntil: number) {
-  if (daysUntil < 0) return "#ffd6d6";
-  if (daysUntil < 30) return "#fff8c6";
-  return "#e5f7ee";
-}
+const calculateServiceDueDate = (valve) => {
+  const interval = valve.plantOverrideMonths || manufacturerIntervals[valve.manufacturer] || manufacturerIntervals.default;
+  return dayjs(valve.lastServiceDate).add(interval, "month").format("YYYY-MM-DD");
+};
 
 const ValveTable = () => (
-  <Box p={4}>
-    <Table variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Valve ID</Th>
-          <Th>Serial #</Th>
-          <Th>Manufacturer</Th>
-          <Th>Model</Th>
-          <Th>Location</Th>
-          <Th>Status</Th>
-          <Th>Last Service</Th>
-          <Th>Process Conditions</Th>
-          <Th>Next Service</Th>
-          <Th>Interval (months)</Th>
-          <Th>Due Status</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {valves.map((valve) => {
-          const nextService = getNextServiceDate(valve);
-          const daysUntil = nextService.diff(dayjs(), "day");
-          const interval = getRecommendedInterval(valve);
-          const statusMsg =
-            daysUntil < 0
-              ? `Overdue by ${-daysUntil} days`
-              : daysUntil < 30
-              ? `Due in ${daysUntil} days`
-              : "OK";
-          return (
-            <Tr key={valve.id} style={{ background: getStatusColor(daysUntil) }}>
+  <Box p={6}>
+    <TableContainer>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>Serial</Th>
+            <Th>Manufacturer</Th>
+            <Th>Model</Th>
+            <Th>Location</Th>
+            <Th>Status</Th>
+            <Th>Last Service</Th>
+            <Th>Service Due</Th>
+            <Th>Process Conditions</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {valves.map((valve) => (
+            <Tr key={valve.id}>
               <Td>{valve.id}</Td>
               <Td>{valve.serial}</Td>
               <Td>{valve.manufacturer}</Td>
               <Td>{valve.model}</Td>
               <Td>{valve.location}</Td>
-              <Td>{valve.status}</Td>
-              <Td>{valve.lastServiceDate}</Td>
-              <Td>{valve.processConditions}</Td>
-              <Td>{nextService.format("YYYY-MM-DD")}</Td>
               <Td>
-                {interval}
-                {valve.plantOverrideMonths
-                  ? " (Plant override)"
-                  : " (Manufacturer)"}
+                <Box
+                  px={2}
+                  py={1}
+                  bg={valve.status === "Needs Repair" ? "orange.200" : "green.200"}
+                  color="black"
+                  rounded="md"
+                  display="inline-block"
+                  fontSize="sm"
+                >
+                  {valve.status}
+                </Box>
               </Td>
-              <Td>{statusMsg}</Td>
+              <Td>{valve.lastServiceDate}</Td>
+              <Td>{calculateServiceDueDate(valve)}</Td>
+              <Td>{valve.processConditions}</Td>
+              <Td>
+                <Button size="sm" colorScheme="purple" variant="outline" mr={2}>
+                  View
+                </Button>
+                <Button size="sm" colorScheme="purple">
+                  Edit
+                </Button>
+              </Td>
             </Tr>
-          );
-        })}
-      </Tbody>
-    </Table>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   </Box>
 );
 
