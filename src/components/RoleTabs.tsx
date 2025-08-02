@@ -1,11 +1,11 @@
 import React from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import ManufacturerPanel from "./roles/ManufacturerPanel";
-import DistributorPanel from "./roles/DistributorPanel";
-import PlantPanel from "./roles/PlantPanel";
-import MaintenancePanel from "./roles/MaintenancePanel";
-import RepairPanel from "./roles/RepairPanel";
-import AuditorPanel from "./roles/AuditorPanel";
+import ManufacturerPanel from "./Roles/ManufacturerPanel";
+import DistributorPanel from "./Roles/DistributorPanel";
+import PlantPanel from "./Roles/PlantPanel";
+import MaintenancePanel from "./Roles/MaintenancePanel";
+import RepairPanel from "./Roles/RepairPanel";
+import AuditorPanel from "./Roles/AuditorPanel";
 
 const RoleTabs = () => (
   <Tabs variant="enclosed" mt={4}>
