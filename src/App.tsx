@@ -17,7 +17,7 @@ import LazyLoadErrorBoundary from "./components/LazyLoadErrorBoundary";
 
 // Lazy load tab panel components
 const DashboardPanel = React.lazy(() => import("./components/DashboardPanel.tsx"));
-const ValveTable = React.lazy(() => import("./components/Valvetable.tsx"));
+const ValveTable = React.lazy(() => import("./components/Valvetable"));
 const RepairsPanel = React.lazy(() => import("./components/RepairsPanel.tsx"));
 const AdvancedValveHistoryPanel = React.lazy(() => import("./components/AdvancedValveHistoryPanel.tsx"));
 const PaymentsPanel = React.lazy(() => import("./components/PaymentsPanel.tsx"));
