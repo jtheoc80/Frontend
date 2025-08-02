@@ -15,7 +15,6 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
 import ValveTable from "./components/Valvetable";
 
