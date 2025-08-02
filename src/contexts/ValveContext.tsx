@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Valve, ManufacturerInterval, ValveContextType } from '../types/valve';
-import ValveService from '../services/valveService.ts';
+import ValveService from '../services/valveService';
 
 // Create the context
 const ValveContext = createContext<ValveContextType | undefined>(undefined);
