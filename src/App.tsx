@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ChakraProvider,
   Box,
   Flex,
   Heading,
@@ -16,8 +15,9 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/ValveTable";
+import ValveTable from "./components/Valvetable";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -25,7 +25,7 @@ function App() {
   const bg = "white";
 
   return (
-    <ChakraProvider>
+    <ChakraProvider value={defaultSystem}>
       <Box minH="100vh" bg="gray.50">
         {/* Header */}
         <Flex as="header" bg="purple.700" p={4} align="center" color="white">

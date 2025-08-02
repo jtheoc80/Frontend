@@ -1,7 +1,5 @@
-// src/App.js
 import React from "react";
 import {
-  ChakraProvider,
   Box,
   Flex,
   Heading,
@@ -11,6 +9,7 @@ import {
   HStack,
   Spacer,
 } from "@chakra-ui/react";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import {
   Table,
   Thead,
@@ -139,7 +138,7 @@ function Dashboard() {
 
 export default function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider value={defaultSystem}>
       <Dashboard />
     </ChakraProvider>
   );
