@@ -11,13 +11,13 @@ import {
   HStack,
   Spacer,
   Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
+  TabsContent,
+  TabsList,
+  TabsRoot,
+  TabsTrigger,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/ValveTable";
+import ValveTable from "./components/Valvetable";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -70,10 +70,8 @@ function App() {
         </Flex>
 
         {/* Main Tabs */}
-        <Tabs index={tabIndex} onChange={setTabIndex} mt={0} variant="unstyled">
-          <TabPanels>
-            {/* Dashboard */}
-            <TabPanel>
+        <TabsRoot value={tabIndex.toString()} onValueChange={(value) => setTabIndex(parseInt(value.value))}>
+          <TabsContent value="0">
               <Box maxW="7xl" mx="auto" p={6}>
                 {/* Welcome and Stats */}
                 <Flex align="center" justify="space-between" mb={8}>
@@ -95,32 +93,30 @@ function App() {
                   <Text>3 valves due for service, 1 overdue.</Text>
                   {/* You could add a small preview table or chart here if desired */}
                 </Box>
-              </Box>
-            </TabPanel>
+              </TabsContent>
             {/* Valve Inventory Tab */}
-            <TabPanel>
+            <TabsContent value="1">
               <ValveTable />
-            </TabPanel>
+            </TabsContent>
             {/* Repairs Tab */}
-            <TabPanel>
+            <TabsContent value="2">
               <Box p={6}>
                 <Heading size="md">Repairs Panel (Coming Soon)</Heading>
               </Box>
-            </TabPanel>
+            </TabsContent>
             {/* Valve History Tab */}
-            <TabPanel>
+            <TabsContent value="3">
               <Box p={6}>
                 <Heading size="md">Valve History Viewer (Coming Soon)</Heading>
               </Box>
-            </TabPanel>
+            </TabsContent>
             {/* Payments Tab */}
-            <TabPanel>
+            <TabsContent value="4">
               <Box p={6}>
                 <Heading size="md">Payments Panel (Coming Soon)</Heading>
               </Box>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            </TabsContent>
+        </TabsRoot>
       </Box>
     </ChakraProvider>
   );
