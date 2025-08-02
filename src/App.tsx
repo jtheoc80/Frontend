@@ -10,17 +10,11 @@ import {
   VStack,
   HStack,
   Spacer,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanels,
-  TabPanel,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/ValveTable";
 
 function App() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   const bg = "white";
 
@@ -36,91 +30,97 @@ function App() {
           <HStack spacing={4}>
             <Button
               leftIcon={<FaTable />}
-              colorScheme={tabIndex === 1 ? "purple" : "gray"}
-              variant={tabIndex === 1 ? "solid" : "outline"}
-              onClick={() => setTabIndex(1)}
+              colorScheme={activeTab === 1 ? "purple" : "gray"}
+              variant={activeTab === 1 ? "solid" : "outline"}
+              onClick={() => setActiveTab(1)}
             >
               Valve Inventory
             </Button>
             <Button
               leftIcon={<FaTools />}
-              colorScheme={tabIndex === 2 ? "purple" : "gray"}
-              variant={tabIndex === 2 ? "solid" : "outline"}
-              onClick={() => setTabIndex(2)}
+              colorScheme={activeTab === 2 ? "purple" : "gray"}
+              variant={activeTab === 2 ? "solid" : "outline"}
+              onClick={() => setActiveTab(2)}
             >
               Repairs
             </Button>
             <Button
               leftIcon={<FaHistory />}
-              colorScheme={tabIndex === 3 ? "purple" : "gray"}
-              variant={tabIndex === 3 ? "solid" : "outline"}
-              onClick={() => setTabIndex(3)}
+              colorScheme={activeTab === 3 ? "purple" : "gray"}
+              variant={activeTab === 3 ? "solid" : "outline"}
+              onClick={() => setActiveTab(3)}
             >
               Valve History
             </Button>
             <Button
               leftIcon={<FaWallet />}
-              colorScheme={tabIndex === 4 ? "purple" : "gray"}
-              variant={tabIndex === 4 ? "solid" : "outline"}
-              onClick={() => setTabIndex(4)}
+              colorScheme={activeTab === 4 ? "purple" : "gray"}
+              variant={activeTab === 4 ? "solid" : "outline"}
+              onClick={() => setActiveTab(4)}
             >
               Payments
             </Button>
           </HStack>
         </Flex>
 
-        {/* Main Tabs */}
-        <Tabs index={tabIndex} onChange={setTabIndex} mt={0} variant="unstyled">
-          <TabPanels>
-            {/* Dashboard */}
-            <TabPanel>
-              <Box maxW="7xl" mx="auto" p={6}>
-                {/* Welcome and Stats */}
-                <Flex align="center" justify="space-between" mb={8}>
-                  <Box>
-                    <Heading fontSize="lg">Welcome, Jimmy!</Heading>
-                    <Text color="gray.500">Your role: Admin</Text>
-                  </Box>
-                  <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
-                    <StatCard label="Valves" value="250" />
-                    <StatCard label="In Repair" value="3" />
-                    <StatCard label="Owed" value="$12,500" />
-                  </SimpleGrid>
-                </Flex>
-                {/* Add a quick summary from Valve Table */}
-                <Box bg={bg} rounded="2xl" shadow="md" p={6}>
-                  <Heading fontSize="lg" mb={4}>
-                    Quick Valve Summary
-                  </Heading>
-                  <Text>3 valves due for service, 1 overdue.</Text>
-                  {/* You could add a small preview table or chart here if desired */}
+        {/* Main Content */}
+        <Box>
+          {activeTab === 0 && (
+            <Box maxW="7xl" mx="auto" p={6}>
+              {/* Welcome and Stats */}
+              <Flex align="center" justify="space-between" mb={8}>
+                <Box>
+                  <Heading fontSize="lg">Welcome, Jimmy!</Heading>
+                  <Text color="gray.500">Your role: Admin</Text>
                 </Box>
+                <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+                  <StatCard label="Valves" value="250" />
+                  <StatCard label="In Repair" value="3" />
+                  <StatCard label="Owed" value="$12,500" />
+                </SimpleGrid>
+              </Flex>
+              {/* System Status */}
+              <Box bg={bg} rounded="2xl" shadow="md" p={6}>
+                <Heading fontSize="lg" mb={4}>
+                  System Status
+                </Heading>
+                <VStack spacing={4} align="start">
+                  <Text color="green.500">✅ Frontend: Connected</Text>
+                  <Text color="orange.500">⏳ Express API: Running on port 8080</Text>
+                  <Text color="orange.500">⏳ FastAPI Service: Running on port 8000</Text>
+                </VStack>
               </Box>
-            </TabPanel>
-            {/* Valve Inventory Tab */}
-            <TabPanel>
-              <ValveTable />
-            </TabPanel>
-            {/* Repairs Tab */}
-            <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Repairs Panel (Coming Soon)</Heading>
-              </Box>
-            </TabPanel>
-            {/* Valve History Tab */}
-            <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Valve History Viewer (Coming Soon)</Heading>
-              </Box>
-            </TabPanel>
-            {/* Payments Tab */}
-            <TabPanel>
-              <Box p={6}>
-                <Heading size="md">Payments Panel (Coming Soon)</Heading>
-              </Box>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            </Box>
+          )}
+          
+          {activeTab === 1 && (
+            <Box p={6}>
+              <Heading size="md">Valve Inventory</Heading>
+              <Text mt={4}>Valve table will be displayed here once components are properly configured.</Text>
+            </Box>
+          )}
+          
+          {activeTab === 2 && (
+            <Box p={6}>
+              <Heading size="md">Repairs Panel</Heading>
+              <Text mt={4}>Repairs management functionality coming soon.</Text>
+            </Box>
+          )}
+          
+          {activeTab === 3 && (
+            <Box p={6}>
+              <Heading size="md">Valve History Viewer</Heading>
+              <Text mt={4}>Valve history tracking functionality coming soon.</Text>
+            </Box>
+          )}
+          
+          {activeTab === 4 && (
+            <Box p={6}>
+              <Heading size="md">Payments Panel</Heading>
+              <Text mt={4}>Payment management functionality coming soon.</Text>
+            </Box>
+          )}
+        </Box>
       </Box>
     </ChakraProvider>
   );
