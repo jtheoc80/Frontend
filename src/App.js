@@ -9,11 +9,6 @@ import {
   Button,
   SimpleGrid,
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   HStack,
   Spacer,
 } from "@chakra-ui/react";
@@ -86,25 +81,25 @@ function Dashboard() {
           <Heading fontSize="lg" mb={4}>
             Valve Inventory
           </Heading>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Serial Number</Th>
-                <Th>Type</Th>
-                <Th>Manufacturer</Th>
-                <Th>Owner</Th>
-                <Th>Status</Th>
-                <Th>Action</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+          <Table.Root variant="simple">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeader>Serial Number</Table.ColumnHeader>
+                <Table.ColumnHeader>Type</Table.ColumnHeader>
+                <Table.ColumnHeader>Manufacturer</Table.ColumnHeader>
+                <Table.ColumnHeader>Owner</Table.ColumnHeader>
+                <Table.ColumnHeader>Status</Table.ColumnHeader>
+                <Table.ColumnHeader>Action</Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
               {valves.map((v, i) => (
-                <Tr key={i}>
-                  <Td>{v.sn}</Td>
-                  <Td>{v.type}</Td>
-                  <Td>{v.mfr}</Td>
-                  <Td>{v.owner}</Td>
-                  <Td>
+                <Table.Row key={i}>
+                  <Table.Cell>{v.sn}</Table.Cell>
+                  <Table.Cell>{v.type}</Table.Cell>
+                  <Table.Cell>{v.mfr}</Table.Cell>
+                  <Table.Cell>{v.owner}</Table.Cell>
+                  <Table.Cell>
                     <Box
                       px={2}
                       py={1}
@@ -116,19 +111,19 @@ function Dashboard() {
                     >
                       {v.status}
                     </Box>
-                  </Td>
-                  <Td>
+                  </Table.Cell>
+                  <Table.Cell>
                     <Button size="sm" colorScheme="purple" variant="outline" mr={2}>
                       View
                     </Button>
                     <Button size="sm" colorScheme="purple">
                       Repair
                     </Button>
-                  </Td>
-                </Tr>
+                  </Table.Cell>
+                </Table.Row>
               ))}
-            </Tbody>
-          </Table>
+            </Table.Body>
+          </Table.Root>
         </Box>
       </Box>
     </Box>
