@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Input, Button, VStack, Heading, Text, SimpleGrid, Divider, Spinner, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import contractABI from "../../abi/ValveChainABI.json";
+import { BlockchainValve, MaintenanceRecord, RepairRequest, ValveState } from "../types";
 
 const CONTRACT_ADDRESS = "0xYourValveChainContractAddress"; // Update as needed
 
@@ -9,9 +10,9 @@ const ValveHistoryPanel = () => {
   const toast = useToast();
   const [serial, setSerial] = useState("");
   const [loading, setLoading] = useState(false);
-  const [valveInfo, setValveInfo] = useState<any>(null);
-  const [maintenance, setMaintenance] = useState<any[]>([]);
-  const [repair, setRepair] = useState<any>(null);
+  const [valveInfo, setValveInfo] = useState<BlockchainValve | null>(null);
+  const [maintenance, setMaintenance] = useState<MaintenanceRecord[]>([]);
+  const [repair, setRepair] = useState<RepairRequest | null>(null);
 
   const handleFetchHistory = async () => {
     if (!window.ethereum) return toast({ title: "No wallet", status: "error" });
@@ -42,8 +43,10 @@ const ValveHistoryPanel = () => {
   };
 
   // Helper to pretty-print states (if needed)
-  const stateToStr = (s: number) =>
-    ["Manufactured", "AtDistributor", "AtPlant", "Installed", "NeedsRepair", "UnderRepair", "InService"][s] || "Unknown";
+  const stateToStr = (s: number) => {
+    const stateNames = Object.keys(ValveState).filter(key => isNaN(Number(key)));
+    return stateNames[s] || "Unknown";
+  };
 
   return (
     <Box mt={6} p={4} borderWidth={1} borderRadius="lg" shadow="md">
@@ -65,11 +68,11 @@ const ValveHistoryPanel = () => {
         <Box mb={4}>
           <Heading size="sm">Valve Details</Heading>
           <SimpleGrid columns={2} spacing={2}>
-            <Text><b>Serial:</b></Text> <Text>{valveInfo[0]}</Text>
-            <Text><b>Manufacturer:</b></Text> <Text>{valveInfo[1]}</Text>
-            <Text><b>Current Owner:</b></Text> <Text>{valveInfo[2]}</Text>
-            <Text><b>Details:</b></Text> <Text>{valveInfo[3]}</Text>
-            <Text><b>State:</b></Text> <Text>{stateToStr(valveInfo[4])}</Text>
+            <Text><b>Serial:</b></Text> <Text>{valveInfo.serial}</Text>
+            <Text><b>Manufacturer:</b></Text> <Text>{valveInfo.manufacturer}</Text>
+            <Text><b>Current Owner:</b></Text> <Text>{valveInfo.currentOwner}</Text>
+            <Text><b>Details:</b></Text> <Text>{valveInfo.details}</Text>
+            <Text><b>State:</b></Text> <Text>{stateToStr(valveInfo.state)}</Text>
           </SimpleGrid>
         </Box>
       )}
@@ -89,18 +92,18 @@ const ValveHistoryPanel = () => {
         </Box>
       )}
 
-      {repair && repair[0] && (
+      {repair && repair.exists && (
         <Box mb={4}>
           <Heading size="sm">Repair Request/Status</Heading>
           <SimpleGrid columns={2} spacing={2}>
-            <Text><b>Requested By:</b></Text> <Text>{repair[1]}</Text>
-            <Text><b>Contractor:</b></Text> <Text>{repair[2]}</Text>
-            <Text><b>Amount (wei):</b></Text> <Text>{repair[3].toString()}</Text>
-            <Text><b>Pre-Test Hash:</b></Text> <Text>{repair[4]}</Text>
-            <Text><b>Repair Hash:</b></Text> <Text>{repair[5]}</Text>
-            <Text><b>Post-Test Hash:</b></Text> <Text>{repair[6]}</Text>
-            <Text><b>Complete:</b></Text> <Text>{repair[7] ? "Yes" : "No"}</Text>
-            <Text><b>Paid:</b></Text> <Text>{repair[8] ? "Yes" : "No"}</Text>
+            <Text><b>Requested By:</b></Text> <Text>{repair.requestedBy}</Text>
+            <Text><b>Contractor:</b></Text> <Text>{repair.contractor}</Text>
+            <Text><b>Amount (wei):</b></Text> <Text>{repair.amount.toString()}</Text>
+            <Text><b>Pre-Test Hash:</b></Text> <Text>{repair.preTestHash}</Text>
+            <Text><b>Repair Hash:</b></Text> <Text>{repair.repairHash}</Text>
+            <Text><b>Post-Test Hash:</b></Text> <Text>{repair.postTestHash}</Text>
+            <Text><b>Complete:</b></Text> <Text>{repair.complete ? "Yes" : "No"}</Text>
+            <Text><b>Paid:</b></Text> <Text>{repair.paid ? "Yes" : "No"}</Text>
           </SimpleGrid>
         </Box>
       )}

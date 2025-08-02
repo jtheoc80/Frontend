@@ -1,17 +1,4 @@
 import React, { useState } from "react";
-import { Button, Input, VStack, Text, Box, useToast } from "@chakra-ui/react";
-import { ethers } from "ethers";
-import contractABI from "../../abi/ValveChainABI.json";
-
-const CONTRACT_ADDRESS = "0xYourValveChainContractAddress";
-
-const AuditorPanel = () => {
-  const toast = useToast();
-  const [serial, setSerial] = useState("");
-  const [valveInfo, setValveInfo] = useState<any>(null);
-
-  const handleGetValve = async () => {
-    if (!window.ethereum) return toast(import React, { useState } from "react";
 import { Button, Input, VStack, Heading, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import contractABI from "../../abi/ValveChainABI.json";
@@ -60,4 +47,3 @@ const AuditorPanel = () => {
 };
 
 export default AuditorPanel;
-

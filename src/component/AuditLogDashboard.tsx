@@ -10,9 +10,10 @@ import {
   Input 
 } from '@chakra-ui/react';
 import axios from 'axios';
+import { AuditLog } from '../types';
 
 const AuditLogDashboard: React.FC = () => {
-    const [logs, setLogs] = useState([]);
+    const [logs, setLogs] = useState<AuditLog[]>([]);
     const [filterUser, setFilterUser] = useState('');
     const [filterAction, setFilterAction] = useState('');
     
@@ -59,7 +60,7 @@ const AuditLogDashboard: React.FC = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {logs.map((log: any, index: number) => (
+                    {logs.map((log: AuditLog, index: number) => (
                         <TableRow key={index}>
                             <TableCell>{log.user}</TableCell>
                             <TableCell>{log.action}</TableCell>

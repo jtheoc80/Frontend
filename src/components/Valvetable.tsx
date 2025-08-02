@@ -7,11 +7,11 @@ import {
   TableRow,
   TableColumnHeader,
   TableCell,
-  Button,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { Valve, ManufacturerIntervals } from "../types";
 
-const valves = [
+const valves: Valve[] = [
   {
     id: "VAL-001",
     serial: "SN12345",
@@ -36,19 +36,19 @@ const valves = [
   },
 ];
 
-const manufacturerIntervals = {
+const manufacturerIntervals: ManufacturerIntervals = {
   Emerson: { A100: 12 },
   Kitz: { B200: 18 },
 };
 
-function getRecommendedInterval(valve: any) {
+function getRecommendedInterval(valve: Valve): number {
   if (valve.plantOverrideMonths) return valve.plantOverrideMonths;
   const manu = manufacturerIntervals[valve.manufacturer];
   if (manu && manu[valve.model]) return manu[valve.model];
   return 12;
 }
 
-function getNextServiceDate(valve: any) {
+function getNextServiceDate(valve: Valve) {
   const intervalMonths = getRecommendedInterval(valve);
   return dayjs(valve.lastServiceDate).add(intervalMonths, "month");
 }
