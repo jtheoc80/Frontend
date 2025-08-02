@@ -9,7 +9,6 @@ import {
   Text,
   Button,
   SimpleGrid,
-  Table,
   HStack,
   Spacer,
 } from "@chakra-ui/react";
