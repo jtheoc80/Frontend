@@ -1,0 +1,38 @@
+[
+  {
+    "inputs": [
+      {"internalType": "string", "name": "serialNumber", "type": "string"},
+      {"internalType": "address", "name": "to", "type": "address"}
+    ],
+    "name": "transferValve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "serialNumber", "type": "string"},
+      {"internalType": "string", "name": "valveType", "type": "string"},
+      {"internalType": "string", "name": "manufacturer", "type": "string"}
+    ],
+    "name": "tokenizeValve",
+    "outputs": [
+      {"internalType": "uint256", "name": "tokenId", "type": "uint256"}
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "serialNumber", "type": "string"}
+    ],
+    "name": "getValveInfo",
+    "outputs": [
+      {"internalType": "address", "name": "owner", "type": "address"},
+      {"internalType": "string", "name": "valveType", "type": "string"},
+      {"internalType": "string", "name": "manufacturer", "type": "string"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
