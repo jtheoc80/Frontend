@@ -12,8 +12,9 @@ import {
   TabsContent,
   TabsRoot,
 } from "@chakra-ui/react";
-import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
+import { FaTools, FaHistory, FaWallet, FaTable, FaIndustry } from "react-icons/fa";
 import ValveTable from "./components/Valvetable.tsx";
+import ManufacturerPanel from "./components/Roles/Manufacturer Panel.tsx";
 import system from "./theme.ts";
 
 function App() {
@@ -82,38 +83,50 @@ function App() {
                 Valve Inventory
               </Button>
               <Button
-                leftIcon={<FaTools />}
+                leftIcon={<FaIndustry />}
                 colorScheme={tabIndex === 2 ? "purple" : "gray"}
                 variant={tabIndex === 2 ? "solid" : "outline"}
                 onClick={() => setTabIndex(2)}
                 size={{ base: "sm", md: "md" }}
                 fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View repairs management panel"
+                aria-label="Manufacturer valve tokenization panel"
                 aria-pressed={tabIndex === 2}
               >
-                Repairs
+                Manufacturer
               </Button>
               <Button
-                leftIcon={<FaHistory />}
+                leftIcon={<FaTools />}
                 colorScheme={tabIndex === 3 ? "purple" : "gray"}
                 variant={tabIndex === 3 ? "solid" : "outline"}
                 onClick={() => setTabIndex(3)}
                 size={{ base: "sm", md: "md" }}
                 fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View valve history records"
+                aria-label="View repairs management panel"
                 aria-pressed={tabIndex === 3}
               >
-                Valve History
+                Repairs
               </Button>
               <Button
-                leftIcon={<FaWallet />}
+                leftIcon={<FaHistory />}
                 colorScheme={tabIndex === 4 ? "purple" : "gray"}
                 variant={tabIndex === 4 ? "solid" : "outline"}
                 onClick={() => setTabIndex(4)}
                 size={{ base: "sm", md: "md" }}
                 fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View payments and billing information"
+                aria-label="View valve history records"
                 aria-pressed={tabIndex === 4}
+              >
+                Valve History
+              </Button>
+              <Button
+                leftIcon={<FaWallet />}
+                colorScheme={tabIndex === 5 ? "purple" : "gray"}
+                variant={tabIndex === 5 ? "solid" : "outline"}
+                onClick={() => setTabIndex(5)}
+                size={{ base: "sm", md: "md" }}
+                fontSize={{ base: "xs", md: "sm" }}
+                aria-label="View payments and billing information"
+                aria-pressed={tabIndex === 5}
               >
                 Payments
               </Button>
@@ -164,20 +177,24 @@ function App() {
               <TabsContent value="1">
                 <ValveTable />
               </TabsContent>
-              {/* Repairs Tab */}
+              {/* Manufacturer Tab */}
               <TabsContent value="2">
+                <ManufacturerPanel />
+              </TabsContent>
+              {/* Repairs Tab */}
+              <TabsContent value="3">
                 <Box p={6}>
                   <Heading as="h2" size="md">Repairs Panel (Coming Soon)</Heading>
                 </Box>
               </TabsContent>
               {/* Valve History Tab */}
-              <TabsContent value="3">
+              <TabsContent value="4">
                 <Box p={6}>
                   <Heading as="h2" size="md">Valve History Viewer (Coming Soon)</Heading>
                 </Box>
               </TabsContent>
               {/* Payments Tab */}
-              <TabsContent value="4">
+              <TabsContent value="5">
                 <Box p={6}>
                   <Heading as="h2" size="md">Payments Panel (Coming Soon)</Heading>
                 </Box>
