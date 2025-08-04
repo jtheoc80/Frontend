@@ -1,0 +1,489 @@
+// src/components/roles/ManufacturerPanel.tsx
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Input,
+  VStack,
+  HStack,
+  Select,
+  Textarea,
+  Heading,
+  Text,
+  Spinner,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  Badge,
+  SimpleGrid
+} from "@chakra-ui/react";
+import { ethers, BrowserProvider } from "ethers";
+import { ValveDetails, TokenizeValveRequest, ManufacturerAuth } from "../../types/valve.ts";
+import valveApiService from "../../services/valveApi.ts";
+import { validateValveDetails, formatValidationErrors } from "../../utils/validation.ts";
+
+const ManufacturerPanel = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [manufacturerAuth, setManufacturerAuth] = useState<ManufacturerAuth | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // Valve form state
+  const [valveDetails, setValveDetails] = useState<Partial<ValveDetails>>({
+    serialNumber: "",
+    type: undefined,
+    manufacturer: "",
+    model: "",
+    specifications: {
+      diameter: 0,
+      pressure: 0,
+      temperature: 0,
+      material: "",
+      connectionType: "",
+      flowCoefficient: undefined
+    },
+    certifications: [],
+    manufactureDate: "",
+    warrantyMonths: 12
+  });
+
+  // Authentication check on component mount
+  useEffect(() => {
+    checkManufacturerAuth();
+  }, []);
+
+  const checkManufacturerAuth = async () => {
+    setIsAuthenticating(true);
+    try {
+      // Check if wallet is connected
+      if (!window.ethereum) {
+        setErrorMessage("Please install MetaMask or another Web3 wallet to continue.");
+        return;
+      }
+
+      const provider = new BrowserProvider(window.ethereum as any);
+      const accounts = await provider.listAccounts();
+      
+      if (accounts.length === 0) {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        return;
+      }
+
+      const walletAddress = accounts[0]?.address || accounts[0];
+      
+      // Mock manufacturer authentication - in real app this would check against the blockchain or backend
+      const authResult = await valveApiService.validateManufacturer('mfg001', walletAddress);
+      
+      if (authResult.success && authResult.data) {
+        setManufacturerAuth(authResult.data);
+        setValveDetails(prev => ({
+          ...prev,
+          manufacturer: authResult.data!.name
+        }));
+        setSuccessMessage(`Welcome, ${authResult.data.name}!`);
+      } else {
+        setErrorMessage(authResult.message);
+      }
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+      setErrorMessage("Failed to authenticate manufacturer. Please try again.");
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: any) => {
+    if (field.startsWith('specifications.')) {
+      const specField = field.split('.')[1];
+      setValveDetails(prev => ({
+        ...prev,
+        specifications: {
+          ...prev.specifications!,
+          [specField]: value
+        }
+      }));
+    } else {
+      setValveDetails(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
+    
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ""
+      }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const validationResult = validateValveDetails(valveDetails);
+    
+    if (!validationResult.isValid) {
+      const fieldErrors: Record<string, string> = {};
+      validationResult.errors.forEach(error => {
+        // Map validation errors to specific fields for better UX
+        if (error.includes('Serial number')) fieldErrors.serialNumber = error;
+        else if (error.includes('type')) fieldErrors.type = error;
+        else if (error.includes('Manufacturer')) fieldErrors.manufacturer = error;
+        else if (error.includes('Model')) fieldErrors.model = error;
+        else if (error.includes('Diameter')) fieldErrors['specifications.diameter'] = error;
+        else if (error.includes('Pressure')) fieldErrors['specifications.pressure'] = error;
+        else if (error.includes('Temperature')) fieldErrors['specifications.temperature'] = error;
+        else if (error.includes('Material')) fieldErrors['specifications.material'] = error;
+        else if (error.includes('Connection type')) fieldErrors['specifications.connectionType'] = error;
+        else if (error.includes('Manufacture date')) fieldErrors.manufactureDate = error;
+        else if (error.includes('Warranty')) fieldErrors.warrantyMonths = error;
+        else fieldErrors.general = error;
+      });
+      
+      setErrors(fieldErrors);
+      
+      setErrorMessage(formatValidationErrors(validationResult.errors));
+      
+      return false;
+    }
+    
+    setErrors({});
+    return true;
+  };
+
+  const handleTokenizeValve = async () => {
+    if (!manufacturerAuth) {
+      setErrorMessage("Please authenticate as a manufacturer first.");
+      return;
+    }
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const request: TokenizeValveRequest = {
+        valveDetails: valveDetails as ValveDetails,
+        manufacturerId: manufacturerAuth.id
+      };
+
+      const response = await valveApiService.tokenizeValve(request);
+
+      if (response.success) {
+        setSuccessMessage(`Valve Tokenized Successfully! Token ID: ${response.tokenId}, Valve ID: ${response.valveId}`);
+
+        // Reset form
+        setValveDetails({
+          serialNumber: "",
+          type: undefined,
+          manufacturer: manufacturerAuth.name,
+          model: "",
+          specifications: {
+            diameter: 0,
+            pressure: 0,
+            temperature: 0,
+            material: "",
+            connectionType: "",
+            flowCoefficient: undefined
+          },
+          certifications: [],
+          manufactureDate: "",
+          warrantyMonths: 12
+        });
+        setErrors({});
+        setErrorMessage("");
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error: any) {
+      console.error("Tokenization error:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isAuthenticating) {
+    return (
+      <Box textAlign="center" py={10}>
+        <Spinner size="xl" color="purple.500" />
+        <Text mt={4}>Authenticating manufacturer...</Text>
+      </Box>
+    );
+  }
+
+  if (!manufacturerAuth) {
+    return (
+      <Box p={6}>
+        <Alert status="warning">
+          <Box>
+            <AlertTitle>Authentication Required</AlertTitle>
+            <AlertDescription>
+              Please connect your wallet and authenticate as a manufacturer to tokenize valves.
+            </AlertDescription>
+          </Box>
+        </Alert>
+        <Button mt={4} colorScheme="purple" onClick={checkManufacturerAuth}>
+          Authenticate
+        </Button>
+      </Box>
+    );
+  }
+
+  return (
+    <Box p={6} maxW="4xl" mx="auto">
+      <VStack spacing={6} align="stretch">
+        {/* Header */}
+        <Box>
+          <Heading size="lg" mb={2}>Valve Tokenization</Heading>
+          <HStack spacing={3}>
+            <Badge colorScheme="green" px={3} py={1}>
+              Authenticated: {manufacturerAuth.name}
+            </Badge>
+            <Badge colorScheme="blue" px={3} py={1}>
+              ID: {manufacturerAuth.id}
+            </Badge>
+          </HStack>
+        </Box>
+
+        {/* Success Message */}
+        {successMessage && (
+          <Alert status="success">
+            <AlertDescription>{successMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Error Message */}
+        {errorMessage && (
+          <Alert status="error">
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        <Box bg="white" rounded="lg" shadow="sm" border="1px solid" borderColor="gray.200" p={6}>
+          <VStack spacing={6} align="stretch">
+              {/* Basic Information */}
+              <Box>
+                <Heading size="md" mb={4}>Basic Information</Heading>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                  <FormControl isInvalid={!!errors.serialNumber}>
+                    <FormLabel>Serial Number</FormLabel>
+                    <Input
+                      value={valveDetails.serialNumber}
+                      onChange={(e) => handleInputChange('serialNumber', e.target.value)}
+                      placeholder="Enter unique serial number"
+                    />
+                    <FormErrorMessage>{errors.serialNumber}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors.type}>
+                    <FormLabel>Valve Type</FormLabel>
+                    <Select
+                      value={valveDetails.type || ""}
+                      onChange={(e) => handleInputChange('type', e.target.value as ValveDetails['type'])}
+                      placeholder="Select valve type"
+                    >
+                      <option value="gate">Gate Valve</option>
+                      <option value="ball">Ball Valve</option>
+                      <option value="globe">Globe Valve</option>
+                      <option value="butterfly">Butterfly Valve</option>
+                      <option value="check">Check Valve</option>
+                      <option value="needle">Needle Valve</option>
+                      <option value="plug">Plug Valve</option>
+                    </Select>
+                    <FormErrorMessage>{errors.type}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors.manufacturer}>
+                    <FormLabel>Manufacturer</FormLabel>
+                    <Input
+                      value={valveDetails.manufacturer}
+                      onChange={(e) => handleInputChange('manufacturer', e.target.value)}
+                      placeholder="Manufacturer name"
+                      isReadOnly
+                      bg="gray.50"
+                    />
+                    <FormErrorMessage>{errors.manufacturer}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors.model}>
+                    <FormLabel>Model</FormLabel>
+                    <Input
+                      value={valveDetails.model}
+                      onChange={(e) => handleInputChange('model', e.target.value)}
+                      placeholder="Enter model number"
+                    />
+                    <FormErrorMessage>{errors.model}</FormErrorMessage>
+                  </FormControl>
+                </SimpleGrid>
+              </Box>
+
+              <Box height="1px" bg="gray.200" my={4} />
+
+              {/* Specifications */}
+              <Box>
+                <Heading size="md" mb={4}>Technical Specifications</Heading>
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+                  <FormControl isInvalid={!!errors['specifications.diameter']}>
+                    <FormLabel>Diameter (inches)</FormLabel>
+                    <NumberInput min={0} max={1000} step={0.1}>
+                      <NumberInputField
+                        value={valveDetails.specifications?.diameter || ""}
+                        onChange={(e) => handleInputChange('specifications.diameter', parseFloat(e.target.value) || 0)}
+                        placeholder="0.0"
+                      />
+                    </NumberInput>
+                    <FormErrorMessage>{errors['specifications.diameter']}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors['specifications.pressure']}>
+                    <FormLabel>Pressure Rating (PSI)</FormLabel>
+                    <NumberInput min={0} max={10000}>
+                      <NumberInputField
+                        value={valveDetails.specifications?.pressure || ""}
+                        onChange={(e) => handleInputChange('specifications.pressure', parseFloat(e.target.value) || 0)}
+                        placeholder="0"
+                      />
+                    </NumberInput>
+                    <FormErrorMessage>{errors['specifications.pressure']}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors['specifications.temperature']}>
+                    <FormLabel>Temperature Rating (°C)</FormLabel>
+                    <NumberInput min={-273} max={2000}>
+                      <NumberInputField
+                        value={valveDetails.specifications?.temperature || ""}
+                        onChange={(e) => handleInputChange('specifications.temperature', parseFloat(e.target.value) || 0)}
+                        placeholder="0"
+                      />
+                    </NumberInput>
+                    <FormErrorMessage>{errors['specifications.temperature']}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors['specifications.material']}>
+                    <FormLabel>Material</FormLabel>
+                    <Input
+                      value={valveDetails.specifications?.material}
+                      onChange={(e) => handleInputChange('specifications.material', e.target.value)}
+                      placeholder="e.g., Stainless Steel 316"
+                    />
+                    <FormErrorMessage>{errors['specifications.material']}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors['specifications.connectionType']}>
+                    <FormLabel>Connection Type</FormLabel>
+                    <Input
+                      value={valveDetails.specifications?.connectionType}
+                      onChange={(e) => handleInputChange('specifications.connectionType', e.target.value)}
+                      placeholder="e.g., Flanged, Threaded"
+                    />
+                    <FormErrorMessage>{errors['specifications.connectionType']}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel>Flow Coefficient (Cv) - Optional</FormLabel>
+                    <NumberInput min={0}>
+                      <NumberInputField
+                        value={valveDetails.specifications?.flowCoefficient || ""}
+                        onChange={(e) => handleInputChange('specifications.flowCoefficient', parseFloat(e.target.value) || undefined)}
+                        placeholder="Optional"
+                      />
+                    </NumberInput>
+                  </FormControl>
+                </SimpleGrid>
+              </Box>
+
+              <Box height="1px" bg="gray.200" my={4} />
+
+              {/* Additional Information */}
+              <Box>
+                <Heading size="md" mb={4}>Additional Information</Heading>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                  <FormControl isInvalid={!!errors.manufactureDate}>
+                    <FormLabel>Manufacture Date</FormLabel>
+                    <Input
+                      type="date"
+                      value={valveDetails.manufactureDate}
+                      onChange={(e) => handleInputChange('manufactureDate', e.target.value)}
+                    />
+                    <FormErrorMessage>{errors.manufactureDate}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={!!errors.warrantyMonths}>
+                    <FormLabel>Warranty (months)</FormLabel>
+                    <NumberInput min={0} max={240}>
+                      <NumberInputField
+                        value={valveDetails.warrantyMonths || ""}
+                        onChange={(e) => handleInputChange('warrantyMonths', parseInt(e.target.value) || 0)}
+                        placeholder="12"
+                      />
+                    </NumberInput>
+                    <FormErrorMessage>{errors.warrantyMonths}</FormErrorMessage>
+                  </FormControl>
+                </SimpleGrid>
+
+                <FormControl mt={4}>
+                  <FormLabel>Certifications (comma-separated)</FormLabel>
+                  <Textarea
+                    value={valveDetails.certifications?.join(', ') || ""}
+                    onChange={(e) => handleInputChange('certifications', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
+                    placeholder="e.g., API 6D, ISO 14313, ASME B16.34"
+                    rows={3}
+                  />
+                </FormControl>
+              </Box>
+
+              {/* Error Display */}
+              {errors.general && (
+                <Alert status="error">
+                  <AlertDescription>{errors.general}</AlertDescription>
+                </Alert>
+              )}
+
+              {/* Submit Button */}
+              <HStack spacing={4} justify="flex-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setValveDetails({
+                      serialNumber: "",
+                      type: undefined,
+                      manufacturer: manufacturerAuth.name,
+                      model: "",
+                      specifications: {
+                        diameter: 0,
+                        pressure: 0,
+                        temperature: 0,
+                        material: "",
+                        connectionType: "",
+                        flowCoefficient: undefined
+                      },
+                      certifications: [],
+                      manufactureDate: "",
+                      warrantyMonths: 12
+                    });
+                    setErrors({});
+                  }}
+                >
+                  Reset Form
+                </Button>
+                <Button
+                  colorScheme="purple"
+                  onClick={handleTokenizeValve}
+                  isLoading={isLoading}
+                  loadingText="Tokenizing..."
+                  size="lg"
+                >
+                  Tokenize Valve
+                </Button>
+              </HStack>
+            </VStack>
+        </Box>
+      </VStack>
+    </Box>
+  );
+};
+
+export default ManufacturerPanel;

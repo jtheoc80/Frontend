@@ -1,213 +1,113 @@
 import React, { useState } from "react";
-import {
-  ChakraProvider,
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Button,
-  SimpleGrid,
-  HStack,
-  Spacer,
-  TabsContent,
-  TabsRoot,
-} from "@chakra-ui/react";
-import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable.tsx";
-import system from "./theme.ts";
+import ValveTokenizationDemo from "./components/ValveTokenizationDemo.tsx";
 
 function App() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [currentTab, setCurrentTab] = useState('manufacturer');
 
-  const bg = "white";
+  const styles = {
+    container: {
+      minHeight: '100vh',
+      backgroundColor: '#F3F4F6'
+    },
+    header: {
+      backgroundColor: '#7C3AED',
+      color: 'white',
+      padding: '1rem',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexWrap: 'wrap' as const
+    },
+    nav: {
+      display: 'flex',
+      gap: '0.5rem',
+      flexWrap: 'wrap' as const
+    },
+    navButton: {
+      backgroundColor: 'transparent',
+      color: 'white',
+      border: '1px solid rgba(255,255,255,0.3)',
+      padding: '0.5rem 1rem',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      fontSize: '0.875rem'
+    },
+    activeNavButton: {
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      border: '1px solid white'
+    }
+  };
 
   return (
-    <ChakraProvider value={system}>
-      <Box minH="100vh" bg="gray.50">
-        {/* Skip Links for Screen Readers */}
-        <Box
-          as="a"
-          href="#main-content"
-          position="absolute"
-          top="-40px"
-          left="0"
-          bg="purple.700"
-          color="white"
-          p={2}
-          zIndex="1000"
-          _focus={{
-            top: "0",
-          }}
-        >
-          Skip to main content
-        </Box>
-
-        {/* Header */}
-        <Flex 
-          as="header" 
-          role="banner"
-          bg="purple.700" 
-          p={4} 
-          align="center" 
-          color="white"
-          direction={{ base: "column", md: "row" }}
-          gap={{ base: 3, md: 0 }}
-        >
-          <Heading as="h1" fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">
-            ValveChain Dashboard
-          </Heading>
-          <Spacer display={{ base: "none", md: "block" }} />
-          {/* Navigation Buttons - Responsive Layout */}
-          <Box
-            as="nav"
-            role="navigation"
-            aria-label="Main navigation"
+    <div style={styles.container}>
+      {/* Header */}
+      <header style={styles.header}>
+        <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+          🔧 ValveChain Dashboard
+        </h1>
+        <nav style={styles.nav}>
+          <button 
+            style={{
+              ...styles.navButton,
+              ...(currentTab === 'inventory' ? styles.activeNavButton : {})
+            }}
+            onClick={() => setCurrentTab('inventory')}
           >
-            <HStack 
-              spacing={{ base: 2, md: 4 }} 
-              flexWrap={{ base: "wrap", md: "nowrap" }}
-              justify={{ base: "center", md: "flex-end" }}
-              w={{ base: "100%", md: "auto" }}
-            >
-              <Button
-                leftIcon={<FaTable />}
-                colorScheme={tabIndex === 1 ? "purple" : "gray"}
-                variant={tabIndex === 1 ? "solid" : "outline"}
-                onClick={() => setTabIndex(1)}
-                size={{ base: "sm", md: "md" }}
-                fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View valve inventory table"
-                aria-pressed={tabIndex === 1}
-              >
-                Valve Inventory
-              </Button>
-              <Button
-                leftIcon={<FaTools />}
-                colorScheme={tabIndex === 2 ? "purple" : "gray"}
-                variant={tabIndex === 2 ? "solid" : "outline"}
-                onClick={() => setTabIndex(2)}
-                size={{ base: "sm", md: "md" }}
-                fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View repairs management panel"
-                aria-pressed={tabIndex === 2}
-              >
-                Repairs
-              </Button>
-              <Button
-                leftIcon={<FaHistory />}
-                colorScheme={tabIndex === 3 ? "purple" : "gray"}
-                variant={tabIndex === 3 ? "solid" : "outline"}
-                onClick={() => setTabIndex(3)}
-                size={{ base: "sm", md: "md" }}
-                fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View valve history records"
-                aria-pressed={tabIndex === 3}
-              >
-                Valve History
-              </Button>
-              <Button
-                leftIcon={<FaWallet />}
-                colorScheme={tabIndex === 4 ? "purple" : "gray"}
-                variant={tabIndex === 4 ? "solid" : "outline"}
-                onClick={() => setTabIndex(4)}
-                size={{ base: "sm", md: "md" }}
-                fontSize={{ base: "xs", md: "sm" }}
-                aria-label="View payments and billing information"
-                aria-pressed={tabIndex === 4}
-              >
-                Payments
-              </Button>
-            </HStack>
-          </Box>
-        </Flex>
+            📊 Valve Inventory
+          </button>
+          <button 
+            style={{
+              ...styles.navButton,
+              ...(currentTab === 'manufacturer' ? styles.activeNavButton : {})
+            }}
+            onClick={() => setCurrentTab('manufacturer')}
+          >
+            🏭 Manufacturer
+          </button>
+          <button 
+            style={{
+              ...styles.navButton,
+              ...(currentTab === 'repairs' ? styles.activeNavButton : {})
+            }}
+            onClick={() => setCurrentTab('repairs')}
+          >
+            🔧 Repairs
+          </button>
+          <button 
+            style={{
+              ...styles.navButton,
+              ...(currentTab === 'history' ? styles.activeNavButton : {})
+            }}
+            onClick={() => setCurrentTab('history')}
+          >
+            📜 History
+          </button>
+        </nav>
+      </header>
 
-        {/* Main Content */}
-        <Box as="main" id="main-content" role="main">
-          <TabsRoot value={tabIndex.toString()} onValueChange={(value) => setTabIndex(parseInt(value.value))}>
-            <TabsContent value="0">
-              <Box maxW="7xl" mx="auto" p={{ base: 4, md: 6 }}>
-                {/* Welcome and Stats */}
-                <Flex 
-                  align="center" 
-                  justify="space-between" 
-                  mb={8}
-                  direction={{ base: "column", lg: "row" }}
-                  gap={{ base: 4, lg: 0 }}
-                >
-                  <Box textAlign={{ base: "center", lg: "left" }}>
-                    <Heading as="h2" fontSize="lg">Welcome, Jimmy!</Heading>
-                    <Text color="gray.500">Your role: Admin</Text>
-                  </Box>
-                  <SimpleGrid 
-                    columns={{ base: 1, sm: 3 }} 
-                    spacing={4}
-                    w={{ base: "100%", lg: "auto" }}
-                    role="region"
-                    aria-label="Dashboard statistics"
-                  >
-                    <StatCard label="Valves" value="250" />
-                    <StatCard label="In Repair" value="3" />
-                    <StatCard label="Owed" value="$12,500" />
-                  </SimpleGrid>
-                </Flex>
-                {/* Add a quick summary from Valve Table */}
-                <Box bg={bg} rounded="2xl" shadow="md" p={{ base: 4, md: 6 }}>
-                  <Heading as="h3" fontSize="lg" mb={4}>
-                    Quick Valve Summary
-                  </Heading>
-                  <Text>3 valves due for service, 1 overdue.</Text>
-                  {/* You could add a small preview table or chart here if desired */}
-                </Box>
-              </Box>
-            </TabsContent>
-              {/* Valve Inventory Tab */}
-              <TabsContent value="1">
-                <ValveTable />
-              </TabsContent>
-              {/* Repairs Tab */}
-              <TabsContent value="2">
-                <Box p={6}>
-                  <Heading as="h2" size="md">Repairs Panel (Coming Soon)</Heading>
-                </Box>
-              </TabsContent>
-              {/* Valve History Tab */}
-              <TabsContent value="3">
-                <Box p={6}>
-                  <Heading as="h2" size="md">Valve History Viewer (Coming Soon)</Heading>
-                </Box>
-              </TabsContent>
-              {/* Payments Tab */}
-              <TabsContent value="4">
-                <Box p={6}>
-                  <Heading as="h2" size="md">Payments Panel (Coming Soon)</Heading>
-                </Box>
-              </TabsContent>
-          </TabsRoot>
-        </Box>
-      </Box>
-    </ChakraProvider>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <Box
-      bg="purple.50"
-      color="purple.900"
-      rounded="2xl"
-      px={6}
-      py={4}
-      shadow="sm"
-      textAlign="center"
-      minW="110px"
-      role="region"
-      aria-label={`${label}: ${value}`}
-    >
-      <Text fontSize="2xl" fontWeight="bold" aria-hidden="true">
-        {value}
-      </Text>
-      <Text fontSize="sm" aria-hidden="true">{label}</Text>
-    </Box>
+      {/* Main Content */}
+      <main>
+        {currentTab === 'manufacturer' && <ValveTokenizationDemo />}
+        {currentTab === 'inventory' && (
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>📊 Valve Inventory</h2>
+            <p>This would show the valve inventory table (see existing ValveTable component)</p>
+          </div>
+        )}
+        {currentTab === 'repairs' && (
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>🔧 Repairs Panel</h2>
+            <p>Coming Soon - Repair management functionality</p>
+          </div>
+        )}
+        {currentTab === 'history' && (
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <h2>📜 Valve History</h2>
+            <p>Coming Soon - Valve history tracking</p>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
 
