@@ -6,7 +6,11 @@ import {
   TokenizeValveResponse, 
   ManufacturerAuth, 
   ApiResponse,
-  ValveDetails 
+  ValveDetails,
+  TerminationRequest,
+  TerminationRequestData,
+  TerminationApprovalData,
+  TerminationApproval
 } from '../types/valve';
 
 // Mock manufacturer database
@@ -27,6 +31,9 @@ const AUTHORIZED_MANUFACTURERS = [
 
 // Mock tokenized valves storage
 let tokenizedValves: Array<ValveDetails & { tokenId: string, manufacturerId: string }> = [];
+
+// Mock termination requests storage
+let terminationRequests: TerminationRequest[] = [];
 
 class ValveApiService {
   private baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
@@ -240,6 +247,217 @@ class ValveApiService {
       data: manufacturerValves,
       message: `Retrieved ${manufacturerValves.length} valves for manufacturer`
     };
+  }
+
+  /**
+   * Generate unique termination request ID
+   */
+  private generateTerminationId(): string {
+    return 'TERM' + Date.now() + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  }
+
+  /**
+   * Validate termination request data
+   */
+  private validateTerminationRequest(data: TerminationRequestData): string[] {
+    const errors: string[] = [];
+
+    if (!data.valveSerialNumber || data.valveSerialNumber.trim().length < 3) {
+      errors.push('Valve serial number is required');
+    }
+
+    if (!data.reason) {
+      errors.push('Termination reason is required');
+    }
+
+    if (data.reason === 'other' && (!data.customReason || data.customReason.trim().length < 5)) {
+      errors.push('Custom reason must be at least 5 characters when selecting "other"');
+    }
+
+    if (data.reason === 'high_repair_cost') {
+      if (!data.repairCost || data.repairCost <= 0) {
+        errors.push('Repair cost is required for high repair cost termination');
+      }
+      if (!data.newValveCost || data.newValveCost <= 0) {
+        errors.push('New valve cost is required for cost comparison');
+      }
+      if (data.repairCost && data.newValveCost && data.repairCost <= data.newValveCost) {
+        errors.push('Repair cost must be higher than new valve cost to justify termination');
+      }
+    }
+
+    // Check if valve exists
+    const valveExists = tokenizedValves.some(v => v.serialNumber === data.valveSerialNumber);
+    if (!valveExists) {
+      errors.push('Valve with this serial number not found in system');
+    }
+
+    // Check if there's already a pending termination request
+    const existingRequest = terminationRequests.find(
+      r => r.valveSerialNumber === data.valveSerialNumber && r.status === 'pending'
+    );
+    if (existingRequest) {
+      errors.push('There is already a pending termination request for this valve');
+    }
+
+    return errors;
+  }
+
+  /**
+   * Submit a termination request (repair role)
+   */
+  async submitTerminationRequest(data: TerminationRequestData, requestedBy: string): Promise<ApiResponse<TerminationRequest>> {
+    await this.delay(1000);
+
+    try {
+      // Validate request data
+      const validationErrors = this.validateTerminationRequest(data);
+      if (validationErrors.length > 0) {
+        return {
+          success: false,
+          message: 'Termination request validation failed',
+          errors: validationErrors
+        };
+      }
+
+      // Create termination request
+      const terminationRequest: TerminationRequest = {
+        id: this.generateTerminationId(),
+        valveSerialNumber: data.valveSerialNumber,
+        requestedBy,
+        reason: data.reason,
+        customReason: data.customReason,
+        repairCost: data.repairCost,
+        newValveCost: data.newValveCost,
+        requestDate: new Date().toISOString(),
+        status: 'pending',
+        approvals: {
+          repair: null,
+          plant: null
+        }
+      };
+
+      terminationRequests.push(terminationRequest);
+
+      return {
+        success: true,
+        data: terminationRequest,
+        message: 'Termination request submitted successfully'
+      };
+
+    } catch (error) {
+      console.error('Termination request error:', error);
+      return {
+        success: false,
+        message: 'Internal server error during termination request',
+        errors: ['An unexpected error occurred. Please try again.']
+      };
+    }
+  }
+
+  /**
+   * Get all termination requests
+   */
+  async getTerminationRequests(): Promise<ApiResponse<TerminationRequest[]>> {
+    await this.delay(300);
+    
+    return {
+      success: true,
+      data: terminationRequests,
+      message: `Retrieved ${terminationRequests.length} termination requests`
+    };
+  }
+
+  /**
+   * Get termination requests for a specific valve
+   */
+  async getTerminationRequestsByValve(valveSerialNumber: string): Promise<ApiResponse<TerminationRequest[]>> {
+    await this.delay(300);
+    
+    const valveRequests = terminationRequests.filter(r => r.valveSerialNumber === valveSerialNumber);
+    
+    return {
+      success: true,
+      data: valveRequests,
+      message: `Retrieved ${valveRequests.length} termination requests for valve ${valveSerialNumber}`
+    };
+  }
+
+  /**
+   * Approve or reject a termination request
+   */
+  async submitTerminationApproval(data: TerminationApprovalData, approvedBy: string): Promise<ApiResponse<TerminationRequest>> {
+    await this.delay(1000);
+
+    try {
+      // Find the termination request
+      const requestIndex = terminationRequests.findIndex(r => r.id === data.terminationRequestId);
+      if (requestIndex === -1) {
+        return {
+          success: false,
+          message: 'Termination request not found',
+          errors: ['Invalid termination request ID']
+        };
+      }
+
+      const request = terminationRequests[requestIndex];
+
+      // Check if request is still pending
+      if (request.status !== 'pending') {
+        return {
+          success: false,
+          message: 'This termination request has already been processed',
+          errors: ['Request is no longer pending']
+        };
+      }
+
+      // Check if this role has already provided approval
+      if (request.approvals[data.role] !== null) {
+        return {
+          success: false,
+          message: `${data.role} role has already provided approval for this request`,
+          errors: ['Duplicate approval not allowed']
+        };
+      }
+
+      // Create approval record
+      const approval: TerminationApproval = {
+        approvedBy,
+        approvalDate: new Date().toISOString(),
+        approved: data.approved,
+        comments: data.comments
+      };
+
+      // Update the request with the approval
+      request.approvals[data.role] = approval;
+
+      // Check if we now have both approvals
+      const repairApproval = request.approvals.repair;
+      const plantApproval = request.approvals.plant;
+
+      if (repairApproval && plantApproval) {
+        // Both roles have provided approval, determine final status
+        if (repairApproval.approved && plantApproval.approved) {
+          request.status = 'approved';
+        } else {
+          request.status = 'rejected';
+        }
+      }
+
+      return {
+        success: true,
+        data: request,
+        message: `${data.role} approval recorded successfully`
+      };
+
+    } catch (error) {
+      console.error('Termination approval error:', error);
+      return {
+        success: false,
+        message: 'Internal server error during approval processing',
+        errors: ['An unexpected error occurred. Please try again.']
+      };
+    }
   }
 }
 
