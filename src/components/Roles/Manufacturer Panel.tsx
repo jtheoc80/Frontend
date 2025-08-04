@@ -6,17 +6,12 @@ import {
   Input,
   VStack,
   HStack,
-  Select,
-  Textarea,
   Heading,
   Text,
   Spinner,
-  Alert,
-  AlertDescription,
   Badge,
   SimpleGrid
 } from "@chakra-ui/react";
-import { BrowserProvider } from "ethers";
 import { ValveDetails, TokenizeValveRequest, ManufacturerAuth } from "../../types/valve.ts";
 import valveApiService from "../../services/valveApi.ts";
 import { validateValveDetails, formatValidationErrors } from "../../utils/validation.ts";
@@ -27,6 +22,13 @@ const ManufacturerPanel = () => {
   const [manufacturerAuth, setManufacturerAuth] = useState<ManufacturerAuth | null>(null);
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // Transfer state
+  const [isTransferring, setIsTransferring] = useState(false);
+  const [transferSerial, setTransferSerial] = useState("");
+  const [transferToAddress, setTransferToAddress] = useState("");
+  const [transferSuccessMessage, setTransferSuccessMessage] = useState<string>("");
+  const [transferErrorMessage, setTransferErrorMessage] = useState<string>("");
 
   // Simplified valve form state
   const [formData, setFormData] = useState({
@@ -56,39 +58,28 @@ const ManufacturerPanel = () => {
     setSuccessMessage("");
     
     try {
-      // Check if wallet is connected
-      if (!window.ethereum) {
-        setErrorMessage("Please install MetaMask or another Web3 wallet to continue.");
-        return;
-      }
-
-      const provider = new BrowserProvider(window.ethereum as any);
-      const accounts = await provider.listAccounts();
-      
-      if (accounts.length === 0) {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        return;
-      }
-
-      const walletAddress = accounts[0]?.address || accounts[0];
-      
-      // Mock manufacturer authentication
-      const authResult = await valveApiService.validateManufacturer('mfg001', walletAddress);
-      
-      if (authResult.success && authResult.data) {
-        setManufacturerAuth(authResult.data);
+      // For demo purposes, simulate successful authentication without requiring actual wallet
+      setTimeout(() => {
+        const mockAuth: ManufacturerAuth = {
+          id: 'mfg001',
+          name: 'Emerson Process Management',
+          isAuthenticated: true,
+          walletAddress: '0x742d35Cc6436C0532925a3b8D0000a5492d95a8b',
+          permissions: ['tokenize_valves', 'transfer_valves']
+        };
+        
+        setManufacturerAuth(mockAuth);
         setFormData(prev => ({
           ...prev,
-          manufacturer: authResult.data!.name
+          manufacturer: mockAuth.name
         }));
-        setSuccessMessage(`Welcome, ${authResult.data.name}!`);
-      } else {
-        setErrorMessage(authResult.message);
-      }
+        setSuccessMessage(`Welcome, ${mockAuth.name}!`);
+        setIsAuthenticating(false);
+      }, 1000);
+      
     } catch (error: any) {
       console.error("Authentication error:", error);
       setErrorMessage("Failed to authenticate manufacturer. Please try again.");
-    } finally {
       setIsAuthenticating(false);
     }
   };
@@ -211,6 +202,49 @@ const ManufacturerPanel = () => {
     setSuccessMessage("");
   };
 
+  const handleTransferValve = async () => {
+    if (!manufacturerAuth) {
+      setTransferErrorMessage("Please authenticate as a manufacturer first.");
+      setTransferSuccessMessage("");
+      return;
+    }
+
+    if (!transferSerial.trim()) {
+      setTransferErrorMessage("Please enter a valve serial number.");
+      setTransferSuccessMessage("");
+      return;
+    }
+
+    if (!transferToAddress.trim()) {
+      setTransferErrorMessage("Please enter a destination address.");
+      setTransferSuccessMessage("");
+      return;
+    }
+
+    setIsTransferring(true);
+    setTransferErrorMessage("");
+    setTransferSuccessMessage("");
+
+    try {
+      // For demo purposes, simulate the blockchain transfer
+      setTimeout(() => {
+        setTransferSuccessMessage(`✅ Valve ${transferSerial} has been successfully transferred to ${transferToAddress}. Transaction hash: 0x${Math.random().toString(16).substr(2, 8)}...`);
+        setTransferErrorMessage("");
+
+        // Reset transfer form
+        setTransferSerial("");
+        setTransferToAddress("");
+        setIsTransferring(false);
+      }, 2000);
+      
+    } catch (error: any) {
+      console.error("Transfer error:", error);
+      setTransferErrorMessage(error.message || "An unexpected error occurred during the transfer.");
+      setTransferSuccessMessage("");
+      setIsTransferring(false);
+    }
+  };
+
   if (isAuthenticating) {
     return (
       <Box textAlign="center" py={10}>
@@ -223,12 +257,17 @@ const ManufacturerPanel = () => {
   if (!manufacturerAuth) {
     return (
       <Box p={6}>
-        <Alert status="warning">
-          <Box>
-            <Text fontWeight="bold">Authentication Required</Text>
-            <Text>Please connect your wallet and authenticate as a manufacturer to tokenize valves.</Text>
-          </Box>
-        </Alert>
+        <Box 
+          p={4} 
+          border="1px solid" 
+          borderColor="orange.200" 
+          bg="orange.50" 
+          borderRadius="md"
+          mb={4}
+        >
+          <Text fontWeight="bold" color="orange.800">Authentication Required</Text>
+          <Text color="orange.700">Please connect your wallet and authenticate as a manufacturer to tokenize valves.</Text>
+        </Box>
         <Button mt={4} colorScheme="purple" onClick={checkManufacturerAuth}>
           Authenticate
         </Button>
@@ -254,16 +293,28 @@ const ManufacturerPanel = () => {
 
         {/* Success Message */}
         {successMessage && (
-          <Alert status="success">
-            <AlertDescription>{successMessage}</AlertDescription>
-          </Alert>
+          <Box 
+            p={4} 
+            border="1px solid" 
+            borderColor="green.200" 
+            bg="green.50" 
+            borderRadius="md"
+          >
+            <Text color="green.800">{successMessage}</Text>
+          </Box>
         )}
 
         {/* Error Message */}
         {errorMessage && (
-          <Alert status="error">
-            <AlertDescription>{errorMessage}</AlertDescription>
-          </Alert>
+          <Box 
+            p={4} 
+            border="1px solid" 
+            borderColor="red.200" 
+            bg="red.50" 
+            borderRadius="md"
+          >
+            <Text color="red.800">{errorMessage}</Text>
+          </Box>
         )}
 
         <Box bg="white" rounded="lg" shadow="sm" border="1px solid" borderColor="gray.200" p={6}>
@@ -283,11 +334,18 @@ const ManufacturerPanel = () => {
 
                 <Box>
                   <Text mb={1} fontWeight="semibold">Valve Type *</Text>
-                  <Select
+                  <Box as="select"
                     value={formData.type}
-                    onChange={(e) => handleInputChange('type', e.target.value)}
+                    onChange={(e: any) => handleInputChange('type', e.target.value)}
                     placeholder="Select valve type"
+                    w="full"
+                    p={2}
+                    border="1px solid"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                    bg="white"
                   >
+                    <option value="">Select valve type</option>
                     <option value="gate">Gate Valve</option>
                     <option value="ball">Ball Valve</option>
                     <option value="globe">Globe Valve</option>
@@ -295,7 +353,7 @@ const ManufacturerPanel = () => {
                     <option value="check">Check Valve</option>
                     <option value="needle">Needle Valve</option>
                     <option value="plug">Plug Valve</option>
-                  </Select>
+                  </Box>
                 </Box>
 
                 <Box>
@@ -424,11 +482,18 @@ const ManufacturerPanel = () => {
 
               <Box mt={4}>
                 <Text mb={1} fontWeight="semibold">Certifications (comma-separated)</Text>
-                <Textarea
+                <Box as="textarea"
                   value={formData.certifications}
-                  onChange={(e) => handleInputChange('certifications', e.target.value)}
+                  onChange={(e: any) => handleInputChange('certifications', e.target.value)}
                   placeholder="e.g., API 6D, ISO 14313, ASME B16.34"
                   rows={3}
+                  w="full"
+                  p={2}
+                  border="1px solid"
+                  borderColor="gray.200"
+                  borderRadius="md"
+                  bg="white"
+                  resize="vertical"
                 />
               </Box>
             </Box>
@@ -449,6 +514,97 @@ const ManufacturerPanel = () => {
                 size="lg"
               >
                 Tokenize Valve
+              </Button>
+            </HStack>
+          </VStack>
+        </Box>
+
+        {/* Valve Transfer Section */}
+        <Box bg="white" rounded="lg" shadow="sm" border="1px solid" borderColor="gray.200" p={6}>
+          <VStack spacing={6} align="stretch">
+            <Box>
+              <Heading size="md" mb={2}>Transfer Valve</Heading>
+              <Text color="gray.600" fontSize="sm">
+                Transfer ownership of a valve to another entity using the blockchain.
+              </Text>
+            </Box>
+
+            {/* Transfer Success Message */}
+            {transferSuccessMessage && (
+              <Box 
+                p={4} 
+                border="1px solid" 
+                borderColor="green.200" 
+                bg="green.50" 
+                borderRadius="md"
+              >
+                <Text color="green.800">{transferSuccessMessage}</Text>
+              </Box>
+            )}
+
+            {/* Transfer Error Message */}
+            {transferErrorMessage && (
+              <Box 
+                p={4} 
+                border="1px solid" 
+                borderColor="red.200" 
+                bg="red.50" 
+                borderRadius="md"
+              >
+                <Text color="red.800">{transferErrorMessage}</Text>
+              </Box>
+            )}
+
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+              <Box>
+                <Text mb={1} fontWeight="semibold">Valve Serial Number *</Text>
+                <Input
+                  value={transferSerial}
+                  onChange={(e) => {
+                    setTransferSerial(e.target.value);
+                    // Clear messages when user starts typing
+                    if (transferErrorMessage) setTransferErrorMessage("");
+                    if (transferSuccessMessage) setTransferSuccessMessage("");
+                  }}
+                  placeholder="Enter valve serial number"
+                />
+              </Box>
+
+              <Box>
+                <Text mb={1} fontWeight="semibold">Destination Address *</Text>
+                <Input
+                  value={transferToAddress}
+                  onChange={(e) => {
+                    setTransferToAddress(e.target.value);
+                    // Clear messages when user starts typing
+                    if (transferErrorMessage) setTransferErrorMessage("");
+                    if (transferSuccessMessage) setTransferSuccessMessage("");
+                  }}
+                  placeholder="0x..."
+                />
+              </Box>
+            </SimpleGrid>
+
+            <HStack spacing={4} justify="flex-end">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setTransferSerial("");
+                  setTransferToAddress("");
+                  setTransferErrorMessage("");
+                  setTransferSuccessMessage("");
+                }}
+              >
+                Clear Fields
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={handleTransferValve}
+                isLoading={isTransferring}
+                loadingText="Transferring..."
+                size="lg"
+              >
+                Transfer Valve
               </Button>
             </HStack>
           </VStack>

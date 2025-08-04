@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import ValveTokenizationDemo from "./components/ValveTokenizationDemo.tsx";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import ManufacturerPanel from "./components/Roles/Manufacturer Panel.tsx";
 
 function App() {
   const [currentTab, setCurrentTab] = useState('manufacturer');
@@ -39,75 +40,77 @@ function App() {
   };
 
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <header style={styles.header}>
-        <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
-          🔧 ValveChain Dashboard
-        </h1>
-        <nav style={styles.nav}>
-          <button 
-            style={{
-              ...styles.navButton,
-              ...(currentTab === 'inventory' ? styles.activeNavButton : {})
-            }}
-            onClick={() => setCurrentTab('inventory')}
-          >
-            📊 Valve Inventory
-          </button>
-          <button 
-            style={{
-              ...styles.navButton,
-              ...(currentTab === 'manufacturer' ? styles.activeNavButton : {})
-            }}
-            onClick={() => setCurrentTab('manufacturer')}
-          >
-            🏭 Manufacturer
-          </button>
-          <button 
-            style={{
-              ...styles.navButton,
-              ...(currentTab === 'repairs' ? styles.activeNavButton : {})
-            }}
-            onClick={() => setCurrentTab('repairs')}
-          >
-            🔧 Repairs
-          </button>
-          <button 
-            style={{
-              ...styles.navButton,
-              ...(currentTab === 'history' ? styles.activeNavButton : {})
-            }}
-            onClick={() => setCurrentTab('history')}
-          >
-            📜 History
-          </button>
-        </nav>
-      </header>
+    <ChakraProvider value={defaultSystem}>
+      <div style={styles.container}>
+        {/* Header */}
+        <header style={styles.header}>
+          <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'bold' }}>
+            🔧 ValveChain Dashboard
+          </h1>
+          <nav style={styles.nav}>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'inventory' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('inventory')}
+            >
+              📊 Valve Inventory
+            </button>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'manufacturer' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('manufacturer')}
+            >
+              🏭 Manufacturer
+            </button>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'repairs' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('repairs')}
+            >
+              🔧 Repairs
+            </button>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'history' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('history')}
+            >
+              📜 History
+            </button>
+          </nav>
+        </header>
 
-      {/* Main Content */}
-      <main>
-        {currentTab === 'manufacturer' && <ValveTokenizationDemo />}
-        {currentTab === 'inventory' && (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>📊 Valve Inventory</h2>
-            <p>This would show the valve inventory table (see existing ValveTable component)</p>
-          </div>
-        )}
-        {currentTab === 'repairs' && (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>🔧 Repairs Panel</h2>
-            <p>Coming Soon - Repair management functionality</p>
-          </div>
-        )}
-        {currentTab === 'history' && (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>📜 Valve History</h2>
-            <p>Coming Soon - Valve history tracking</p>
-          </div>
-        )}
-      </main>
-    </div>
+        {/* Main Content */}
+        <main>
+          {currentTab === 'manufacturer' && <ManufacturerPanel />}
+          {currentTab === 'inventory' && (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <h2>📊 Valve Inventory</h2>
+              <p>This would show the valve inventory table (see existing ValveTable component)</p>
+            </div>
+          )}
+          {currentTab === 'repairs' && (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <h2>🔧 Repairs Panel</h2>
+              <p>Coming Soon - Repair management functionality</p>
+            </div>
+          )}
+          {currentTab === 'history' && (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <h2>📜 Valve History</h2>
+              <p>Coming Soon - Valve history tracking</p>
+            </div>
+          )}
+        </main>
+      </div>
+    </ChakraProvider>
   );
 }
 
