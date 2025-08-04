@@ -3,37 +3,26 @@ import {
   Button, 
   Input, 
   VStack, 
-  useToast, 
   Heading, 
-  Divider, 
-  Select, 
-  Textarea, 
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Box,
   Text,
-  Badge,
+  Box,
   HStack,
-  Card,
-  CardBody,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription
+  Textarea,
+  Select,
+  SimpleGrid
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import contractABI from "../../abi/ValveChainABI.json";
 import { valveApiService } from "../../services/valveApi";
 import { TerminationRequest, TerminationRequestData } from "../../types/valve";
-import { validateTerminationReason, validateCostComparison, formatValidationErrors } from "../../utils/validation";
 
 const CONTRACT_ADDRESS = "0xYourValveChainContractAddress"; // Update with your contract's address
 
 const RepairPanel = () => {
-  const toast = useToast();
+  // Simple toast replacement
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    alert(`${type.toUpperCase()}: ${message}`);
+  };
   
   // Repair logging state
   const [serial, setSerial] = useState("");
@@ -45,8 +34,8 @@ const RepairPanel = () => {
   const [terminationSerial, setTerminationSerial] = useState("");
   const [terminationReason, setTerminationReason] = useState<'high_repair_cost' | 'beyond_economical_repair' | 'other'>('high_repair_cost');
   const [customReason, setCustomReason] = useState("");
-  const [repairCost, setRepairCost] = useState<number>(0);
-  const [newValveCost, setNewValveCost] = useState<number>(0);
+  const [repairCost, setRepairCost] = useState<string>("0");
+  const [newValveCost, setNewValveCost] = useState<string>("0");
   const [isSubmittingTermination, setIsSubmittingTermination] = useState(false);
 
   // Termination requests display state
@@ -65,58 +54,59 @@ const RepairPanel = () => {
       if (result.success && result.data) {
         setTerminationRequests(result.data);
       } else {
-        toast({
-          title: "Error loading termination requests",
-          description: result.message,
-          status: "error"
-        });
+        showToast(result.message, 'error');
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load termination requests",
-        status: "error"
-      });
+      showToast("Failed to load termination requests", 'error');
     } finally {
       setIsLoadingRequests(false);
     }
   };
 
   const handleLogRepair = async () => {
-    if (!window.ethereum) return toast({ title: "No wallet", status: "error" });
+    if (!window.ethereum) return showToast("No wallet", 'error');
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-      const signer = provider.getSigner();
+      const provider = new ethers.BrowserProvider(window.ethereum as any);
+      const signer = await provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
       const tx = await contract.logRepair(serial, preTest, repairDetails, postTest);
       await tx.wait();
-      toast({ title: "Repair logged!", status: "success" });
+      showToast("Repair logged!");
       // Clear form
       setSerial("");
       setPreTest("");
       setRepairDetails("");
       setPostTest("");
     } catch (error: any) {
-      toast({ title: "Error", description: error.message, status: "error" });
+      showToast(error.message, 'error');
     }
   };
 
   const handleSubmitTermination = async () => {
-    // Validate form data
-    const reasonValidation = validateTerminationReason(terminationReason, customReason);
-    const costValidation = terminationReason === 'high_repair_cost' ? 
-      validateCostComparison(repairCost, newValveCost) : { isValid: true, errors: [] };
-
-    const allErrors = [...reasonValidation.errors, ...costValidation.errors];
-    
-    if (allErrors.length > 0) {
-      toast({
-        title: "Validation Error",
-        description: formatValidationErrors(allErrors),
-        status: "error",
-        duration: 5000
-      });
+    // Basic validation
+    if (!terminationSerial) {
+      showToast("Valve serial number is required", 'error');
       return;
+    }
+
+    if (terminationReason === 'other' && !customReason) {
+      showToast("Custom reason is required", 'error');
+      return;
+    }
+
+    if (terminationReason === 'high_repair_cost') {
+      const repairCostNum = parseFloat(repairCost);
+      const newValveCostNum = parseFloat(newValveCost);
+      
+      if (repairCostNum <= 0 || newValveCostNum <= 0) {
+        showToast("Both repair cost and new valve cost must be greater than 0", 'error');
+        return;
+      }
+      
+      if (repairCostNum <= newValveCostNum) {
+        showToast("Repair cost must be higher than new valve cost to justify termination", 'error');
+        return;
+      }
     }
 
     setIsSubmittingTermination(true);
@@ -125,8 +115,8 @@ const RepairPanel = () => {
         valveSerialNumber: terminationSerial,
         reason: terminationReason,
         customReason: terminationReason === 'other' ? customReason : undefined,
-        repairCost: terminationReason === 'high_repair_cost' ? repairCost : undefined,
-        newValveCost: terminationReason === 'high_repair_cost' ? newValveCost : undefined
+        repairCost: terminationReason === 'high_repair_cost' ? parseFloat(repairCost) : undefined,
+        newValveCost: terminationReason === 'high_repair_cost' ? parseFloat(newValveCost) : undefined
       };
 
       const result = await valveApiService.submitTerminationRequest(
@@ -135,43 +125,30 @@ const RepairPanel = () => {
       );
 
       if (result.success) {
-        toast({
-          title: "Termination Request Submitted",
-          description: "The termination request has been submitted for approval",
-          status: "success"
-        });
+        showToast("Termination request submitted for approval");
         
         // Clear form
         setTerminationSerial("");
         setTerminationReason('high_repair_cost');
         setCustomReason("");
-        setRepairCost(0);
-        setNewValveCost(0);
+        setRepairCost("0");
+        setNewValveCost("0");
         
         // Reload requests
         await loadTerminationRequests();
       } else {
-        toast({
-          title: "Error",
-          description: result.message,
-          status: "error",
-          duration: 5000
-        });
+        showToast(result.message, 'error');
       }
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: "Failed to submit termination request",
-        status: "error"
-      });
+      showToast("Failed to submit termination request", 'error');
     } finally {
       setIsSubmittingTermination(false);
     }
   };
 
-  const getStatusBadgeColor = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'yellow';
+      case 'pending': return 'orange';
       case 'approved': return 'green';
       case 'rejected': return 'red';
       default: return 'gray';
@@ -199,7 +176,7 @@ const RepairPanel = () => {
   };
 
   return (
-    <VStack align="start" spacing={6} mt={2} divider={<Divider />}>
+    <VStack align="start" spacing={6} mt={2}>
       {/* Repair Logging Section */}
       <VStack align="start" spacing={4} width="100%">
         <Heading size="md" color="purple.600">Log Repair</Heading>
@@ -228,19 +205,18 @@ const RepairPanel = () => {
         </Button>
       </VStack>
 
+      {/* Divider */}
+      <Box width="100%" height="1px" bg="gray.200" />
+
       {/* Valve Termination Request Section */}
       <VStack align="start" spacing={4} width="100%">
         <Heading size="md" color="red.600">Request Valve Termination</Heading>
-        <Alert status="info" size="sm">
-          <AlertIcon />
-          <Box>
-            <AlertTitle>Termination Process</AlertTitle>
-            <AlertDescription>
-              Request termination for valves that are beyond economical repair or have higher repair costs than replacement. 
-              Requires approval from both Repair and Plant roles.
-            </AlertDescription>
-          </Box>
-        </Alert>
+        <Box p={3} bg="blue.50" borderRadius="md" width="100%">
+          <Text fontSize="sm" color="blue.800">
+            <strong>Termination Process:</strong> Request termination for valves that are beyond economical repair or have higher repair costs than replacement. 
+            Requires approval from both Repair and Plant roles.
+          </Text>
+        </Box>
         
         <Input
           placeholder="Valve Serial Number"
@@ -267,47 +243,39 @@ const RepairPanel = () => {
         )}
 
         {terminationReason === 'high_repair_cost' && (
-          <HStack spacing={4} width="100%">
-            <Box flex={1}>
+          <SimpleGrid columns={2} spacing={4} width="100%">
+            <Box>
               <Text fontSize="sm" mb={1}>Repair Cost ($)</Text>
-              <NumberInput
+              <Input
+                type="number"
                 value={repairCost}
-                onChange={(_, value) => setRepairCost(value || 0)}
-                min={0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                onChange={e => setRepairCost(e.target.value)}
+                placeholder="0"
+              />
             </Box>
-            <Box flex={1}>
+            <Box>
               <Text fontSize="sm" mb={1}>New Valve Cost ($)</Text>
-              <NumberInput
+              <Input
+                type="number"
                 value={newValveCost}
-                onChange={(_, value) => setNewValveCost(value || 0)}
-                min={0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                onChange={e => setNewValveCost(e.target.value)}
+                placeholder="0"
+              />
             </Box>
-          </HStack>
+          </SimpleGrid>
         )}
 
         <Button 
           colorScheme="red" 
           onClick={handleSubmitTermination}
-          isLoading={isSubmittingTermination}
-          loadingText="Submitting..."
+          isDisabled={isSubmittingTermination}
         >
-          Submit Termination Request
+          {isSubmittingTermination ? "Submitting..." : "Submit Termination Request"}
         </Button>
       </VStack>
+
+      {/* Divider */}
+      <Box width="100%" height="1px" bg="gray.200" />
 
       {/* Termination Requests Status */}
       <VStack align="start" spacing={4} width="100%">
@@ -316,9 +284,9 @@ const RepairPanel = () => {
           <Button 
             size="sm" 
             onClick={loadTerminationRequests}
-            isLoading={isLoadingRequests}
+            isDisabled={isLoadingRequests}
           >
-            Refresh
+            {isLoadingRequests ? "Loading..." : "Refresh"}
           </Button>
         </HStack>
         
@@ -327,37 +295,42 @@ const RepairPanel = () => {
         ) : (
           <VStack spacing={3} width="100%">
             {terminationRequests.map((request) => (
-              <Card key={request.id} width="100%" size="sm">
-                <CardBody>
-                  <VStack align="start" spacing={2}>
-                    <HStack justify="space-between" width="100%">
-                      <Text fontWeight="bold">Valve: {request.valveSerialNumber}</Text>
-                      <Badge colorScheme={getStatusBadgeColor(request.status)}>
-                        {request.status.toUpperCase()}
-                      </Badge>
-                    </HStack>
-                    
+              <Box key={request.id} width="100%" p={4} borderWidth={1} borderRadius="md" bg="gray.50">
+                <VStack align="start" spacing={2}>
+                  <HStack justify="space-between" width="100%">
+                    <Text fontWeight="bold">Valve: {request.valveSerialNumber}</Text>
+                    <Text 
+                      px={2} 
+                      py={1} 
+                      borderRadius="md" 
+                      bg={`${getStatusColor(request.status)}.100`}
+                      color={`${getStatusColor(request.status)}.800`}
+                      fontSize="sm"
+                    >
+                      {request.status.toUpperCase()}
+                    </Text>
+                  </HStack>
+                  
+                  <Text fontSize="sm">
+                    <strong>Reason:</strong> {request.reason === 'other' ? request.customReason : 
+                      request.reason.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </Text>
+                  
+                  {request.repairCost && request.newValveCost && (
                     <Text fontSize="sm">
-                      <strong>Reason:</strong> {request.reason === 'other' ? request.customReason : 
-                        request.reason.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      <strong>Cost Analysis:</strong> Repair: ${request.repairCost} | New: ${request.newValveCost}
                     </Text>
-                    
-                    {request.repairCost && request.newValveCost && (
-                      <Text fontSize="sm">
-                        <strong>Cost Analysis:</strong> Repair: ${request.repairCost} | New: ${request.newValveCost}
-                      </Text>
-                    )}
-                    
-                    <Text fontSize="sm">
-                      <strong>Approval Status:</strong> {getApprovalStatus(request)}
-                    </Text>
-                    
-                    <Text fontSize="xs" color="gray.500">
-                      Requested: {new Date(request.requestDate).toLocaleDateString()}
-                    </Text>
-                  </VStack>
-                </CardBody>
-              </Card>
+                  )}
+                  
+                  <Text fontSize="sm">
+                    <strong>Approval Status:</strong> {getApprovalStatus(request)}
+                  </Text>
+                  
+                  <Text fontSize="xs" color="gray.500">
+                    Requested: {new Date(request.requestDate).toLocaleDateString()}
+                  </Text>
+                </VStack>
+              </Box>
             ))}
           </VStack>
         )}

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import ManufacturerPanel from "./components/Roles/Manufacturer Panel.tsx";
+import RepairPanel from "./components/Roles/Repair Panel.tsx";
+import PlantPanel from "./components/Roles/Plant Panel.tsx";
 
 function App() {
   const [currentTab, setCurrentTab] = useState('manufacturer');
@@ -84,6 +86,24 @@ function App() {
             >
               📜 History
             </button>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'repair' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('repair')}
+            >
+              🔧 Repair
+            </button>
+            <button 
+              style={{
+                ...styles.navButton,
+                ...(currentTab === 'plant' ? styles.activeNavButton : {})
+              }}
+              onClick={() => setCurrentTab('plant')}
+            >
+              🏭 Plant
+            </button>
           </nav>
         </header>
 
@@ -106,6 +126,16 @@ function App() {
             <div style={{ padding: '2rem', textAlign: 'center' }}>
               <h2>📜 Valve History</h2>
               <p>Coming Soon - Valve history tracking</p>
+            </div>
+          )}
+          {currentTab === 'repair' && (
+            <div style={{ padding: '2rem' }}>
+              <RepairPanel />
+            </div>
+          )}
+          {currentTab === 'plant' && (
+            <div style={{ padding: '2rem' }}>
+              <PlantPanel />
             </div>
           )}
         </main>
