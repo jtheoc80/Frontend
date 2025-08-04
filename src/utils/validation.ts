@@ -210,3 +210,63 @@ export function formatValidationErrors(errors: string[]): string {
   
   return errors.map((error, index) => `${index + 1}. ${error}`).join('\n');
 }
+
+/**
+ * Validate termination reason
+ */
+export function validateTerminationReason(reason: string, customReason?: string): ValidationResult {
+  const errors: string[] = [];
+
+  if (!reason || reason.trim().length === 0) {
+    errors.push('Termination reason is required');
+  }
+
+  if (reason === 'other' && (!customReason || customReason.trim().length < 5)) {
+    errors.push('Custom reason must be at least 5 characters when selecting "other"');
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+}
+
+/**
+ * Validate cost comparison for termination
+ */
+export function validateCostComparison(repairCost?: number, newValveCost?: number): ValidationResult {
+  const errors: string[] = [];
+
+  if (repairCost !== undefined && newValveCost !== undefined) {
+    if (repairCost <= 0) {
+      errors.push('Repair cost must be greater than 0');
+    }
+    if (newValveCost <= 0) {
+      errors.push('New valve cost must be greater than 0');
+    }
+    if (repairCost > 0 && newValveCost > 0 && repairCost <= newValveCost) {
+      errors.push('Repair cost must be higher than new valve cost to justify termination');
+    }
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+}
+
+/**
+ * Validate approval comments
+ */
+export function validateApprovalComments(comments?: string): ValidationResult {
+  const errors: string[] = [];
+
+  if (comments && comments.length > 500) {
+    errors.push('Comments cannot exceed 500 characters');
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+}

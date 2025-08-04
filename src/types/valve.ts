@@ -48,3 +48,42 @@ export interface ApiResponse<T> {
   message: string;
   errors?: string[];
 }
+
+// Termination workflow types
+export interface TerminationRequest {
+  id: string;
+  valveSerialNumber: string;
+  requestedBy: string; // User who requested termination (repair role)
+  reason: 'high_repair_cost' | 'beyond_economical_repair' | 'other';
+  customReason?: string; // If reason is 'other'
+  repairCost?: number; // Cost of repair
+  newValveCost?: number; // Cost of new valve
+  requestDate: string;
+  status: 'pending' | 'approved' | 'rejected';
+  approvals: {
+    repair: TerminationApproval | null;
+    plant: TerminationApproval | null;
+  };
+}
+
+export interface TerminationApproval {
+  approvedBy: string;
+  approvalDate: string;
+  approved: boolean;
+  comments?: string;
+}
+
+export interface TerminationRequestData {
+  valveSerialNumber: string;
+  reason: 'high_repair_cost' | 'beyond_economical_repair' | 'other';
+  customReason?: string;
+  repairCost?: number;
+  newValveCost?: number;
+}
+
+export interface TerminationApprovalData {
+  terminationRequestId: string;
+  role: 'repair' | 'plant';
+  approved: boolean;
+  comments?: string;
+}
