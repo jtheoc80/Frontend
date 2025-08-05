@@ -8,36 +8,41 @@ import {
 } from '../types/user';
 import { ApiResponse } from '../types/valve';
 
-// Mock user database - in a real app this would come from backend
-let mockUsers: UserProfile[] = [
-  {
-    id: 'user001',
-    companyName: 'Emerson Process Management',
-    contactName: 'John Smith',
-    email: 'john.smith@emerson.com',
-    phone: '+1 (555) 123-4567',
-    createdAt: '2023-01-15T10:30:00Z',
-    role: 'manufacturer',
-    isActive: true
-  },
-  {
-    id: 'user002',
-    companyName: 'Kitz Corporation',
-    contactName: 'Sarah Johnson',
-    email: 'sarah.johnson@kitz.com',
-    phone: '+1 (555) 987-6543',
-    createdAt: '2023-02-20T14:15:00Z',
-    role: 'manufacturer',
-    isActive: true
-  }
-];
-
-// Current user context - in a real app this would come from authentication
-let currentUser: UserProfile = mockUsers[0];
+// Factory function to provide a fresh mock user database
+function getInitialMockUsers(): UserProfile[] {
+  return [
+    {
+      id: 'user001',
+      companyName: 'Emerson Process Management',
+      contactName: 'John Smith',
+      email: 'john.smith@emerson.com',
+      phone: '+1 (555) 123-4567',
+      createdAt: '2023-01-15T10:30:00Z',
+      role: 'manufacturer',
+      isActive: true
+    },
+    {
+      id: 'user002',
+      companyName: 'Kitz Corporation',
+      contactName: 'Sarah Johnson',
+      email: 'sarah.johnson@kitz.com',
+      phone: '+1 (555) 987-6543',
+      createdAt: '2023-02-20T14:15:00Z',
+      role: 'manufacturer',
+      isActive: true
+    }
+  ];
+}
 
 class UserApiService {
   private baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+  private mockUsers: UserProfile[];
+  private currentUser: UserProfile;
 
+  constructor() {
+    this.mockUsers = getInitialMockUsers();
+    this.currentUser = this.mockUsers[0];
+  }
   /**
    * Simulate API delay for realistic testing
    */
