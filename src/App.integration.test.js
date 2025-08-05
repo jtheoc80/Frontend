@@ -2,7 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Mock Chakra UI components with navigation functionality
-const mockSetTabIndex = jest.fn();
 
 jest.mock('@chakra-ui/react', () => ({
   ChakraProvider: ({ children }) => <div data-testid="chakra-provider">{children}</div>,
