@@ -19,9 +19,16 @@ import { TerminationRequest, TerminationRequestData } from "../../types/valve";
 const CONTRACT_ADDRESS = "0xYourValveChainContractAddress"; // Update with your contract's address
 
 const RepairPanel = () => {
-  // Simple toast replacement
+  // Proper toast notification using Chakra UI
+  const toast = useToast();
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    alert(`${type.toUpperCase()}: ${message}`);
+    toast({
+      title: message,
+      status: type,
+      duration: 4000,
+      isClosable: true,
+      position: "top-right"
+    });
   };
   
   // Repair logging state
