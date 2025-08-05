@@ -29,6 +29,9 @@ class FXRateService {
       INR: 83.0,
       CAD: 1.35,
       AUD: 1.55,
+      // WARNING: The ETH and BTC exchange rates below are hardcoded and highly volatile.
+      // These values must be updated regularly or replaced with live data in production.
+      // TODO: Implement fetching of real-time crypto rates for ETH and BTC.
       ETH: 0.0004, // 1 USD = 0.0004 ETH (approximate)
       BTC: 0.000025, // 1 USD = 0.000025 BTC (approximate)
       timestamp: Date.now()
