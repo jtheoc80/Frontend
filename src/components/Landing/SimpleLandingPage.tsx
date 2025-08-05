@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Button, Heading, Text, VStack, HStack, Container } from "@chakra-ui/react";
+// @ts-ignore
+import { useTranslation } from 'react-i18next';
 
 interface SimpleLandingPageProps {
   onGetStarted: () => void;
@@ -8,6 +10,7 @@ interface SimpleLandingPageProps {
 }
 
 const SimpleLandingPage: React.FC<SimpleLandingPageProps> = ({ onGetStarted, onLogin, onLearnMore }) => {
+  const { t } = useTranslation();
   return (
     <Box bg="#f8fafc" minH="100vh">
       {/* Navigation Header */}
@@ -15,7 +18,7 @@ const SimpleLandingPage: React.FC<SimpleLandingPageProps> = ({ onGetStarted, onL
         <Container maxW="1200px" px={{ base: 4, md: 8 }}>
           <HStack justify="space-between" align="center">
             <Heading size="md" color="#1e3a8a">
-              ValveChain
+              {t('landing.title')}
             </Heading>
             <HStack spacing={4}>
               <Button
@@ -24,7 +27,7 @@ const SimpleLandingPage: React.FC<SimpleLandingPageProps> = ({ onGetStarted, onL
                 size="sm"
                 onClick={onLearnMore}
               >
-                About
+                {t('navigation.about')}
               </Button>
               <Button
                 variant="outline"
@@ -32,7 +35,7 @@ const SimpleLandingPage: React.FC<SimpleLandingPageProps> = ({ onGetStarted, onL
                 size="sm"
                 onClick={onLogin}
               >
-                Sign In
+                {t('navigation.signIn')}
               </Button>
               <Button
                 bg="#10b981"
@@ -41,7 +44,7 @@ const SimpleLandingPage: React.FC<SimpleLandingPageProps> = ({ onGetStarted, onL
                 size="sm"
                 onClick={onGetStarted}
               >
-                Get Started
+                {t('navigation.getStarted')}
               </Button>
             </HStack>
           </HStack>

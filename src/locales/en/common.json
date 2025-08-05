@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "about": "About",
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
+    "gettingStarted": "Getting Started",
+    "manufacturer": "Manufacturer",
+    "distributor": "Distributor",
+    "plant": "Plant",
+    "repair": "Repair",
+    "valveInventory": "Valve Inventory",
+    "history": "History"
+  },
+  "dashboard": {
+    "title": "ValveChain Dashboard",
+    "manufacturerDashboard": "Manufacturer Dashboard",
+    "distributorDashboard": "Distributor Dashboard",
+    "plantDashboard": "Plant Dashboard",
+    "repairDashboard": "Repair Dashboard"
+  },
+  "stats": {
+    "totalValves": "Total Valves",
+    "pendingTokenization": "Pending Tokenization",
+    "inService": "In Service",
+    "pendingOrders": "Pending Orders",
+    "activeContracts": "Active Contracts",
+    "completedJobs": "Completed Jobs",
+    "revenue": "Revenue"
+  },
+  "landing": {
+    "title": "ValveChain",
+    "hero": {
+      "title": "Blockchain-Powered Valve Supply Chain Management",
+      "subtitle": "Streamline your valve operations with secure, transparent, and efficient blockchain technology. Track, manage, and optimize your supply chain from manufacturer to end user.",
+      "getStarted": "Get Started Today",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose ValveChain?",
+      "traceability": {
+        "title": "Complete Traceability",
+        "description": "Track every valve from manufacturing to installation with immutable blockchain records."
+      },
+      "efficiency": {
+        "title": "Streamlined Operations",
+        "description": "Automate purchase orders, contracts, and compliance with smart contracts."
+      },
+      "transparency": {
+        "title": "Full Transparency",
+        "description": "All stakeholders have access to real-time, verified supply chain data."
+      }
+    }
+  },
+  "po": {
+    "title": "Purchase Orders",
+    "createNew": "Create New PO",
+    "search": "Search by Order ID, Vendor, or Buyer...",
+    "allStatuses": "All Statuses",
+    "allStages": "All Stages",
+    "showing": "Showing",
+    "of": "of",
+    "purchaseOrders": "purchase orders",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "fulfilled": "Fulfilled",
+      "cancelled": "Cancelled"
+    },
+    "headers": {
+      "orderId": "Order ID",
+      "date": "Date",
+      "status": "Status",
+      "amount": "Amount",
+      "vendor": "Vendor",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "View",
+      "delete": "Delete"
+    }
+  },
+  "forms": {
+    "required": "Required",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "create": "Create",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "comingSoon": "Coming Soon",
+    "language": "Language"
+  }
+}

@@ -1,0 +1,57 @@
+/* RTL Support Styles */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .chakra-stack[data-orientation="horizontal"] {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .chakra-button-group {
+  flex-direction: row-reverse;
+}
+
+/* Custom RTL utilities */
+.rtl-margin-left {
+  margin-inline-start: auto;
+}
+
+.rtl-margin-right {
+  margin-inline-end: auto;
+}
+
+.rtl-text-align {
+  text-align: var(--text-align-start);
+}
+
+/* CSS Custom Properties for RTL */
+:root {
+  --text-align-start: left;
+  --text-align-end: right;
+  --margin-inline-start: margin-left;
+  --margin-inline-end: margin-right;
+  --border-inline-start: border-left;
+  --border-inline-end: border-right;
+}
+
+[dir="rtl"] {
+  --text-align-start: right;
+  --text-align-end: left;
+  --margin-inline-start: margin-right;
+  --margin-inline-end: margin-left;
+  --border-inline-start: border-right;
+  --border-inline-end: border-left;
+}
+
+/* RTL specific overrides */
+[dir="rtl"] .dashboard-nav {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .stats-container {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .button-group {
+  flex-direction: row-reverse;
+}
