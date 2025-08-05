@@ -2,6 +2,26 @@
 
 import React from 'react';
 import { Box, Text, Tooltip } from '@chakra-ui/react';
+
+// Error boundary to catch Chakra UI errors
+class ErrorBoundary extends React.Component<{ fallback: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { fallback: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true };
+  }
+  componentDidCatch(error: any, errorInfo: any) {
+    // You can log error here if needed
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
 import { useUnits } from '../../hooks/useUnits.ts';
 import { ConversionResult } from '../../types/globalization';
 
