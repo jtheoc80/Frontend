@@ -9,6 +9,7 @@ import {
   Badge,
   Container
 } from "@chakra-ui/react";
+import { ValveSpecDisplay } from '../Globalization/index.ts';
 
 const SimpleManufacturerDashboard = () => {
   // Mock data for demonstration
@@ -18,7 +19,7 @@ const SimpleManufacturerDashboard = () => {
       serialNumber: 'EMR-2024-001',
       type: 'ball',
       model: 'Series 2000',
-      specifications: { diameter: 6, pressure: 1500 },
+      specifications: { diameter: 6, pressure: 1500, temperature: 200 },
       manufactureDate: '2024-01-15'
     }
   ];
@@ -84,9 +85,20 @@ const SimpleManufacturerDashboard = () => {
                         Type: <Badge colorScheme="blue" variant="subtle">{valve.type}</Badge> • 
                         Model: {valve.model}
                       </Text>
-                      <Text fontSize="sm" color="#64748b">
-                        Specs: {valve.specifications.diameter}" • {valve.specifications.pressure} PSI
-                      </Text>
+                      <Box fontSize="sm" color="#64748b">
+                        Specs: 
+                        <ValveSpecDisplay
+                          diameter={valve.specifications.diameter}
+                          pressure={valve.specifications.pressure}
+                          temperature={valve.specifications.temperature}
+                          diameterUnit="in"
+                          pressureUnit="psi"
+                          temperatureUnit="F"
+                          showOriginal={false}
+                          size="sm"
+                          layout="horizontal"
+                        />
+                      </Box>
                       <Text fontSize="sm" color="#64748b">
                         Manufactured: {new Date(valve.manufactureDate).toLocaleDateString()}
                       </Text>
