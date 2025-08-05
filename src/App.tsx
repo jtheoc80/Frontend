@@ -7,6 +7,7 @@ import {
   Heading,
   Container,
 } from "@chakra-ui/react";
+import { LocaleProvider } from "./contexts/LocaleContext.tsx";
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
@@ -201,25 +202,27 @@ function App() {
 
   return (
     <ChakraProvider value={defaultSystem}>
-      {currentView === 'landing' && (
-        <SimpleLandingPage 
-          onGetStarted={handleGetStarted}
-          onLogin={handleLogin}
-          onLearnMore={handleLearnMore}
-        />
-      )}
-      {currentView === 'registration' && (
-        <SimpleRegistration 
-          onComplete={handleRegistrationComplete}
-          onCancel={handleRegistrationCancel}
-        />
-      )}
-      {currentView === 'gettingStarted' && (
-        <SimpleGettingStarted 
-          onClose={handleGettingStartedComplete}
-        />
-      )}
-      {currentView === 'dashboard' && renderDashboard()}
+      <LocaleProvider>
+        {currentView === 'landing' && (
+          <SimpleLandingPage 
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+            onLearnMore={handleLearnMore}
+          />
+        )}
+        {currentView === 'registration' && (
+          <SimpleRegistration 
+            onComplete={handleRegistrationComplete}
+            onCancel={handleRegistrationCancel}
+          />
+        )}
+        {currentView === 'gettingStarted' && (
+          <SimpleGettingStarted 
+            onClose={handleGettingStartedComplete}
+          />
+        )}
+        {currentView === 'dashboard' && renderDashboard()}
+      </LocaleProvider>
     </ChakraProvider>
   );
 }

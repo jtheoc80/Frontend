@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { POStage, DistributionToManufacturerPO, PlantToDistributionPO, RepairToPlantPO, CreatePORequest } from '../../types/po';
+import { formatDateForInput } from '../../utils/localization';
 
 interface CreatePOFormProps {
   onSubmit?: (poData: CreatePORequest<any>) => Promise<void>;
@@ -87,7 +88,7 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
               location: 'Test DC Location',
             },
             requisitionItems: [],
-            requestedDeliveryDate: new Date().toISOString().split('T')[0],
+            requestedDeliveryDate: formatDateForInput(new Date()),
             projectInfo: {
               projectId: 'PROJ-001',
               description: 'Test Project',
@@ -114,8 +115,8 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
             repairServices: [],
             invoiceDetails: {
               invoiceNumber: 'INV-001',
-              issueDate: new Date().toISOString().split('T')[0],
-              dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              issueDate: formatDateForInput(new Date()),
+              dueDate: formatDateForInput(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
               taxRate: 0.08,
               taxAmount: totalAmount * 0.08,
               subtotal: totalAmount,
