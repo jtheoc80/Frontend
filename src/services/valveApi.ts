@@ -287,7 +287,8 @@ class ValveApiService {
     }
 
     // Check if valve exists
-    const valveExists = tokenizedValves.some(v => v.serialNumber === data.valveSerialNumber);
+    const valveSerialSet = new Set(tokenizedValves.map(v => v.serialNumber));
+    const valveExists = valveSerialSet.has(data.valveSerialNumber);
     if (!valveExists) {
       errors.push('Valve with this serial number not found in system');
     }
