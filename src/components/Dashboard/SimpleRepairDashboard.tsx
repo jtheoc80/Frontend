@@ -7,8 +7,7 @@ import {
   HStack,
   Button,
   Badge,
-  Container,
-  Progress
+  Container
 } from "@chakra-ui/react";
 
 const SimpleRepairDashboard = () => {
@@ -141,11 +140,14 @@ const SimpleRepairDashboard = () => {
                       </HStack>
                       <Box>
                         <Text fontSize="xs" color="#64748b" mb={1}>Progress</Text>
-                        <Progress
-                          value={repairRecord?.status === 'in_progress' ? 50 : 0}
-                          size="sm"
-                          colorScheme="orange"
-                        />
+                        <Box bg="gray.200" borderRadius="full" h="6px" w="full">
+                          <Box 
+                            bg="orange.400" 
+                            borderRadius="full" 
+                            h="full" 
+                            w={repairRecord?.status === 'in_progress' ? '50%' : '0%'}
+                          />
+                        </Box>
                         <Text fontSize="xs" color="#64748b" mt={1}>
                           {repairRecord?.status === 'in_progress' ? '50%' : '0%'}
                         </Text>

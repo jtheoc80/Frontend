@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   Heading,
@@ -7,13 +7,10 @@ import {
   HStack,
   Button,
   Badge,
-  Spinner,
   Container
 } from "@chakra-ui/react";
 
 const SimpleManufacturerDashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   // Mock data for demonstration
   const pendingValves = [
     {

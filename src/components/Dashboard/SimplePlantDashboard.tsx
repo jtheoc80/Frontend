@@ -7,12 +7,7 @@ import {
   HStack,
   Button,
   Badge,
-  Container,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel
+  Container
 } from "@chakra-ui/react";
 
 const SimplePlantDashboard = () => {
@@ -78,118 +73,132 @@ const SimplePlantDashboard = () => {
         </HStack>
 
         {/* Detailed Views */}
-        <Box bg="white" p={6} borderRadius="md" shadow="sm" border="1px solid #e2e8f0">
-          <Tabs>
-            <TabList>
-              <Tab>Pending Installation ({dashboardData.pendingInstallation.length})</Tab>
-              <Tab>Scheduled Maintenance ({dashboardData.scheduledMaintenance.length})</Tab>
-              <Tab>In Repair ({dashboardData.inRepair.length})</Tab>
-            </TabList>
+        <VStack spacing={6} align="stretch">
+          {/* Pending Installation */}
+          <Box bg="white" p={6} borderRadius="md" shadow="sm" border="1px solid #e2e8f0">
+            <VStack spacing={4} align="stretch">
+              <HStack justify="space-between">
+                <Heading size="md">Pending Installation</Heading>
+                <Badge colorScheme="blue" fontSize="sm">
+                  {dashboardData.pendingInstallation.length} Items
+                </Badge>
+              </HStack>
+              <VStack spacing={3}>
+                {dashboardData.pendingInstallation.map((valve) => (
+                  <Box 
+                    key={valve.id}
+                    p={4} 
+                    bg="gray.50" 
+                    borderRadius="md" 
+                    w="full"
+                    border="1px solid #e2e8f0"
+                  >
+                    <HStack justify="space-between">
+                      <VStack align="start" spacing={1}>
+                        <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Type: <Badge colorScheme="blue" variant="subtle">{valve.type}</Badge> • 
+                          Model: {valve.model}
+                        </Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Planned Location: {valve.location}
+                        </Text>
+                      </VStack>
+                      <Button size="sm" colorScheme="green">
+                        Install
+                      </Button>
+                    </HStack>
+                  </Box>
+                ))}
+              </VStack>
+            </VStack>
+          </Box>
 
-            <TabPanels mt={4}>
-              {/* Pending Installation Tab */}
-              <TabPanel px={0}>
-                <VStack spacing={3}>
-                  {dashboardData.pendingInstallation.map((valve) => (
-                    <Box 
-                      key={valve.id}
-                      p={4} 
-                      bg="gray.50" 
-                      borderRadius="md" 
-                      w="full"
-                      border="1px solid #e2e8f0"
-                    >
-                      <HStack justify="space-between">
-                        <VStack align="start" spacing={1}>
-                          <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Type: <Badge colorScheme="blue" variant="subtle">{valve.type}</Badge> • 
-                            Model: {valve.model}
-                          </Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Planned Location: {valve.location}
-                          </Text>
-                        </VStack>
-                        <Button size="sm" colorScheme="green">
-                          Install
-                        </Button>
-                      </HStack>
-                    </Box>
-                  ))}
-                </VStack>
-              </TabPanel>
+          {/* Scheduled Maintenance */}
+          <Box bg="white" p={6} borderRadius="md" shadow="sm" border="1px solid #e2e8f0">
+            <VStack spacing={4} align="stretch">
+              <HStack justify="space-between">
+                <Heading size="md">Scheduled Maintenance</Heading>
+                <Badge colorScheme="orange" fontSize="sm">
+                  {dashboardData.scheduledMaintenance.length} Items
+                </Badge>
+              </HStack>
+              <VStack spacing={3}>
+                {dashboardData.scheduledMaintenance.map((valve) => (
+                  <Box 
+                    key={valve.id}
+                    p={4} 
+                    bg="gray.50" 
+                    borderRadius="md" 
+                    w="full"
+                    border="1px solid #e2e8f0"
+                  >
+                    <HStack justify="space-between">
+                      <VStack align="start" spacing={1}>
+                        <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Location: {valve.location}
+                        </Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Last Maintenance: {valve.lastMaintenanceDate
+                            ? new Date(valve.lastMaintenanceDate).toLocaleDateString()
+                            : 'Never'
+                          }
+                        </Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Next Maintenance: {valve.nextMaintenanceDate
+                            ? new Date(valve.nextMaintenanceDate).toLocaleDateString()
+                            : 'TBD'
+                          }
+                        </Text>
+                      </VStack>
+                      <Button size="sm" colorScheme="orange">
+                        Schedule
+                      </Button>
+                    </HStack>
+                  </Box>
+                ))}
+              </VStack>
+            </VStack>
+          </Box>
 
-              {/* Scheduled Maintenance Tab */}
-              <TabPanel px={0}>
-                <VStack spacing={3}>
-                  {dashboardData.scheduledMaintenance.map((valve) => (
-                    <Box 
-                      key={valve.id}
-                      p={4} 
-                      bg="gray.50" 
-                      borderRadius="md" 
-                      w="full"
-                      border="1px solid #e2e8f0"
-                    >
-                      <HStack justify="space-between">
-                        <VStack align="start" spacing={1}>
-                          <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Location: {valve.location}
-                          </Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Last Maintenance: {valve.lastMaintenanceDate
-                              ? new Date(valve.lastMaintenanceDate).toLocaleDateString()
-                              : 'Never'
-                            }
-                          </Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Next Maintenance: {valve.nextMaintenanceDate
-                              ? new Date(valve.nextMaintenanceDate).toLocaleDateString()
-                              : 'TBD'
-                            }
-                          </Text>
-                        </VStack>
-                        <Button size="sm" colorScheme="orange">
-                          Schedule
-                        </Button>
-                      </HStack>
-                    </Box>
-                  ))}
-                </VStack>
-              </TabPanel>
-
-              {/* In Repair Tab */}
-              <TabPanel px={0}>
-                <VStack spacing={3}>
-                  {dashboardData.inRepair.map((valve) => (
-                    <Box 
-                      key={valve.id}
-                      p={4} 
-                      bg="gray.50" 
-                      borderRadius="md" 
-                      w="full"
-                      border="1px solid #e2e8f0"
-                    >
-                      <HStack justify="space-between">
-                        <VStack align="start" spacing={1}>
-                          <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
-                          <Text fontSize="sm" color="#64748b">
-                            Location: {valve.location}
-                          </Text>
-                          <Badge colorScheme="red">In Repair</Badge>
-                        </VStack>
-                        <Button size="sm" colorScheme="blue" variant="outline">
-                          View Details
-                        </Button>
-                      </HStack>
-                    </Box>
-                  ))}
-                </VStack>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Box>
+          {/* In Repair */}
+          <Box bg="white" p={6} borderRadius="md" shadow="sm" border="1px solid #e2e8f0">
+            <VStack spacing={4} align="stretch">
+              <HStack justify="space-between">
+                <Heading size="md">In Repair</Heading>
+                <Badge colorScheme="red" fontSize="sm">
+                  {dashboardData.inRepair.length} Items
+                </Badge>
+              </HStack>
+              <VStack spacing={3}>
+                {dashboardData.inRepair.map((valve) => (
+                  <Box 
+                    key={valve.id}
+                    p={4} 
+                    bg="gray.50" 
+                    borderRadius="md" 
+                    w="full"
+                    border="1px solid #e2e8f0"
+                  >
+                    <HStack justify="space-between">
+                      <VStack align="start" spacing={1}>
+                        <Text fontWeight="semibold" fontSize="lg">{valve.serialNumber}</Text>
+                        <Text fontSize="sm" color="#64748b">
+                          Location: {valve.location}
+                        </Text>
+                        <Badge colorScheme="red">In Repair</Badge>
+                      </VStack>
+                      <Button size="sm" colorScheme="blue" variant="outline">
+                        View Details
+                      </Button>
+                    </HStack>
+                  </Box>
+                ))}
+              </VStack>
+            </VStack>
+          </Box>
+        </VStack>
 
         {/* Quick Actions */}
         <Box bg="white" p={6} borderRadius="md" shadow="sm" border="1px solid #e2e8f0">
