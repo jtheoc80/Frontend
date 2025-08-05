@@ -34,5 +34,60 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "orderId", "type": "string"},
+      {"internalType": "address", "name": "vendorAddress", "type": "address"},
+      {"internalType": "address", "name": "buyerAddress", "type": "address"},
+      {"internalType": "uint256", "name": "totalAmount", "type": "uint256"},
+      {"internalType": "string", "name": "currency", "type": "string"},
+      {"internalType": "string", "name": "metadataHash", "type": "string"},
+      {"internalType": "string", "name": "orderDetails", "type": "string"}
+    ],
+    "name": "createDistributionToManufacturerPO",
+    "outputs": [
+      {"internalType": "uint256", "name": "poId", "type": "uint256"}
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "orderId", "type": "string"},
+      {"internalType": "address", "name": "vendorAddress", "type": "address"},
+      {"internalType": "address", "name": "buyerAddress", "type": "address"},
+      {"internalType": "uint256", "name": "totalAmount", "type": "uint256"},
+      {"internalType": "string", "name": "currency", "type": "string"},
+      {"internalType": "string", "name": "metadataHash", "type": "string"},
+      {"internalType": "string", "name": "requisitionDetails", "type": "string"},
+      {"internalType": "string", "name": "plantId", "type": "string"},
+      {"internalType": "string", "name": "distributionCenterId", "type": "string"}
+    ],
+    "name": "createPlantToDistributionPO",
+    "outputs": [
+      {"internalType": "uint256", "name": "poId", "type": "uint256"}
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "orderId", "type": "string"},
+      {"internalType": "address", "name": "vendorAddress", "type": "address"},
+      {"internalType": "address", "name": "buyerAddress", "type": "address"},  
+      {"internalType": "uint256", "name": "totalAmount", "type": "uint256"},
+      {"internalType": "string", "name": "currency", "type": "string"},
+      {"internalType": "string", "name": "metadataHash", "type": "string"},
+      {"internalType": "string", "name": "invoiceDetails", "type": "string"},
+      {"internalType": "string", "name": "serviceProviderId", "type": "string"},
+      {"internalType": "string", "name": "plantId", "type": "string"}
+    ],
+    "name": "createRepairToPlantInvoice",
+    "outputs": [
+      {"internalType": "uint256", "name": "invoiceId", "type": "uint256"}
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]
