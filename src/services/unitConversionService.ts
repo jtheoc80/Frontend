@@ -140,8 +140,9 @@ class UnitConversionService {
       throw new Error(`Unsupported temperature conversion: ${fromUnit} to ${toUnit}`);
     }
 
-    const conversionRate = fromUnit.toLowerCase() === toUnit.toLowerCase() ? 1 : 
-                          (fromUnit.toLowerCase() === 'c' ? 1.8 : 5/9);
+    // For temperature conversions between C and F, the conversion is not linear (involves an offset),
+    // so conversionRate is not meaningful. Set to null except for identical units.
+    const conversionRate = fromUnit.toLowerCase() === toUnit.toLowerCase() ? 1 : null;
     
     return {
       originalValue: value,
