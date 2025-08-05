@@ -1,0 +1,1675 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PO Components Snapshots CreatePOForm Snapshots should match snapshot - default state 1`] = `
+<div
+  data-testid="create-po-form"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; max-width: 600px; margin: 0px auto;"
+>
+  <h2
+    style="margin-bottom: 24px; font-size: 24px; font-weight: bold;"
+  >
+    Create Purchase Order
+  </h2>
+  <form>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        PO Stage *
+      </label>
+      <select
+        data-testid="stage-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="DISTRIBUTION_TO_MANUFACTURER"
+        >
+          Distribution to Manufacturer
+        </option>
+        <option
+          value="PLANT_TO_DISTRIBUTION"
+        >
+          Plant to Distribution
+        </option>
+        <option
+          value="REPAIR_TO_PLANT"
+        >
+          Repair to Plant
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Order ID *
+      </label>
+      <input
+        data-testid="order-id-input"
+        placeholder="Enter order ID"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Vendor Address *
+      </label>
+      <input
+        data-testid="vendor-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Buyer Address *
+      </label>
+      <input
+        data-testid="buyer-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Total Amount *
+      </label>
+      <input
+        data-testid="total-amount-input"
+        min="0"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="number"
+        value="0"
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Currency
+      </label>
+      <select
+        data-testid="currency-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="USD"
+        >
+          USD
+        </option>
+        <option
+          value="EUR"
+        >
+          EUR
+        </option>
+        <option
+          value="ETH"
+        >
+          ETH
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-top: 24px;"
+    >
+      <button
+        data-testid="submit-button"
+        style="padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: rgb(49, 130, 206); color: white;"
+        type="submit"
+      >
+        Create Purchase Order
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`PO Components Snapshots CreatePOForm Snapshots should match snapshot - loading state 1`] = `
+<div
+  data-testid="create-po-form"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; max-width: 600px; margin: 0px auto;"
+>
+  <h2
+    style="margin-bottom: 24px; font-size: 24px; font-weight: bold;"
+  >
+    Create Purchase Order
+  </h2>
+  <form>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        PO Stage *
+      </label>
+      <select
+        data-testid="stage-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="DISTRIBUTION_TO_MANUFACTURER"
+        >
+          Distribution to Manufacturer
+        </option>
+        <option
+          value="PLANT_TO_DISTRIBUTION"
+        >
+          Plant to Distribution
+        </option>
+        <option
+          value="REPAIR_TO_PLANT"
+        >
+          Repair to Plant
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Order ID *
+      </label>
+      <input
+        data-testid="order-id-input"
+        placeholder="Enter order ID"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Vendor Address *
+      </label>
+      <input
+        data-testid="vendor-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Buyer Address *
+      </label>
+      <input
+        data-testid="buyer-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Total Amount *
+      </label>
+      <input
+        data-testid="total-amount-input"
+        min="0"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="number"
+        value="0"
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Currency
+      </label>
+      <select
+        data-testid="currency-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="USD"
+        >
+          USD
+        </option>
+        <option
+          value="EUR"
+        >
+          EUR
+        </option>
+        <option
+          value="ETH"
+        >
+          ETH
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-top: 24px;"
+    >
+      <button
+        data-testid="submit-button"
+        disabled=""
+        style="padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: rgb(160, 174, 192); color: white;"
+        type="submit"
+      >
+        Creating...
+      </button>
+      <button
+        data-testid="cancel-button"
+        disabled=""
+        style="padding: 10px 20px; border-radius: 4px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: transparent; color: rgb(74, 85, 104);"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`PO Components Snapshots CreatePOForm Snapshots should match snapshot - with all props 1`] = `
+<div
+  data-testid="create-po-form"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; max-width: 600px; margin: 0px auto;"
+>
+  <h2
+    style="margin-bottom: 24px; font-size: 24px; font-weight: bold;"
+  >
+    Create Purchase Order
+  </h2>
+  <form>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        PO Stage *
+      </label>
+      <select
+        data-testid="stage-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="DISTRIBUTION_TO_MANUFACTURER"
+        >
+          Distribution to Manufacturer
+        </option>
+        <option
+          value="PLANT_TO_DISTRIBUTION"
+        >
+          Plant to Distribution
+        </option>
+        <option
+          value="REPAIR_TO_PLANT"
+        >
+          Repair to Plant
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Order ID *
+      </label>
+      <input
+        data-testid="order-id-input"
+        placeholder="Enter order ID"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Vendor Address *
+      </label>
+      <input
+        data-testid="vendor-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Buyer Address *
+      </label>
+      <input
+        data-testid="buyer-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Total Amount *
+      </label>
+      <input
+        data-testid="total-amount-input"
+        min="0"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="number"
+        value="0"
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Currency
+      </label>
+      <select
+        data-testid="currency-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="USD"
+        >
+          USD
+        </option>
+        <option
+          value="EUR"
+        >
+          EUR
+        </option>
+        <option
+          value="ETH"
+        >
+          ETH
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-top: 24px;"
+    >
+      <button
+        data-testid="submit-button"
+        style="padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: rgb(49, 130, 206); color: white;"
+        type="submit"
+      >
+        Create Purchase Order
+      </button>
+      <button
+        data-testid="cancel-button"
+        style="padding: 10px 20px; border-radius: 4px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: transparent; color: rgb(74, 85, 104);"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`PO Components Snapshots CreatePOForm Snapshots should match snapshot - with onCancel prop 1`] = `
+<div
+  data-testid="create-po-form"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; max-width: 600px; margin: 0px auto;"
+>
+  <h2
+    style="margin-bottom: 24px; font-size: 24px; font-weight: bold;"
+  >
+    Create Purchase Order
+  </h2>
+  <form>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        PO Stage *
+      </label>
+      <select
+        data-testid="stage-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="DISTRIBUTION_TO_MANUFACTURER"
+        >
+          Distribution to Manufacturer
+        </option>
+        <option
+          value="PLANT_TO_DISTRIBUTION"
+        >
+          Plant to Distribution
+        </option>
+        <option
+          value="REPAIR_TO_PLANT"
+        >
+          Repair to Plant
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Order ID *
+      </label>
+      <input
+        data-testid="order-id-input"
+        placeholder="Enter order ID"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Vendor Address *
+      </label>
+      <input
+        data-testid="vendor-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Buyer Address *
+      </label>
+      <input
+        data-testid="buyer-address-input"
+        placeholder="0x..."
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Total Amount *
+      </label>
+      <input
+        data-testid="total-amount-input"
+        min="0"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+        type="number"
+        value="0"
+      />
+    </div>
+    <div
+      style="margin-bottom: 20px;"
+    >
+      <label
+        style="display: block; margin-bottom: 8px; font-weight: bold;"
+      >
+        Currency
+      </label>
+      <select
+        data-testid="currency-select"
+        style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 16px;"
+      >
+        <option
+          value="USD"
+        >
+          USD
+        </option>
+        <option
+          value="EUR"
+        >
+          EUR
+        </option>
+        <option
+          value="ETH"
+        >
+          ETH
+        </option>
+      </select>
+    </div>
+    <div
+      style="margin-top: 24px;"
+    >
+      <button
+        data-testid="submit-button"
+        style="padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: rgb(49, 130, 206); color: white;"
+        type="submit"
+      >
+        Create Purchase Order
+      </button>
+      <button
+        data-testid="cancel-button"
+        style="padding: 10px 20px; border-radius: 4px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 16px; margin-right: 12px; background-color: transparent; color: rgb(74, 85, 104);"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - empty purchase orders array 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+    <button
+      data-testid="refresh-button"
+      style="padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; background-color: rgb(49, 130, 206); color: white;"
+    >
+      Refresh
+    </button>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    0
+     of 
+    0
+     purchase orders
+  </p>
+  <div
+    data-testid="empty-state"
+    style="text-align: center; padding: 32px;"
+  >
+    <p
+      style="font-size: 18px; color: rgb(160, 174, 192);"
+    >
+      No purchase orders found
+    </p>
+  </div>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - empty state 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    0
+     of 
+    0
+     purchase orders
+  </p>
+  <div
+    data-testid="empty-state"
+    style="text-align: center; padding: 32px;"
+  >
+    <p
+      style="font-size: 18px; color: rgb(160, 174, 192);"
+    >
+      No purchase orders found
+    </p>
+  </div>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - loading state 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+    <button
+      data-testid="refresh-button"
+      disabled=""
+      style="padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; background-color: rgb(160, 174, 192); color: white;"
+    >
+      Loading...
+    </button>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    2
+     of 
+    2
+     purchase orders
+  </p>
+  <div
+    style="text-align: center; padding: 32px;"
+  >
+    <p>
+      Loading purchase orders...
+    </p>
+  </div>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - single purchase order 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    1
+     of 
+    1
+     purchase orders
+  </p>
+  <div
+    style="overflow-x: auto;"
+  >
+    <table
+      data-testid="po-table"
+      style="width: 100%; border-collapse: collapse; margin-top: 16px;"
+    >
+      <thead>
+        <tr>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Order ID
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Date
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Status
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Total Amount
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Vendor
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          data-testid="po-row-DM-2024-001"
+        >
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <strong>
+              DM-2024-001
+            </strong>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            1/1/2024
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <span
+              style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background-color: rgb(254, 215, 215); color: rgb(26, 32, 44); text-transform: uppercase;"
+            >
+              pending
+            </span>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            $50,000.00
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <code
+              style="font-size: 12px;"
+            >
+              0x123456
+              ...
+              567890
+            </code>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <div
+              style="display: flex; gap: 8px;"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - with all action props 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+    <button
+      data-testid="refresh-button"
+      style="padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; background-color: rgb(49, 130, 206); color: white;"
+    >
+      Refresh
+    </button>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    2
+     of 
+    2
+     purchase orders
+  </p>
+  <div
+    style="overflow-x: auto;"
+  >
+    <table
+      data-testid="po-table"
+      style="width: 100%; border-collapse: collapse; margin-top: 16px;"
+    >
+      <thead>
+        <tr>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Order ID
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Date
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Status
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Total Amount
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Vendor
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          data-testid="po-row-DM-2024-001"
+        >
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <strong>
+              DM-2024-001
+            </strong>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            1/1/2024
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <span
+              style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background-color: rgb(254, 215, 215); color: rgb(26, 32, 44); text-transform: uppercase;"
+            >
+              pending
+            </span>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            $50,000.00
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <code
+              style="font-size: 12px;"
+            >
+              0x123456
+              ...
+              567890
+            </code>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <div
+              style="display: flex; gap: 8px;"
+            >
+              <button
+                data-testid="view-button-DM-2024-001"
+                style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 14px; background-color: transparent; color: rgb(74, 85, 104);"
+              >
+                View
+              </button>
+              <button
+                data-testid="delete-button-DM-2024-001"
+                style="padding: 8px 16px; border-radius: 4px; border: 1px solid #fc8181; cursor: pointer; font-size: 14px; background-color: transparent; color: rgb(229, 62, 62);"
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr
+          data-testid="po-row-DM-2024-002"
+        >
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <strong>
+              DM-2024-002
+            </strong>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            1/1/2024
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <span
+              style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background-color: rgb(190, 227, 248); color: rgb(26, 32, 44); text-transform: uppercase;"
+            >
+              approved
+            </span>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            €75,000.00
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <code
+              style="font-size: 12px;"
+            >
+              0x987654
+              ...
+              543210
+            </code>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <div
+              style="display: flex; gap: 8px;"
+            >
+              <button
+                data-testid="view-button-DM-2024-002"
+                style="padding: 8px 16px; border-radius: 4px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 14px; background-color: transparent; color: rgb(74, 85, 104);"
+              >
+                View
+              </button>
+              <button
+                data-testid="delete-button-DM-2024-002"
+                style="padding: 8px 16px; border-radius: 4px; border: 1px solid #fc8181; cursor: pointer; font-size: 14px; background-color: transparent; color: rgb(229, 62, 62);"
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`PO Components Snapshots POList Snapshots should match snapshot - with purchase orders 1`] = `
+<div
+  data-testid="po-list"
+  style="padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: white; margin: 20px 0px;"
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;"
+  >
+    <h2
+      style="font-size: 24px; font-weight: bold; margin: 0px;"
+    >
+      Purchase Orders
+    </h2>
+  </div>
+  <div
+    style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"
+  >
+    <div
+      style="position: relative;"
+    >
+      <input
+        data-testid="search-input"
+        placeholder="Search by Order ID, Vendor, or Buyer..."
+        style="padding: 8px 12px 8px 32px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 300px;"
+        type="text"
+        value=""
+      />
+      <span
+        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"
+      >
+        🔍
+      </span>
+    </div>
+    <select
+      data-testid="status-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 150px;"
+    >
+      <option
+        value="all"
+      >
+        All Statuses
+      </option>
+      <option
+        value="pending"
+      >
+        Pending
+      </option>
+      <option
+        value="approved"
+      >
+        Approved
+      </option>
+      <option
+        value="fulfilled"
+      >
+        Fulfilled
+      </option>
+      <option
+        value="cancelled"
+      >
+        Cancelled
+      </option>
+    </select>
+    <select
+      data-testid="stage-filter"
+      style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; width: 200px;"
+    >
+      <option
+        value="all"
+      >
+        All Stages
+      </option>
+      <option
+        value="DISTRIBUTION_TO_MANUFACTURER"
+      >
+        Distribution to Manufacturer
+      </option>
+      <option
+        value="PLANT_TO_DISTRIBUTION"
+      >
+        Plant to Distribution
+      </option>
+      <option
+        value="REPAIR_TO_PLANT"
+      >
+        Repair to Plant
+      </option>
+    </select>
+  </div>
+  <p
+    data-testid="results-count"
+    style="font-size: 14px; color: rgb(113, 128, 150); margin: 16px 0px;"
+  >
+    Showing 
+    2
+     of 
+    2
+     purchase orders
+  </p>
+  <div
+    style="overflow-x: auto;"
+  >
+    <table
+      data-testid="po-table"
+      style="width: 100%; border-collapse: collapse; margin-top: 16px;"
+    >
+      <thead>
+        <tr>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Order ID
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Date
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Status
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Total Amount
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Vendor
+          </th>
+          <th
+            style="padding: 12px; border-bottom: 2px solid #e2e8f0; text-align: left; font-weight: bold; background-color: rgb(247, 250, 252);"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          data-testid="po-row-DM-2024-001"
+        >
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <strong>
+              DM-2024-001
+            </strong>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            1/1/2024
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <span
+              style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background-color: rgb(254, 215, 215); color: rgb(26, 32, 44); text-transform: uppercase;"
+            >
+              pending
+            </span>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            $50,000.00
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <code
+              style="font-size: 12px;"
+            >
+              0x123456
+              ...
+              567890
+            </code>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <div
+              style="display: flex; gap: 8px;"
+            />
+          </td>
+        </tr>
+        <tr
+          data-testid="po-row-DM-2024-002"
+        >
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <strong>
+              DM-2024-002
+            </strong>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            1/1/2024
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <span
+              style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; background-color: rgb(190, 227, 248); color: rgb(26, 32, 44); text-transform: uppercase;"
+            >
+              approved
+            </span>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            €75,000.00
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <code
+              style="font-size: 12px;"
+            >
+              0x987654
+              ...
+              543210
+            </code>
+          </td>
+          <td
+            style="padding: 12px; border-bottom: 1px solid #e2e8f0;"
+          >
+            <div
+              style="display: flex; gap: 8px;"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
