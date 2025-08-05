@@ -23,6 +23,11 @@ const ManufacturerPanel = () => {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // Token ticker state
+  const [tokenCount, setTokenCount] = useState<number>(1247);
+  const [tickerLoading, setTickerLoading] = useState(false);
+  const [lastTickerUpdate, setLastTickerUpdate] = useState<Date>(new Date());
+
   // Transfer state
   const [isTransferring, setIsTransferring] = useState(false);
   const [transferSerial, setTransferSerial] = useState("");
@@ -50,7 +55,27 @@ const ManufacturerPanel = () => {
   // Authentication check on component mount
   useEffect(() => {
     checkManufacturerAuth();
+    // Set up token count polling
+    const interval = setInterval(updateTokenCount, 30000); // Every 30 seconds
+    return () => clearInterval(interval);
   }, []);
+
+  // Update token count (simulate real-time data)
+  const updateTokenCount = () => {
+    setTickerLoading(true);
+    // Simulate API call delay
+    setTimeout(() => {
+      // Simulate some variation in token count
+      const variation = Math.floor(Math.random() * 5) - 2; // -2 to +2
+      setTokenCount(prev => Math.max(0, prev + variation));
+      setLastTickerUpdate(new Date());
+      setTickerLoading(false);
+    }, 500);
+  };
+
+  const refreshTokenCount = () => {
+    updateTokenCount();
+  };
 
   const checkManufacturerAuth = async () => {
     setIsAuthenticating(true);
@@ -154,6 +179,10 @@ const ManufacturerPanel = () => {
 
       if (response.success) {
         setSuccessMessage(`Valve Tokenized Successfully! Token ID: ${response.tokenId}, Valve ID: ${response.valveId}`);
+        
+        // Increment token count when valve is tokenized
+        setTokenCount(prev => prev + 1);
+        setLastTickerUpdate(new Date());
         
         // Reset form
         setFormData({
@@ -278,16 +307,82 @@ const ManufacturerPanel = () => {
   return (
     <Box p={6} maxW="4xl" mx="auto">
       <VStack spacing={6} align="stretch">
-        {/* Header */}
+        {/* Header with Token Ticker */}
         <Box>
-          <Heading size="lg" mb={2}>Valve Tokenization</Heading>
-          <HStack spacing={3}>
-            <Badge colorScheme="green" px={3} py={1}>
-              Authenticated: {manufacturerAuth.name}
-            </Badge>
-            <Badge colorScheme="blue" px={3} py={1}>
-              ID: {manufacturerAuth.id}
-            </Badge>
+          <HStack spacing={6} align="start" justify="space-between" wrap="wrap">
+            <Box flex="1" minW="300px">
+              <Heading size="lg" mb={2}>Valve Tokenization</Heading>
+              <HStack spacing={3}>
+                <Badge colorScheme="green" px={3} py={1}>
+                  Authenticated: {manufacturerAuth.name}
+                </Badge>
+                <Badge colorScheme="blue" px={3} py={1}>
+                  ID: {manufacturerAuth.id}
+                </Badge>
+              </HStack>
+            </Box>
+            
+            {/* Token Count Ticker */}
+            <Box
+              bg="white"
+              rounded="lg"
+              shadow="sm"
+              border="1px solid"
+              borderColor="gray.200"
+              p={4}
+              minW="250px"
+              flexShrink={0}
+            >
+              <VStack spacing={3} align="stretch">
+                {/* Header */}
+                <HStack justify="space-between" align="center">
+                  <HStack spacing={2}>
+                    <Text fontSize="lg">🔗</Text>
+                    <Text fontWeight="bold" color="gray.700" fontSize="xl">
+                      Lifetime Tokens
+                    </Text>
+                  </HStack>
+                  
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    onClick={refreshTokenCount}
+                    isLoading={tickerLoading}
+                    _hover={{ bg: 'gray.100' }}
+                  >
+                    ↻
+                  </Button>
+                </HStack>
+
+                {/* Token Count Display */}
+                <Box textAlign="center">
+                  <Text
+                    fontWeight="bold"
+                    color="purple.600"
+                    fontSize="3xl"
+                    lineHeight="1"
+                  >
+                    {tokenCount.toLocaleString()}
+                  </Text>
+                  <Text color="gray.600" fontSize="md">
+                    Active Tokens
+                  </Text>
+                </Box>
+
+                {/* Footer Info */}
+                <VStack spacing={2} fontSize="sm" color="gray.500">
+                  <Text>
+                    Updated {Math.floor((new Date().getTime() - lastTickerUpdate.getTime()) / 1000)}s ago
+                  </Text>
+                  
+                  <HStack spacing={2} justify="center">
+                    <Badge colorScheme="orange" size="sm">
+                      Demo Mode
+                    </Badge>
+                  </HStack>
+                </VStack>
+              </VStack>
+            </Box>
           </HStack>
         </Box>
 

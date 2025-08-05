@@ -2,6 +2,24 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Features
+
+### Manufacturer Dashboard Token Ticker
+
+The manufacturer dashboard now includes a real-time token ticker that displays the number of lifetime tokens currently active on the blockchain. The ticker includes:
+
+- **Real-time Updates**: Automatically refreshes every 30 seconds to show current token count
+- **Manual Refresh**: Click the refresh button (↻) to update the count immediately  
+- **Live Token Count**: Displays the total number of active tokens with thousand separators (e.g., "1,247")
+- **Connection Status**: Shows "Demo Mode" indicator when using mock data
+- **Loading States**: Visual feedback during refresh operations
+- **Error Handling**: Graceful handling of connection issues with retry functionality
+- **Responsive Design**: Adapts to different screen sizes while maintaining visibility
+
+The ticker is prominently displayed in the top-right corner of the manufacturer dashboard and automatically increments when new valves are tokenized through the interface.
+
+![Manufacturer Dashboard with Token Ticker](https://github.com/user-attachments/assets/47f9923f-2457-4abb-828b-d15cb25b650d)
+
 ## Available Scripts
 
 In the project directory, you can run:
