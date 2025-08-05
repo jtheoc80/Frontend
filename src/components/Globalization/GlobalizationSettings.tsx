@@ -84,7 +84,7 @@ export const GlobalizationSettings: React.FC<GlobalizationSettingsProps> = ({
 
   return (
     <>
-      <DialogRoot open={isOpen} onOpenChange={(e) => e.open ? {} : handleCancel()}>
+      <DialogRoot open={isOpen} onOpenChange={(e) => { if (!e.open) handleCancel(); }}>
         <DialogBackdrop />
         <DialogContent maxW="lg">
           <DialogHeader>
