@@ -10,10 +10,13 @@ import {
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
-import ManufacturerPanel from "./components/Roles/Manufacturer Panel.tsx";
+import SimpleManufacturerDashboard from "./components/Dashboard/SimpleManufacturerDashboard.tsx";
+import SimpleDistributorDashboard from "./components/Dashboard/SimpleDistributorDashboard.tsx";
+import SimplePlantDashboard from "./components/Dashboard/SimplePlantDashboard.tsx";
+import SimpleRepairDashboard from "./components/Dashboard/SimpleRepairDashboard.tsx";
 
 type AppView = 'landing' | 'registration' | 'gettingStarted' | 'dashboard';
-type DashboardTab = 'manufacturer' | 'inventory' | 'repairs' | 'history';
+type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inventory' | 'history';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('landing');
@@ -106,15 +109,6 @@ function App() {
               <button 
                 style={{
                   ...dashboardStyles.navButton,
-                  ...(currentTab === 'inventory' ? dashboardStyles.activeNavButton : {})
-                }}
-                onClick={() => setCurrentTab('inventory')}
-              >
-                Valve Inventory
-              </button>
-              <button 
-                style={{
-                  ...dashboardStyles.navButton,
                   ...(currentTab === 'manufacturer' ? dashboardStyles.activeNavButton : {})
                 }}
                 onClick={() => setCurrentTab('manufacturer')}
@@ -124,11 +118,38 @@ function App() {
               <button 
                 style={{
                   ...dashboardStyles.navButton,
-                  ...(currentTab === 'repairs' ? dashboardStyles.activeNavButton : {})
+                  ...(currentTab === 'distributor' ? dashboardStyles.activeNavButton : {})
                 }}
-                onClick={() => setCurrentTab('repairs')}
+                onClick={() => setCurrentTab('distributor')}
               >
-                Repairs
+                Distributor
+              </button>
+              <button 
+                style={{
+                  ...dashboardStyles.navButton,
+                  ...(currentTab === 'plant' ? dashboardStyles.activeNavButton : {})
+                }}
+                onClick={() => setCurrentTab('plant')}
+              >
+                Plant
+              </button>
+              <button 
+                style={{
+                  ...dashboardStyles.navButton,
+                  ...(currentTab === 'repair' ? dashboardStyles.activeNavButton : {})
+                }}
+                onClick={() => setCurrentTab('repair')}
+              >
+                Repair
+              </button>
+              <button 
+                style={{
+                  ...dashboardStyles.navButton,
+                  ...(currentTab === 'inventory' ? dashboardStyles.activeNavButton : {})
+                }}
+                onClick={() => setCurrentTab('inventory')}
+              >
+                Valve Inventory
               </button>
               <button 
                 style={{
@@ -145,7 +166,10 @@ function App() {
 
         {/* Main Content */}
         <main>
-          {currentTab === 'manufacturer' && <ManufacturerPanel />}
+          {currentTab === 'manufacturer' && <SimpleManufacturerDashboard />}
+          {currentTab === 'distributor' && <SimpleDistributorDashboard />}
+          {currentTab === 'plant' && <SimplePlantDashboard />}
+          {currentTab === 'repair' && <SimpleRepairDashboard />}
           {currentTab === 'inventory' && (
             <Container maxW="1200px" py={8}>
               <Box textAlign="center" py={16}>
@@ -154,18 +178,6 @@ function App() {
                 </Heading>
                 <Box color="#64748b">
                   This would show the valve inventory table (see existing ValveTable component)
-                </Box>
-              </Box>
-            </Container>
-          )}
-          {currentTab === 'repairs' && (
-            <Container maxW="1200px" py={8}>
-              <Box textAlign="center" py={16}>
-                <Heading size="xl" color="#1e3a8a" mb={4}>
-                  Repairs Panel
-                </Heading>
-                <Box color="#64748b">
-                  Coming Soon - Repair management functionality
                 </Box>
               </Box>
             </Container>

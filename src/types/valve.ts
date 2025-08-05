@@ -1,4 +1,4 @@
-// TypeScript interfaces for valve tokenization
+// TypeScript interfaces for valve tokenization and dashboard
 
 export interface ValveSpecification {
   diameter: number;
@@ -18,6 +18,51 @@ export interface ValveDetails {
   certifications: string[];
   manufactureDate: string;
   warrantyMonths: number;
+}
+
+// Extended interfaces for dashboard functionality
+export type ValveStatus = 'pending_tokenization' | 'tokenized' | 'pending_order' | 'ordered' | 'pending_installation' | 'in_service' | 'scheduled_maintenance' | 'in_repair' | 'repaired';
+
+export interface ValveAsset extends ValveDetails {
+  id: string;
+  tokenId?: string;
+  status: ValveStatus;
+  currentOwner?: string;
+  location?: string;
+  installDate?: string;
+  lastMaintenanceDate?: string;
+  nextMaintenanceDate?: string;
+  repairHistory?: RepairRecord[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RepairRecord {
+  id: string;
+  valveId: string;
+  contractorId: string;
+  contractorName: string;
+  startDate: string;
+  expectedCompletionDate?: string;
+  completionDate?: string;
+  description: string;
+  status: 'requested' | 'in_progress' | 'completed' | 'cancelled';
+  cost?: number;
+  preTestResults?: string;
+  postTestResults?: string;
+}
+
+export interface Order {
+  id: string;
+  manufacturerId: string;
+  distributorId: string;
+  valveId: string;
+  quantity: number;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered';
+  orderDate: string;
+  expectedDeliveryDate?: string;
+  actualDeliveryDate?: string;
+  notes?: string;
 }
 
 export interface TokenizeValveRequest {
@@ -47,4 +92,14 @@ export interface ApiResponse<T> {
   data?: T;
   message: string;
   errors?: string[];
+}
+
+// Dashboard-specific interfaces
+export interface DashboardStats {
+  totalValves: number;
+  pendingTokenization: number;
+  inService: number;
+  inRepair: number;
+  pendingOrders: number;
+  scheduledMaintenance: number;
 }

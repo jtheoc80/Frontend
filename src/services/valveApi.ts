@@ -6,7 +6,12 @@ import {
   TokenizeValveResponse, 
   ManufacturerAuth, 
   ApiResponse,
-  ValveDetails 
+  ValveDetails,
+  ValveAsset,
+  ValveStatus,
+  RepairRecord,
+  Order,
+  DashboardStats
 } from '../types/valve';
 
 // Mock manufacturer database
@@ -25,8 +30,121 @@ const AUTHORIZED_MANUFACTURERS = [
   }
 ];
 
-// Mock tokenized valves storage
-let tokenizedValves: Array<ValveDetails & { tokenId: string, manufacturerId: string }> = [];
+// Mock tokenized valves storage with enhanced data for dashboard
+let valveAssets: ValveAsset[] = [
+  {
+    id: 'VLV001',
+    serialNumber: 'EMR-2024-001',
+    type: 'ball',
+    manufacturer: 'Emerson Process Management',
+    model: 'Series 2000',
+    specifications: {
+      diameter: 6,
+      pressure: 1500,
+      temperature: 200,
+      material: 'Stainless Steel 316',
+      connectionType: 'Flanged'
+    },
+    certifications: ['API 6D', 'ISO 14313'],
+    manufactureDate: '2024-01-15',
+    warrantyMonths: 24,
+    tokenId: 'VLV17089471001',
+    status: 'pending_tokenization',
+    createdAt: '2024-01-15T10:00:00Z',
+    updatedAt: '2024-01-15T10:00:00Z'
+  },
+  {
+    id: 'VLV002',
+    serialNumber: 'EMR-2024-002',
+    type: 'gate',
+    manufacturer: 'Emerson Process Management',
+    model: 'Series 3000',
+    specifications: {
+      diameter: 8,
+      pressure: 2000,
+      temperature: 300,
+      material: 'Carbon Steel',
+      connectionType: 'Welded'
+    },
+    certifications: ['API 6D'],
+    manufactureDate: '2024-01-20',
+    warrantyMonths: 36,
+    tokenId: 'VLV17089471002',
+    status: 'in_service',
+    currentOwner: '0x123...abc',
+    location: 'Plant Unit A-1',
+    installDate: '2024-02-01',
+    lastMaintenanceDate: '2024-03-01',
+    nextMaintenanceDate: '2024-09-01',
+    createdAt: '2024-01-20T10:00:00Z',
+    updatedAt: '2024-03-01T10:00:00Z'
+  },
+  {
+    id: 'VLV003',
+    serialNumber: 'KTZ-2024-001',
+    type: 'butterfly',
+    manufacturer: 'Kitz Corporation',
+    model: 'Model K-100',
+    specifications: {
+      diameter: 4,
+      pressure: 1200,
+      temperature: 150,
+      material: 'Bronze',
+      connectionType: 'Threaded'
+    },
+    certifications: ['JIS B2071'],
+    manufactureDate: '2024-01-25',
+    warrantyMonths: 18,
+    status: 'in_repair',
+    currentOwner: '0x456...def',
+    location: 'Plant Unit B-2',
+    installDate: '2024-02-15',
+    lastMaintenanceDate: '2024-04-15',
+    createdAt: '2024-01-25T10:00:00Z',
+    updatedAt: '2024-04-15T10:00:00Z'
+  }
+];
+
+// Mock repair records
+let repairRecords: RepairRecord[] = [
+  {
+    id: 'REP001',
+    valveId: 'VLV003',
+    contractorId: 'REPAIR_CO_001',
+    contractorName: 'Industrial Repair Services',
+    startDate: '2024-04-16',
+    expectedCompletionDate: '2024-04-20',
+    description: 'Actuator replacement and seal inspection',
+    status: 'in_progress',
+    cost: 1500
+  }
+];
+
+// Mock orders
+let orders: Order[] = [
+  {
+    id: 'ORD001',
+    manufacturerId: 'mfg001',
+    distributorId: 'DIST001',
+    valveId: 'VLV001',
+    quantity: 1,
+    status: 'pending',
+    orderDate: '2024-01-16',
+    expectedDeliveryDate: '2024-01-30',
+    notes: 'Urgent delivery required for Plant A installation'
+  },
+  {
+    id: 'ORD002',
+    manufacturerId: 'mfg002',
+    distributorId: 'DIST002',
+    valveId: 'VLV002',
+    quantity: 2,
+    status: 'confirmed',
+    orderDate: '2024-01-18',
+    expectedDeliveryDate: '2024-02-05',
+    notes: 'Standard delivery'
+  }
+];
 
 class ValveApiService {
   private baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
@@ -140,7 +258,7 @@ class ValveApiService {
     }
 
     // Check for duplicate serial numbers
-    const existingValve = tokenizedValves.find(v => v.serialNumber === valveDetails.serialNumber);
+    const existingValve = valveAssets.find(v => v.serialNumber === valveDetails.serialNumber);
     if (existingValve) {
       errors.push('A valve with this serial number has already been tokenized');
     }
@@ -189,12 +307,17 @@ class ValveApiService {
       const transactionHash = this.generateTransactionHash();
       const valveId = `${request.valveDetails.manufacturer.substring(0, 3).toUpperCase()}-${tokenId}`;
 
-      // Store the tokenized valve
-      tokenizedValves.push({
+      // Store the tokenized valve with enhanced data
+      const newValve: ValveAsset = {
         ...request.valveDetails,
+        id: valveId,
         tokenId,
-        manufacturerId: request.manufacturerId
-      });
+        status: 'tokenized',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      valveAssets.push(newValve);
 
       return {
         success: true,
@@ -230,15 +353,130 @@ class ValveApiService {
   /**
    * Get tokenized valves for a manufacturer
    */
-  async getManufacturerValves(manufacturerId: string): Promise<ApiResponse<Array<ValveDetails & { tokenId: string }>>> {
+  async getManufacturerValves(manufacturerId: string): Promise<ApiResponse<ValveAsset[]>> {
     await this.delay(500);
 
-    const manufacturerValves = tokenizedValves.filter(v => v.manufacturerId === manufacturerId);
+    const manufacturerValves = valveAssets.filter(v => 
+      v.manufacturer === AUTHORIZED_MANUFACTURERS.find(m => m.id === manufacturerId)?.name
+    );
     
     return {
       success: true,
       data: manufacturerValves,
       message: `Retrieved ${manufacturerValves.length} valves for manufacturer`
+    };
+  }
+
+  /**
+   * Get dashboard statistics
+   */
+  async getDashboardStats(): Promise<ApiResponse<DashboardStats>> {
+    await this.delay(300);
+
+    const stats: DashboardStats = {
+      totalValves: valveAssets.length,
+      pendingTokenization: valveAssets.filter(v => v.status === 'pending_tokenization').length,
+      inService: valveAssets.filter(v => v.status === 'in_service').length,
+      inRepair: valveAssets.filter(v => v.status === 'in_repair').length,
+      pendingOrders: orders.filter(o => o.status === 'pending').length,
+      scheduledMaintenance: valveAssets.filter(v => v.status === 'scheduled_maintenance').length
+    };
+
+    return {
+      success: true,
+      data: stats,
+      message: 'Dashboard statistics retrieved successfully'
+    };
+  }
+
+  /**
+   * Get valves by status for dashboard filtering
+   */
+  async getValvesByStatus(status: ValveStatus): Promise<ApiResponse<ValveAsset[]>> {
+    await this.delay(500);
+
+    const filteredValves = valveAssets.filter(v => v.status === status);
+    
+    return {
+      success: true,
+      data: filteredValves,
+      message: `Retrieved ${filteredValves.length} valves with status: ${status}`
+    };
+  }
+
+  /**
+   * Get pending orders for distributor panel
+   */
+  async getPendingOrders(distributorId?: string): Promise<ApiResponse<Order[]>> {
+    await this.delay(500);
+
+    let filteredOrders = orders.filter(o => o.status === 'pending');
+    if (distributorId) {
+      filteredOrders = filteredOrders.filter(o => o.distributorId === distributorId);
+    }
+    
+    return {
+      success: true,
+      data: filteredOrders,
+      message: `Retrieved ${filteredOrders.length} pending orders`
+    };
+  }
+
+  /**
+   * Get valves in repair for repair panel
+   */
+  async getValvesInRepair(): Promise<ApiResponse<ValveAsset[]>> {
+    await this.delay(500);
+
+    const repairValves = valveAssets.filter(v => v.status === 'in_repair');
+    
+    return {
+      success: true,
+      data: repairValves,
+      message: `Retrieved ${repairValves.length} valves in repair`
+    };
+  }
+
+  /**
+   * Get repair records
+   */
+  async getRepairRecords(valveId?: string): Promise<ApiResponse<RepairRecord[]>> {
+    await this.delay(500);
+
+    let filteredRecords = repairRecords;
+    if (valveId) {
+      filteredRecords = repairRecords.filter(r => r.valveId === valveId);
+    }
+    
+    return {
+      success: true,
+      data: filteredRecords,
+      message: `Retrieved ${filteredRecords.length} repair records`
+    };
+  }
+
+  /**
+   * Get plant dashboard data (pending installation, service, repair counts)
+   */
+  async getPlantDashboardData(): Promise<ApiResponse<{
+    pendingInstallation: ValveAsset[];
+    scheduledMaintenance: ValveAsset[];
+    inRepair: ValveAsset[];
+    inServiceCount: number;
+  }>> {
+    await this.delay(500);
+
+    const data = {
+      pendingInstallation: valveAssets.filter(v => v.status === 'pending_installation'),
+      scheduledMaintenance: valveAssets.filter(v => v.status === 'scheduled_maintenance'),
+      inRepair: valveAssets.filter(v => v.status === 'in_repair'),
+      inServiceCount: valveAssets.filter(v => v.status === 'in_service').length
+    };
+    
+    return {
+      success: true,
+      data,
+      message: 'Plant dashboard data retrieved successfully'
     };
   }
 }
