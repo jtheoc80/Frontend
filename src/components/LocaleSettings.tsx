@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocale } from '../contexts/LocaleContext.tsx';
+import { useLocale } from '../contexts/LocaleContext';
 
 export const LocaleSettings: React.FC = () => {
   const { config, updateLocale, isLoading } = useLocale();
