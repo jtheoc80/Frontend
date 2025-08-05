@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { POStage, BasePurchaseOrder } from '../../types/po';
+import { formatDate, formatCurrency } from '../../utils/localization';
 
 interface POListProps {
   purchaseOrders?: BasePurchaseOrder[];
@@ -90,15 +91,12 @@ export const POList: React.FC<POListProps> = ({
     }
   };
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString();
+  const formatDateLocal = (timestamp: number) => {
+    return formatDate(timestamp);
   };
 
-  const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
+  const formatCurrencyLocal = (amount: number, currency: string) => {
+    return formatCurrency(amount, currency);
   };
 
   const containerStyle: React.CSSProperties = {
@@ -303,13 +301,13 @@ export const POList: React.FC<POListProps> = ({
                   <td style={tdStyle}>
                     <strong>{po.orderId}</strong>
                   </td>
-                  <td style={tdStyle}>{formatDate(po.timestamp)}</td>
+                  <td style={tdStyle}>{formatDateLocal(po.timestamp)}</td>
                   <td style={tdStyle}>
                     <span style={badgeStyle(po.status)}>
                       {po.status}
                     </span>
                   </td>
-                  <td style={tdStyle}>{formatCurrency(po.totalAmount, po.currency)}</td>
+                  <td style={tdStyle}>{formatCurrencyLocal(po.totalAmount, po.currency)}</td>
                   <td style={tdStyle}>
                     <code style={{ fontSize: '12px' }}>
                       {po.vendorAddress.substring(0, 8)}...

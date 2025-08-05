@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Input, Button, VStack, Heading, Text, SimpleGrid, Divider, Spinner, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import { formatDateTime, formatCurrency } from "../utils/localization";
 import contractABI from "../../abi/ValveChainABI.json";
 
 const CONTRACT_ADDRESS = "0xYourValveChainContractAddress"; // Update as needed
@@ -80,7 +81,7 @@ const ValveHistoryPanel = () => {
           <Divider my={2} />
           {maintenance.map((m, idx) => (
             <Box key={idx} p={2} mb={2} borderWidth={1} borderRadius="md">
-              <Text><b>Date:</b> {new Date(Number(m.timestamp) * 1000).toLocaleString()}</Text>
+              <Text><b>Date:</b> {formatDateTime(Number(m.timestamp) * 1000)}</Text>
               <Text><b>By:</b> {m.performedBy}</Text>
               <Text><b>Description:</b> {m.description}</Text>
               <Text><b>Report Hash:</b> {m.reportHash}</Text>
@@ -95,7 +96,7 @@ const ValveHistoryPanel = () => {
           <SimpleGrid columns={2} spacing={2}>
             <Text><b>Requested By:</b></Text> <Text>{repair[1]}</Text>
             <Text><b>Contractor:</b></Text> <Text>{repair[2]}</Text>
-            <Text><b>Amount (wei):</b></Text> <Text>{repair[3].toString()}</Text>
+            <Text><b>Amount (wei):</b></Text> <Text>{formatCurrency(Number(repair[3]), 'ETH')}</Text>
             <Text><b>Pre-Test Hash:</b></Text> <Text>{repair[4]}</Text>
             <Text><b>Repair Hash:</b></Text> <Text>{repair[5]}</Text>
             <Text><b>Post-Test Hash:</b></Text> <Text>{repair[6]}</Text>
