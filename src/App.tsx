@@ -11,9 +11,10 @@ import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
 import ManufacturerPanel from "./components/Roles/Manufacturer Panel.tsx";
+import UserProfile from "./components/UserProfile.tsx";
 
 type AppView = 'landing' | 'registration' | 'gettingStarted' | 'dashboard';
-type DashboardTab = 'manufacturer' | 'inventory' | 'repairs' | 'history';
+type DashboardTab = 'manufacturer' | 'inventory' | 'repairs' | 'history' | 'profile';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('landing');
@@ -44,6 +45,12 @@ function App() {
 
   const handleGettingStartedComplete = () => {
     setCurrentView('dashboard');
+  };
+
+  const handleAccountDeleted = () => {
+    // When account is deleted, redirect to landing page
+    setCurrentView('landing');
+    setCurrentTab('manufacturer'); // Reset tab
   };
 
   const renderDashboard = () => {
@@ -139,6 +146,15 @@ function App() {
               >
                 History
               </button>
+              <button 
+                style={{
+                  ...dashboardStyles.navButton,
+                  ...(currentTab === 'profile' ? dashboardStyles.activeNavButton : {})
+                }}
+                onClick={() => setCurrentTab('profile')}
+              >
+                Profile
+              </button>
             </nav>
           </HStack>
         </header>
@@ -181,6 +197,9 @@ function App() {
                 </Box>
               </Box>
             </Container>
+          )}
+          {currentTab === 'profile' && (
+            <UserProfile onAccountDeleted={handleAccountDeleted} />
           )}
         </main>
       </div>
