@@ -96,7 +96,7 @@ const ValveHistoryPanel = () => {
           <SimpleGrid columns={2} spacing={2}>
             <Text><b>Requested By:</b></Text> <Text>{repair[1]}</Text>
             <Text><b>Contractor:</b></Text> <Text>{repair[2]}</Text>
-            <Text><b>Amount (wei):</b></Text> <Text>{formatCurrency(Number(repair[3]), 'ETH')}</Text>
+            <Text><b>Amount (ETH):</b></Text> <Text>{Number(repair[3]) ? `${ethers.utils.formatEther(repair[3])} ETH` : "0 ETH"}</Text>
             <Text><b>Pre-Test Hash:</b></Text> <Text>{repair[4]}</Text>
             <Text><b>Repair Hash:</b></Text> <Text>{repair[5]}</Text>
             <Text><b>Post-Test Hash:</b></Text> <Text>{repair[6]}</Text>
