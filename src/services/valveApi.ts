@@ -294,9 +294,16 @@ class ValveApiService {
     }
 
     // Check if there's already a pending termination request
-    const existingRequest = terminationRequests.find(
-      r => r.valveSerialNumber === data.valveSerialNumber && r.status === 'pending'
-    );
+    // Build an index of termination requests by valve serial number for efficient lookup
+    const terminationRequestIndex: Map<string, TerminationRequest[]> = new Map();
+    for (const req of terminationRequests) {
+      if (!terminationRequestIndex.has(req.valveSerialNumber)) {
+        terminationRequestIndex.set(req.valveSerialNumber, []);
+      }
+      terminationRequestIndex.get(req.valveSerialNumber)!.push(req);
+    }
+    const requestsForValve = terminationRequestIndex.get(data.valveSerialNumber) || [];
+    const existingRequest = requestsForValve.find(r => r.status === 'pending');
     if (existingRequest) {
       errors.push('There is already a pending termination request for this valve');
     }
