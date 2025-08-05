@@ -1,6 +1,6 @@
 // Hook for unit conversion and formatting
 
-import { useGlobalization } from '../contexts/GlobalizationContext.tsx';
+import { useGlobalization } from '../contexts/GlobalizationContext';
 import { unitConversionService } from '../services/unitConversionService.ts';
 import { ConversionResult } from '../types/globalization';
 
