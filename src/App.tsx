@@ -7,6 +7,7 @@ import {
   Heading,
   Container,
 } from "@chakra-ui/react";
+import { GlobalizationProvider } from "./contexts/GlobalizationContext.tsx";
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
@@ -14,6 +15,7 @@ import SimpleManufacturerDashboard from "./components/Dashboard/SimpleManufactur
 import SimpleDistributorDashboard from "./components/Dashboard/SimpleDistributorDashboard.tsx";
 import SimplePlantDashboard from "./components/Dashboard/SimplePlantDashboard.tsx";
 import SimpleRepairDashboard from "./components/Dashboard/SimpleRepairDashboard.tsx";
+import { GlobalizationToggle, GlobalizationSettings } from "./components/Globalization/index.ts";
 
 type AppView = 'landing' | 'registration' | 'gettingStarted' | 'dashboard';
 type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inventory' | 'history';
@@ -21,6 +23,7 @@ type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inven
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('landing');
   const [currentTab, setCurrentTab] = useState<DashboardTab>('manufacturer');
+  const [showGlobalizationSettings, setShowGlobalizationSettings] = useState(false);
 
   const handleGetStarted = () => {
     setCurrentView('registration');
@@ -96,6 +99,7 @@ function App() {
             </Heading>
           </HStack>
           <HStack spacing={2}>
+            <GlobalizationToggle onOpenSettings={() => setShowGlobalizationSettings(true)} />
             <Button
               size="sm"
               variant="ghost"
@@ -201,25 +205,35 @@ function App() {
 
   return (
     <ChakraProvider value={defaultSystem}>
-      {currentView === 'landing' && (
-        <SimpleLandingPage 
-          onGetStarted={handleGetStarted}
-          onLogin={handleLogin}
-          onLearnMore={handleLearnMore}
-        />
-      )}
-      {currentView === 'registration' && (
-        <SimpleRegistration 
-          onComplete={handleRegistrationComplete}
-          onCancel={handleRegistrationCancel}
-        />
-      )}
-      {currentView === 'gettingStarted' && (
-        <SimpleGettingStarted 
-          onClose={handleGettingStartedComplete}
-        />
-      )}
-      {currentView === 'dashboard' && renderDashboard()}
+      <GlobalizationProvider>
+        {currentView === 'landing' && (
+          <SimpleLandingPage 
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+            onLearnMore={handleLearnMore}
+          />
+        )}
+        {currentView === 'registration' && (
+          <SimpleRegistration 
+            onComplete={handleRegistrationComplete}
+            onCancel={handleRegistrationCancel}
+          />
+        )}
+        {currentView === 'gettingStarted' && (
+          <SimpleGettingStarted 
+            onClose={handleGettingStartedComplete}
+          />
+        )}
+        {currentView === 'dashboard' && (
+          <>
+            {renderDashboard()}
+            <GlobalizationSettings 
+              isOpen={showGlobalizationSettings}
+              onClose={() => setShowGlobalizationSettings(false)}
+            />
+          </>
+        )}
+      </GlobalizationProvider>
     </ChakraProvider>
   );
 }

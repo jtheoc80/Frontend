@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { POStage, DistributionToManufacturerPO, PlantToDistributionPO, RepairToPlantPO, CreatePORequest } from '../../types/po';
+import { useGlobalization } from '../../contexts/GlobalizationContext.tsx';
+import { localeService } from '../../services/localeService.ts';
 
 interface CreatePOFormProps {
   onSubmit?: (poData: CreatePORequest<any>) => Promise<void>;
@@ -12,14 +14,18 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
   onCancel,
   isLoading = false
 }) => {
+  const { preferences } = useGlobalization();
   const [selectedStage, setSelectedStage] = useState<POStage>(POStage.DISTRIBUTION_TO_MANUFACTURER);
   const [orderId, setOrderId] = useState('');
   const [vendorAddress, setVendorAddress] = useState('');
   const [buyerAddress, setBuyerAddress] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState(preferences.currency);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  // Get available currencies
+  const availableCurrencies = localeService.getAllCurrencies();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -307,9 +313,11 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
             data-testid="currency-select"
             style={inputStyle}
           >
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="ETH">ETH</option>
+            {availableCurrencies.map((currencyInfo) => (
+              <option key={currencyInfo.code} value={currencyInfo.code}>
+                {currencyInfo.symbol} {currencyInfo.name} ({currencyInfo.code})
+              </option>
+            ))}
           </select>
         </div>
 

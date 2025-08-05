@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { POStage, BasePurchaseOrder } from '../../types/po';
+import { CurrencyDisplay } from '../Globalization/index.ts';
+import { SupportedCurrency } from '../../types/globalization';
 
 interface POListProps {
   purchaseOrders?: BasePurchaseOrder[];
@@ -92,13 +94,6 @@ export const POList: React.FC<POListProps> = ({
 
   const formatDate = (timestamp: number) => {
     return new Date(timestamp).toLocaleDateString();
-  };
-
-  const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
   };
 
   const containerStyle: React.CSSProperties = {
@@ -309,7 +304,14 @@ export const POList: React.FC<POListProps> = ({
                       {po.status}
                     </span>
                   </td>
-                  <td style={tdStyle}>{formatCurrency(po.totalAmount, po.currency)}</td>
+                  <td style={tdStyle}>
+                    <CurrencyDisplay
+                      amount={po.totalAmount}
+                      currency={po.currency as SupportedCurrency}
+                      size="sm"
+                      showOriginal={true}
+                    />
+                  </td>
                   <td style={tdStyle}>
                     <code style={{ fontSize: '12px' }}>
                       {po.vendorAddress.substring(0, 8)}...
