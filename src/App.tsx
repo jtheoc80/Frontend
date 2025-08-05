@@ -8,7 +8,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { LocaleProvider } from "./contexts/LocaleContext";
-import { LocaleSettings } from "./components/LocaleSettings.tsx";
+import { LocaleSettings } from "./components/LocaleSettings";
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
