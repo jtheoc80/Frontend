@@ -1,30 +1,72 @@
 import { render, screen } from '@testing-library/react';
 import dayjs from 'dayjs';
 
+
+// Utility to filter only valid DOM props for a given element type
+const VALID_DOM_PROPS = {
+  div: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children',
+  ],
+  table: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children',
+  ],
+  thead: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children',
+  ],
+  tbody: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children',
+  ],
+  tr: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children',
+  ],
+  th: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children', 'colSpan', 'rowSpan', 'scope',
+  ],
+  td: [
+    'className', 'id', 'style', 'title', 'tabIndex', 'role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'data-testid', 'children', 'colSpan', 'rowSpan', 'headers',
+  ],
+};
+
+function filterDOMProps(props, elementType) {
+  const validProps = VALID_DOM_PROPS[elementType] || [];
+  return Object.keys(props)
+    .filter(key => validProps.includes(key))
+    .reduce((acc, key) => {
+      acc[key] = props[key];
+      return acc;
+    }, {});
+}
+
 // Mock Chakra UI components
 jest.mock('@chakra-ui/react', () => ({
   Box: ({ children, ...props }) => {
-    // Filter out Chakra-specific props that would cause React warnings
-    const { bg, color, rounded, px, py, shadow, textAlign, minW, overflowX, overflowY, border, borderColor, p, ...cleanProps } = props;
-    return <div data-testid="box" {...cleanProps}>{children}</div>;
+    // Only pass valid div props
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'box', children }, 'div');
+    return <div {...cleanProps}>{children}</div>;
   },
   TableRoot: ({ children, ...props }) => {
-    const { variant, size, ...cleanProps } = props;
-    return <table data-testid="table-root" {...cleanProps}>{children}</table>;
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'table-root', children }, 'table');
+    return <table {...cleanProps}>{children}</table>;
   },
-  TableHeader: ({ children }) => <thead data-testid="table-header">{children}</thead>,
-  TableBody: ({ children }) => <tbody data-testid="table-body">{children}</tbody>,
+  TableHeader: ({ children, ...props }) => {
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'table-header', children }, 'thead');
+    return <thead {...cleanProps}>{children}</thead>;
+  },
+  TableBody: ({ children, ...props }) => {
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'table-body', children }, 'tbody');
+    return <tbody {...cleanProps}>{children}</tbody>;
+  },
   TableRow: ({ children, style, ...props }) => {
-    return <tr data-testid="table-row" style={style}>{children}</tr>;
+    const cleanProps = filterDOMProps({ ...props, style, 'data-testid': 'table-row', children }, 'tr');
+    return <tr {...cleanProps}>{children}</tr>;
   },
   TableColumnHeader: ({ children, ...props }) => {
-    // Filter out Chakra-specific props
-    const { whiteSpace, minW, ...cleanProps } = props;
-    return <th data-testid="table-column-header" {...cleanProps}>{children}</th>;
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'table-column-header', children }, 'th');
+    return <th {...cleanProps}>{children}</th>;
   },
   TableCell: ({ children, ...props }) => {
-    const { whiteSpace, ...cleanProps } = props;
-    return <td data-testid="table-cell" {...cleanProps}>{children}</td>;
+    const cleanProps = filterDOMProps({ ...props, 'data-testid': 'table-cell', children }, 'td');
+    return <td {...cleanProps}>{children}</td>;
   },
 }));
 
