@@ -1,7 +1,7 @@
 // Hook for currency conversion and formatting
 
 import { useState, useEffect } from 'react';
-import { useGlobalization } from '../contexts/GlobalizationContext.tsx';
+import { useGlobalization } from '../contexts/GlobalizationContext';
 import { SupportedCurrency, LocalizedValue } from '../types/globalization';
 
 export const useCurrency = () => {
