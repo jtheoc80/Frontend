@@ -2,6 +2,30 @@
 
 This project is a React frontend application for managing valve supply chain operations through blockchain-based Purchase Orders (POs). It provides comprehensive tools for creating, managing, and tracking purchase orders across different stages of the valve supply chain.
 
+## 🌍 Documentation Languages
+
+This documentation is available in multiple languages to serve our global user base:
+
+- **English** (Default) - Complete documentation in this file
+- **中文** (Chinese) - [Chinese Documentation](docs/i18n/zh/README.md)
+- **Español** (Spanish) - [Spanish Documentation](docs/i18n/es/README.md)  
+- **Deutsch** (German) - [German Documentation](docs/i18n/de/README.md)
+
+### Contributing Translations
+
+We welcome contributions to improve and expand our documentation translations:
+
+- **Translation Guidelines**: See [docs/i18n/README.md](docs/i18n/README.md) for detailed guidelines
+- **Request New Language**: Open a [Translation Request](https://github.com/jtheoc80/Frontend/issues/new?assignees=&labels=translation%2Cdocumentation%2Clocalization&template=translation-request.md&title=%5BTRANSLATION%5D+Request+for+%5BLANGUAGE%5D+translation) issue
+- **Report Translation Issues**: Use our [Translation Update](https://github.com/jtheoc80/Frontend/issues/new?assignees=&labels=translation%2Cdocumentation%2Cupdate&template=translation-update.md&title=%5BTRANSLATION+UPDATE%5D+%5BLANGUAGE%5D+-+%5BDOCUMENT%5D) template
+- **Native Speaker Review**: We seek native speakers with technical backgrounds to ensure accuracy
+
+For translation contributions, we particularly value contributors with:
+- Native proficiency in the target language
+- Technical writing experience
+- Knowledge of industrial valve systems or manufacturing processes
+- Understanding of blockchain/Web3 terminology
+
 ## Features
 
 ### 🌍 Internationalization (i18n) & RTL Support
