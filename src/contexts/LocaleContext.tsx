@@ -12,48 +12,6 @@ const DEFAULT_CONFIG: LocaleConfig = {
   currency: 'USD',
 };
 
-/**
- * Get user's locale configuration from localStorage or browser defaults
- */
-function getLocaleConfigLocal(): LocaleConfig {
-  try {
-    const stored = localStorage.getItem('valvechain-locale-config');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      return {
-        locale: parsed.locale || DEFAULT_CONFIG.locale,
-        timezone: parsed.timezone || DEFAULT_CONFIG.timezone,
-        currency: parsed.currency || DEFAULT_CONFIG.currency,
-      };
-    }
-  } catch (error) {
-    console.warn('Failed to load locale configuration:', error);
-  }
-
-  // Try to detect from browser
-  const browserLocale = navigator.language || 'en-US';
-  const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  
-  return {
-    locale: browserLocale,
-    timezone: browserTimezone,
-    currency: DEFAULT_CONFIG.currency,
-  };
-}
-
-/**
- * Save locale configuration to localStorage
- */
-function setLocaleConfigLocal(config: Partial<LocaleConfig>): void {
-  try {
-    const currentConfig = getLocaleConfigLocal();
-    const newConfig = { ...currentConfig, ...config };
-    localStorage.setItem('valvechain-locale-config', JSON.stringify(newConfig));
-  } catch (error) {
-    console.warn('Failed to save locale configuration:', error);
-  }
-}
-
 interface LocaleContextType {
   config: LocaleConfig;
   updateLocale: (newConfig: Partial<LocaleConfig>) => void;
