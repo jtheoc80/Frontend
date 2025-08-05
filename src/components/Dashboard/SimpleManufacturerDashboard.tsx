@@ -9,8 +9,11 @@ import {
   Badge,
   Container
 } from "@chakra-ui/react";
+// @ts-ignore
+import { useTranslation } from 'react-i18next';
 
 const SimpleManufacturerDashboard = () => {
+  const { t } = useTranslation();
   // Mock data for demonstration
   const pendingValves = [
     {
@@ -34,25 +37,25 @@ const SimpleManufacturerDashboard = () => {
     <Container maxW="1200px" py={8}>
       <VStack spacing={6} align="stretch">
         <Heading size="lg" color="#1e3a8a">
-          Manufacturer Dashboard
+          {t('dashboard.manufacturerDashboard')}
         </Heading>
 
         {/* Dashboard Statistics */}
-        <HStack spacing={4} justify="space-around">
+        <HStack spacing={4} justify="space-around" className="stats-container">
           <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
-            <Text fontSize="sm" color="#64748b">Total Valves</Text>
+            <Text fontSize="sm" color="#64748b">{t('stats.totalValves')}</Text>
             <Text fontSize="2xl" fontWeight="bold" color="#1e3a8a">{stats.totalValves}</Text>
           </Box>
           <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
-            <Text fontSize="sm" color="#64748b">Pending Tokenization</Text>
+            <Text fontSize="sm" color="#64748b">{t('stats.pendingTokenization')}</Text>
             <Text fontSize="2xl" fontWeight="bold" color="#f59e0b">{stats.pendingTokenization}</Text>
           </Box>
           <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
-            <Text fontSize="sm" color="#64748b">In Service</Text>
+            <Text fontSize="sm" color="#64748b">{t('stats.inService')}</Text>
             <Text fontSize="2xl" fontWeight="bold" color="#10b981">{stats.inService}</Text>
           </Box>
           <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
-            <Text fontSize="sm" color="#64748b">Pending Orders</Text>
+            <Text fontSize="sm" color="#64748b">{t('stats.pendingOrders')}</Text>
             <Text fontSize="2xl" fontWeight="bold" color="#3b82f6">{stats.pendingOrders}</Text>
           </Box>
         </HStack>

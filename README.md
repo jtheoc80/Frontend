@@ -4,6 +4,20 @@ This project is a React frontend application for managing valve supply chain ope
 
 ## Features
 
+### 🌍 Internationalization (i18n) & RTL Support
+
+The application now supports multiple languages and right-to-left (RTL) layouts for Middle Eastern markets:
+
+- **Multi-language Support**: English and Arabic translations with easy language switching
+- **RTL Layout**: Full right-to-left layout support for Arabic and other RTL languages  
+- **Language Switcher**: Intuitive language selection in the dashboard header
+- **Persistent Settings**: Language preference saved and restored automatically
+- **Responsive RTL**: RTL support works across all screen sizes and components
+
+![Internationalization Demo](https://github.com/user-attachments/assets/85f2f18c-6c44-45bc-824e-5fd0a5205949)
+
+*Dashboard showing Arabic translation and RTL layout*
+
 ### Manufacturer Dashboard Token Ticker
 
 The manufacturer dashboard now includes a real-time token ticker that displays the number of lifetime tokens currently active on the blockchain. The ticker includes:
@@ -156,6 +170,37 @@ The application uses strongly-typed TypeScript interfaces:
 - `RepairToPlantPO`: Stage 3 specific fields
 - `CreatePORequest<T>`: API request structure
 - `CreatePOResponse`: API response structure
+
+## Internationalization (i18n) Usage
+
+### Adding New Languages
+
+1. **Create Translation File**: Add a new JSON file in `src/locales/{language-code}/common.json`
+2. **Update i18n Config**: Import and add the translations to `src/i18n.ts`
+3. **Update Language Switcher**: Add the new language option in the component
+
+### Using Translations in Components
+
+```tsx
+import { useTranslation } from 'react-i18next';
+
+const MyComponent = () => {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('dashboard.title')}</h1>
+      <button>{t('navigation.getStarted')}</button>
+    </div>
+  );
+};
+```
+
+### RTL Support
+
+RTL layout is automatically applied for Arabic and other RTL languages. Custom RTL styles are available in `src/rtl.css`.
+
+For detailed i18n documentation, see [docs/i18n-rtl-guide.md](docs/i18n-rtl-guide.md).
 
 ## Testing
 

@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "about": "حول",
+    "signIn": "تسجيل الدخول",
+    "getStarted": "ابدأ الآن",
+    "gettingStarted": "البدء",
+    "manufacturer": "المصنع",
+    "distributor": "الموزع",
+    "plant": "المحطة",
+    "repair": "الإصلاح",
+    "valveInventory": "مخزون الصمامات",
+    "history": "التاريخ"
+  },
+  "dashboard": {
+    "title": "لوحة تحكم سلسلة الصمامات",
+    "manufacturerDashboard": "لوحة تحكم المصنع",
+    "distributorDashboard": "لوحة تحكم الموزع",
+    "plantDashboard": "لوحة تحكم المحطة",
+    "repairDashboard": "لوحة تحكم الإصلاح"
+  },
+  "stats": {
+    "totalValves": "إجمالي الصمامات",
+    "pendingTokenization": "في انتظار الترقيم",
+    "inService": "في الخدمة",
+    "pendingOrders": "الطلبات المعلقة",
+    "activeContracts": "العقود النشطة",
+    "completedJobs": "الوظائف المكتملة",
+    "revenue": "الإيرادات"
+  },
+  "landing": {
+    "title": "سلسلة الصمامات",
+    "hero": {
+      "title": "إدارة سلسلة توريد الصمامات بتقنية البلوك تشين",
+      "subtitle": "قم بتبسيط عمليات الصمامات الخاصة بك مع تقنية البلوك تشين الآمنة والشفافة والفعالة. تتبع وإدارة وتحسين سلسلة التوريد من المصنع إلى المستخدم النهائي.",
+      "getStarted": "ابدأ اليوم",
+      "learnMore": "اعرف المزيد"
+    },
+    "features": {
+      "title": "لماذا تختار سلسلة الصمامات؟",
+      "traceability": {
+        "title": "تتبع كامل",
+        "description": "تتبع كل صمام من التصنيع إلى التركيب مع سجلات البلوك تشين الثابتة."
+      },
+      "efficiency": {
+        "title": "عمليات مبسطة",
+        "description": "أتمتة أوامر الشراء والعقود والامتثال مع العقود الذكية."
+      },
+      "transparency": {
+        "title": "شفافية كاملة",
+        "description": "جميع أصحاب المصلحة لديهم إمكانية الوصول إلى بيانات سلسلة التوريد المتحققة في الوقت الفعلي."
+      }
+    }
+  },
+  "po": {
+    "title": "أوامر الشراء",
+    "createNew": "إنشاء أمر شراء جديد",
+    "search": "البحث برقم الطلب أو البائع أو المشتري...",
+    "allStatuses": "جميع الحالات",
+    "allStages": "جميع المراحل",
+    "showing": "عرض",
+    "of": "من",
+    "purchaseOrders": "أوامر الشراء",
+    "status": {
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "fulfilled": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "headers": {
+      "orderId": "رقم الطلب",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "amount": "المبلغ",
+      "vendor": "البائع",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "view": "عرض",
+      "delete": "حذف"
+    }
+  },
+  "forms": {
+    "required": "مطلوب",
+    "cancel": "إلغاء",
+    "submit": "إرسال",
+    "create": "إنشاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "comingSoon": "قريباً",
+    "language": "اللغة"
+  }
+}

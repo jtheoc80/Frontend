@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import {
   Box,
@@ -6,7 +6,11 @@ import {
   HStack,
   Heading,
   Container,
+  Text,
 } from "@chakra-ui/react";
+// @ts-ignore
+import { useTranslation } from 'react-i18next';
+import { getTextDirection } from './i18n.ts';
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
@@ -21,6 +25,50 @@ type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inven
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('landing');
   const [currentTab, setCurrentTab] = useState<DashboardTab>('manufacturer');
+  const { t, i18n } = useTranslation();
+
+  // Update document direction when language changes
+  useEffect(() => {
+    document.documentElement.dir = getTextDirection();
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
+  // Inline LanguageSwitcher component  
+  const LanguageSwitcher = () => {
+    const languages = [
+      { code: 'en', name: 'English', flag: '🇺🇸' },
+      { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    ];
+
+    const handleLanguageChange = (languageCode: string) => {
+      i18n.changeLanguage(languageCode);
+      
+      // Update document direction
+      document.documentElement.dir = getTextDirection();
+      document.documentElement.lang = languageCode;
+    };
+
+    return (
+      <HStack spacing={2}>
+        {languages.map((language) => (
+          <Button
+            key={language.code}
+            onClick={() => handleLanguageChange(language.code)}
+            variant={i18n.language === language.code ? "solid" : "ghost"}
+            size="sm"
+            color="white"
+            bg={i18n.language === language.code ? 'whiteAlpha.300' : 'transparent'}
+            _hover={{ bg: 'whiteAlpha.200' }}
+          >
+            <HStack spacing={1}>
+              <Text fontSize="sm">{language.flag}</Text>
+              <Text fontSize="sm">{language.name}</Text>
+            </HStack>
+          </Button>
+        ))}
+      </HStack>
+    );
+  };
 
   const handleGetStarted = () => {
     setCurrentView('registration');
@@ -92,10 +140,11 @@ function App() {
         <header style={dashboardStyles.header}>
           <HStack spacing={4}>
             <Heading size="lg" fontWeight="bold" color="white">
-              ValveChain Dashboard
+              {t('dashboard.title')}
             </Heading>
           </HStack>
           <HStack spacing={2}>
+            <LanguageSwitcher />
             <Button
               size="sm"
               variant="ghost"
@@ -103,7 +152,7 @@ function App() {
               _hover={{ bg: 'whiteAlpha.200' }}
               onClick={() => setCurrentView('gettingStarted')}
             >
-              Getting Started
+              {t('navigation.gettingStarted')}
             </Button>
             <nav style={dashboardStyles.nav}>
               <button 
@@ -113,7 +162,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('manufacturer')}
               >
-                Manufacturer
+                {t('navigation.manufacturer')}
               </button>
               <button 
                 style={{
@@ -122,7 +171,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('distributor')}
               >
-                Distributor
+                {t('navigation.distributor')}
               </button>
               <button 
                 style={{
@@ -131,7 +180,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('plant')}
               >
-                Plant
+                {t('navigation.plant')}
               </button>
               <button 
                 style={{
@@ -140,7 +189,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('repair')}
               >
-                Repair
+                {t('navigation.repair')}
               </button>
               <button 
                 style={{
@@ -149,7 +198,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('inventory')}
               >
-                Valve Inventory
+                {t('navigation.valveInventory')}
               </button>
               <button 
                 style={{
@@ -158,7 +207,7 @@ function App() {
                 }}
                 onClick={() => setCurrentTab('history')}
               >
-                History
+                {t('navigation.history')}
               </button>
             </nav>
           </HStack>
@@ -174,7 +223,7 @@ function App() {
             <Container maxW="1200px" py={8}>
               <Box textAlign="center" py={16}>
                 <Heading size="xl" color="#1e3a8a" mb={4}>
-                  Valve Inventory
+                  {t('navigation.valveInventory')}
                 </Heading>
                 <Box color="#64748b">
                   This would show the valve inventory table (see existing ValveTable component)
@@ -186,10 +235,10 @@ function App() {
             <Container maxW="1200px" py={8}>
               <Box textAlign="center" py={16}>
                 <Heading size="xl" color="#1e3a8a" mb={4}>
-                  Valve History
+                  {t('navigation.history')}
                 </Heading>
                 <Box color="#64748b">
-                  Coming Soon - Valve history tracking
+                  {t('common.comingSoon')} - Valve history tracking
                 </Box>
               </Box>
             </Container>
