@@ -10,7 +10,7 @@ import {
   Container,
   Spinner
 } from "@chakra-ui/react";
-import { userApiService } from "../services/userApi.ts";
+import { userApiService } from "../services/userApi";
 import { UserProfile as UserProfileType } from "../types/user";
 
 interface UserProfileProps {
