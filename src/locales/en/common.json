@@ -25,7 +25,26 @@
     "pendingOrders": "Pending Orders",
     "activeContracts": "Active Contracts",
     "completedJobs": "Completed Jobs",
-    "revenue": "Revenue"
+    "revenue": "Total Revenue"
+  },
+  "currency": {
+    "selector": "Currency",
+    "loading": "Loading rates...",
+    "offline": "Offline rates",
+    "lastUpdated": "Last updated",
+    "convertedFrom": "Converted from"
+  },
+  "units": {
+    "selector": "Units",
+    "system": "Unit System",
+    "imperial": "Imperial/US",
+    "metric": "Metric", 
+    "si": "SI",
+    "pressure": "Pressure",
+    "temperature": "Temperature",
+    "length": "Length",
+    "volume": "Volume",
+    "flow": "Flow"
   },
   "landing": {
     "title": "ValveChain",

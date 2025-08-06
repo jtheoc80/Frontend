@@ -11,18 +11,23 @@ import {
 } from "@chakra-ui/react";
 // @ts-ignore
 import { useTranslation } from 'react-i18next';
+import { useCurrencyUnit } from '../../contexts/CurrencyUnitContext.tsx';
+// import { CombinedIndicator } from '../../components/CurrencyUnit/CurrencyUnitIndicators.tsx';
 
 const SimpleManufacturerDashboard = () => {
   const { t } = useTranslation();
-  // Mock data for demonstration
+  const { formatCurrency, currentUnitSystem, formatUnitValue } = useCurrencyUnit();
+  
+  // Mock data for demonstration with pricing
   const pendingValves = [
     {
       id: 'VLV001',
       serialNumber: 'EMR-2024-001',
       type: 'ball',
       model: 'Series 2000',
-      specifications: { diameter: 6, pressure: 1500 },
-      manufactureDate: '2024-01-15'
+      specifications: { diameter: 6, pressure: 1500, temperature: 200 },
+      manufactureDate: '2024-01-15',
+      estimatedPrice: 2500 // USD base price
     }
   ];
 
@@ -30,15 +35,19 @@ const SimpleManufacturerDashboard = () => {
     totalValves: 3,
     pendingTokenization: 1,
     inService: 1,
-    pendingOrders: 1
+    pendingOrders: 1,
+    totalRevenue: 125000 // USD base amount
   };
 
   return (
     <Container maxW="1200px" py={8}>
       <VStack spacing={6} align="stretch">
-        <Heading size="lg" color="#1e3a8a">
-          {t('dashboard.manufacturerDashboard')}
-        </Heading>
+        <HStack justify="space-between" align="center">
+          <Heading size="lg" color="#1e3a8a">
+            {t('dashboard.manufacturerDashboard')}
+          </Heading>
+          {/* <CombinedIndicator size="md" /> */}
+        </HStack>
 
         {/* Dashboard Statistics */}
         <HStack spacing={4} justify="space-around" className="stats-container">
@@ -57,6 +66,10 @@ const SimpleManufacturerDashboard = () => {
           <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
             <Text fontSize="sm" color="#64748b">{t('stats.pendingOrders')}</Text>
             <Text fontSize="2xl" fontWeight="bold" color="#3b82f6">{stats.pendingOrders}</Text>
+          </Box>
+          <Box bg="white" p={4} borderRadius="md" shadow="sm" border="1px solid #e2e8f0" textAlign="center">
+            <Text fontSize="sm" color="#64748b">{t('stats.revenue')}</Text>
+            <Text fontSize="2xl" fontWeight="bold" color="#10b981">{formatCurrency(stats.totalRevenue)}</Text>
           </Box>
         </HStack>
 
@@ -88,10 +101,15 @@ const SimpleManufacturerDashboard = () => {
                         Model: {valve.model}
                       </Text>
                       <Text fontSize="sm" color="#64748b">
-                        Specs: {valve.specifications.diameter}" • {valve.specifications.pressure} PSI
+                        Specs: {currentUnitSystem ? formatUnitValue(valve.specifications.diameter, currentUnitSystem.units.length) : `${valve.specifications.diameter}"`} • 
+                        {currentUnitSystem ? formatUnitValue(valve.specifications.pressure, currentUnitSystem.units.pressure) : `${valve.specifications.pressure} PSI`} • 
+                        {currentUnitSystem ? formatUnitValue(valve.specifications.temperature, currentUnitSystem.units.temperature) : `${valve.specifications.temperature}°F`}
                       </Text>
                       <Text fontSize="sm" color="#64748b">
                         Manufactured: {new Date(valve.manufactureDate).toLocaleDateString()}
+                      </Text>
+                      <Text fontSize="sm" color="#64748b" fontWeight="semibold">
+                        Est. Price: {formatCurrency(valve.estimatedPrice)}
                       </Text>
                     </VStack>
                     <VStack align="end" spacing={2}>

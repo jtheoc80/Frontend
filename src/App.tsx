@@ -20,6 +20,8 @@ import SimpleManufacturerDashboard from "./components/Dashboard/SimpleManufactur
 import SimpleDistributorDashboard from "./components/Dashboard/SimpleDistributorDashboard.tsx";
 import SimplePlantDashboard from "./components/Dashboard/SimplePlantDashboard.tsx";
 import SimpleRepairDashboard from "./components/Dashboard/SimpleRepairDashboard.tsx";
+import { CurrencyUnitProvider } from './contexts/CurrencyUnitContext.tsx';
+// import { CurrencySelector, UnitSelector } from './components/CurrencyUnit/CurrencySelector.tsx';
 
 type AppView = 'landing' | 'registration' | 'gettingStarted' | 'dashboard';
 type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inventory' | 'history';
@@ -252,26 +254,28 @@ function App() {
 
   return (
     <ChakraProvider value={defaultSystem}>
-      {/* <HealthCheck /> */}
-      {currentView === 'landing' && (
-        <SimpleLandingPage 
-          onGetStarted={handleGetStarted}
-          onLogin={handleLogin}
-          onLearnMore={handleLearnMore}
-        />
-      )}
-      {currentView === 'registration' && (
-        <SimpleRegistration 
-          onComplete={handleRegistrationComplete}
-          onCancel={handleRegistrationCancel}
-        />
-      )}
-      {currentView === 'gettingStarted' && (
-        <SimpleGettingStarted 
-          onClose={handleGettingStartedComplete}
-        />
-      )}
-      {currentView === 'dashboard' && renderDashboard()}
+      <CurrencyUnitProvider>
+        {/* <HealthCheck /> */}
+        {currentView === 'landing' && (
+          <SimpleLandingPage 
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+            onLearnMore={handleLearnMore}
+          />
+        )}
+        {currentView === 'registration' && (
+          <SimpleRegistration 
+            onComplete={handleRegistrationComplete}
+            onCancel={handleRegistrationCancel}
+          />
+        )}
+        {currentView === 'gettingStarted' && (
+          <SimpleGettingStarted 
+            onClose={handleGettingStartedComplete}
+          />
+        )}
+        {currentView === 'dashboard' && renderDashboard()}
+      </CurrencyUnitProvider>
     </ChakraProvider>
   );
 }

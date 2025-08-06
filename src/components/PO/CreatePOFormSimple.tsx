@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { POStage, DistributionToManufacturerPO, PlantToDistributionPO, RepairToPlantPO, CreatePORequest } from '../../types/po';
+import { useCurrencyUnit } from '../../contexts/CurrencyUnitContext.tsx';
+import { CurrencySelector } from '../../components/CurrencyUnit/CurrencySelector.tsx';
+import { CombinedIndicator } from '../../components/CurrencyUnit/CurrencyUnitIndicators.tsx';
 
 interface CreatePOFormProps {
   onSubmit?: (poData: CreatePORequest<any>) => Promise<void>;
@@ -17,9 +20,10 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
   const [vendorAddress, setVendorAddress] = useState('');
   const [buyerAddress, setBuyerAddress] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
-  const [currency, setCurrency] = useState('USD');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  
+  const { selectedCurrency, formatCurrency } = useCurrencyUnit();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +43,7 @@ export const CreatePOForm: React.FC<CreatePOFormProps> = ({
         vendorAddress,
         buyerAddress,
         totalAmount,
-        currency,
+        currency: selectedCurrency,
         status: 'pending' as const,
       };
 
