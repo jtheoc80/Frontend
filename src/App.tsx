@@ -14,7 +14,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import { FaTools, FaHistory, FaWallet, FaTable } from "react-icons/fa";
-import ValveTable from "./components/Valvetable.tsx";
+import ValveTable from "./components/Valvetable";
 
 function App() {
   const [tabIndex, setTabIndex] = useState(0);
