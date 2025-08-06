@@ -6,13 +6,15 @@ import {
   HStack,
   Heading,
   Container,
-  Text,
 } from "@chakra-ui/react";
+import { LocaleProvider } from "./contexts/LocaleContext.tsx";
+import { LocaleSettings } from "./components/LocaleSettings.tsx";
 // @ts-ignore
 import { useTranslation } from 'react-i18next';
 import { getTextDirection } from './i18n.ts';
 // import ErrorBoundary from './components/ErrorBoundary';
 // import HealthCheck from './components/HealthCheck';
+
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
@@ -35,42 +37,7 @@ function App() {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
-  // Inline LanguageSwitcher component  
-  const LanguageSwitcher = () => {
-    const languages = [
-      { code: 'en', name: 'English', flag: '🇺🇸' },
-      { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-    ];
 
-    const handleLanguageChange = (languageCode: string) => {
-      i18n.changeLanguage(languageCode);
-      
-      // Update document direction
-      document.documentElement.dir = getTextDirection();
-      document.documentElement.lang = languageCode;
-    };
-
-    return (
-      <HStack spacing={2}>
-        {languages.map((language) => (
-          <Button
-            key={language.code}
-            onClick={() => handleLanguageChange(language.code)}
-            variant={i18n.language === language.code ? "solid" : "ghost"}
-            size="sm"
-            color="white"
-            bg={i18n.language === language.code ? 'whiteAlpha.300' : 'transparent'}
-            _hover={{ bg: 'whiteAlpha.200' }}
-          >
-            <HStack spacing={1}>
-              <Text fontSize="sm">{language.flag}</Text>
-              <Text fontSize="sm">{language.name}</Text>
-            </HStack>
-          </Button>
-        ))}
-      </HStack>
-    );
-  };
 
   const handleGetStarted = () => {
     setCurrentView('registration');
@@ -146,7 +113,7 @@ function App() {
             </Heading>
           </HStack>
           <HStack spacing={2}>
-            <LanguageSwitcher />
+            <LocaleSettings />
             <Button
               size="sm"
               variant="ghost"
@@ -251,28 +218,30 @@ function App() {
   };
 
   return (
-    <ChakraProvider value={defaultSystem}>
-      {/* <HealthCheck /> */}
-      {currentView === 'landing' && (
-        <SimpleLandingPage 
-          onGetStarted={handleGetStarted}
-          onLogin={handleLogin}
-          onLearnMore={handleLearnMore}
-        />
-      )}
-      {currentView === 'registration' && (
-        <SimpleRegistration 
-          onComplete={handleRegistrationComplete}
-          onCancel={handleRegistrationCancel}
-        />
-      )}
-      {currentView === 'gettingStarted' && (
-        <SimpleGettingStarted 
-          onClose={handleGettingStartedComplete}
-        />
-      )}
-      {currentView === 'dashboard' && renderDashboard()}
-    </ChakraProvider>
+    <LocaleProvider>
+      <ChakraProvider value={defaultSystem}>
+        {/* <HealthCheck /> */}
+        {currentView === 'landing' && (
+          <SimpleLandingPage 
+            onGetStarted={handleGetStarted}
+            onLogin={handleLogin}
+            onLearnMore={handleLearnMore}
+          />
+        )}
+        {currentView === 'registration' && (
+          <SimpleRegistration 
+            onComplete={handleRegistrationComplete}
+            onCancel={handleRegistrationCancel}
+          />
+        )}
+        {currentView === 'gettingStarted' && (
+          <SimpleGettingStarted 
+            onClose={handleGettingStartedComplete}
+          />
+        )}
+        {currentView === 'dashboard' && renderDashboard()}
+      </ChakraProvider>
+    </LocaleProvider>
   );
 }
 
