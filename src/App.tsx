@@ -11,6 +11,8 @@ import {
 // @ts-ignore
 import { useTranslation } from 'react-i18next';
 import { getTextDirection } from './i18n.ts';
+// import ErrorBoundary from './components/ErrorBoundary';
+// import HealthCheck from './components/HealthCheck';
 import SimpleLandingPage from "./components/Landing/SimpleLandingPage.tsx";
 import SimpleRegistration from "./components/Registration/SimpleRegistration.tsx";
 import SimpleGettingStarted from "./components/GettingStarted/SimpleGettingStarted.tsx";
@@ -250,6 +252,7 @@ function App() {
 
   return (
     <ChakraProvider value={defaultSystem}>
+      {/* <HealthCheck /> */}
       {currentView === 'landing' && (
         <SimpleLandingPage 
           onGetStarted={handleGetStarted}

@@ -28,6 +28,18 @@ For translation contributions, we particularly value contributors with:
 
 ## Features
 
+### ☁️ Cloud-Ready Infrastructure
+
+The application is designed for enterprise-grade cloud deployment with comprehensive infrastructure support:
+
+- **🐳 Containerization**: Docker and Docker Compose with multi-stage builds
+- **🚀 CI/CD Pipeline**: GitHub Actions with automated testing, building, and deployment
+- **☁️ Multi-Cloud Support**: Ready-to-deploy configurations for AWS, Azure, and Google Cloud
+- **🔄 Auto-Scaling**: Kubernetes and cloud-native auto-scaling capabilities
+- **📊 Monitoring**: Built-in health checks, logging, and error tracking
+- **🔒 Security**: Container vulnerability scanning and security best practices
+- **📋 Infrastructure as Code**: Terraform modules for all major cloud providers
+
 ### 🌍 Internationalization (i18n) & RTL Support
 
 The application now supports multiple languages and right-to-left (RTL) layouts for Middle Eastern markets:
@@ -290,15 +302,65 @@ npm start
 
 ## Deployment
 
-### Production Build
+### Local Development
 ```bash
-npm run build
+# Traditional development
+npm start
+
+# Docker development environment
+docker compose --profile dev up frontend-dev
+
+# Production build locally
+docker compose up frontend
 ```
 
+### Cloud Deployment
+
+The application is **cloud-ready** with comprehensive deployment options:
+
+#### 🐳 Containerization
+- **Docker**: Multi-stage production build with Nginx
+- **Docker Compose**: Development and production environments
+- **Health Checks**: Built-in health monitoring endpoints
+
+#### ☁️ Cloud Platforms
+- **AWS ECS**: Auto-scaling Fargate deployment with Application Load Balancer
+- **Azure App Service**: Container-based hosting with Application Insights
+- **Google Cloud Run**: Serverless container platform with global CDN
+- **Kubernetes**: Production-ready manifests with auto-scaling
+
+#### 🚀 Quick Deploy Commands
+```bash
+# Deploy to AWS ECS
+./scripts/deploy-aws.sh production
+
+# Deploy to Azure App Service  
+./scripts/deploy-azure.sh production
+
+# Deploy to Google Cloud Run
+./scripts/deploy-gcp.sh YOUR_PROJECT_ID production
+
+# Deploy to Kubernetes
+./scripts/deploy-k8s.sh production
+```
+
+#### 📋 Infrastructure as Code
+- **Terraform**: Complete infrastructure definitions for AWS, Azure, and GCP
+- **Kubernetes**: Production manifests with ConfigMaps, Secrets, and auto-scaling
+- **CI/CD**: GitHub Actions workflows with automated testing and deployment
+
+#### 📊 Monitoring & Observability
+- Built-in health checks and application metrics
+- Error boundary for graceful error handling
+- Production logging with external service integration
+- Container security scanning in CI/CD pipeline
+
+For detailed deployment instructions, see [CLOUD_DEPLOYMENT.md](CLOUD_DEPLOYMENT.md).
+
 ### Environment-specific Builds
-- **Development**: Local testing with mock data
-- **Staging**: Testnet integration
-- **Production**: Mainnet deployment
+- **Development**: Local testing with mock data and hot reloading
+- **Staging**: Testnet integration with production-like infrastructure
+- **Production**: Mainnet deployment with full monitoring and auto-scaling
 
 ## Security Considerations
 
