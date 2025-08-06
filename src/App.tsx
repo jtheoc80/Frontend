@@ -21,7 +21,8 @@ import SimpleDistributorDashboard from "./components/Dashboard/SimpleDistributor
 import SimplePlantDashboard from "./components/Dashboard/SimplePlantDashboard.tsx";
 import SimpleRepairDashboard from "./components/Dashboard/SimpleRepairDashboard.tsx";
 import { CurrencyUnitProvider } from './contexts/CurrencyUnitContext.tsx';
-// import { CurrencySelector, UnitSelector } from './components/CurrencyUnit/CurrencySelector.tsx';
+import { CurrencySelector } from './components/CurrencyUnit/CurrencySelector.tsx';
+import { UnitSelector } from './components/CurrencyUnit/UnitSelector.tsx';
 
 type AppView = 'landing' | 'registration' | 'gettingStarted' | 'dashboard';
 type DashboardTab = 'manufacturer' | 'distributor' | 'plant' | 'repair' | 'inventory' | 'history';
@@ -148,6 +149,8 @@ function App() {
             </Heading>
           </HStack>
           <HStack spacing={2}>
+            {/* <CurrencySelector size="sm" variant="outline" />
+            <UnitSelector size="sm" variant="outline" /> */}
             <LanguageSwitcher />
             <Button
               size="sm"
