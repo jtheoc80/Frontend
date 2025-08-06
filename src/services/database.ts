@@ -11,6 +11,8 @@
  * @version 1.0.0
  */
 
+import { getApiConfig, apiEndpoints, getDefaultHeaders } from '../config/api';
+
 // ============================================================================
 // TypeScript Types and Interfaces
 // ============================================================================
@@ -39,7 +41,6 @@ export interface ApiResponse<T = any> {
 export interface DatabaseConfig {
   baseUrl: string;
   timeout: number;
-  headers: Record<string, string>;
 }
 
 /**
@@ -66,18 +67,15 @@ export interface RunResult {
 // ============================================================================
 
 class DatabaseApiClient {
-  private config: DatabaseConfig;
+  private config = getApiConfig();
 
-  constructor(config?: Partial<DatabaseConfig>) {
-    this.config = {
-      baseUrl: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
-      timeout: 30000, // 30 seconds
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      ...config
-    };
+  constructor(customConfig?: Partial<DatabaseConfig>) {
+    if (customConfig) {
+      this.config = { 
+        ...this.config, 
+        ...customConfig,
+      };
+    }
   }
 
   /**
@@ -104,9 +102,10 @@ class DatabaseApiClient {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
 
-      const response = await fetch(`${this.config.baseUrl}/database/query`, {
+      const defaultHeaders = getDefaultHeaders();
+      const response = await fetch(`${this.config.baseUrl}${apiEndpoints.database.query}`, {
         method: 'POST',
-        headers: this.config.headers,
+        headers: defaultHeaders,
         body: JSON.stringify({
           sql,
           params: params || {},
@@ -175,9 +174,10 @@ class DatabaseApiClient {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
 
-      const response = await fetch(`${this.config.baseUrl}/database/run`, {
+      const defaultHeaders = getDefaultHeaders();
+      const response = await fetch(`${this.config.baseUrl}${apiEndpoints.database.run}`, {
         method: 'POST',
-        headers: this.config.headers,
+        headers: defaultHeaders,
         body: JSON.stringify({
           sql,
           params: params || {},
@@ -218,14 +218,12 @@ class DatabaseApiClient {
   }
 
   /**
-   * Update configuration (useful for changing base URL or headers)
+   * Update configuration (useful for changing base URL or timeout)
    */
   updateConfig(newConfig: Partial<DatabaseConfig>): void {
     this.config = { 
       ...this.config, 
-      ...newConfig,
-      // Merge headers properly
-      headers: { ...this.config.headers, ...newConfig.headers }
+      ...newConfig
     };
   }
 
@@ -233,7 +231,10 @@ class DatabaseApiClient {
    * Get current configuration
    */
   getConfig(): DatabaseConfig {
-    return { ...this.config };
+    return { 
+      baseUrl: this.config.baseUrl,
+      timeout: this.config.timeout
+    };
   }
 }
 

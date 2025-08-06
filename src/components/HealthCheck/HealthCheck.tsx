@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { logger } from '../../utils/logger';
+import { getApiConfig, apiEndpoints } from '../../config/api';
 
 interface HealthStatus {
   status: 'healthy' | 'unhealthy' | 'degraded';
@@ -76,11 +77,11 @@ const HealthCheck: React.FC = () => {
 
   const checkApiHealth = async (): Promise<boolean> => {
     try {
-      const apiUrl = process.env.REACT_APP_API_BASE_URL;
-      if (!apiUrl) return true; // Skip if no API configured
+      const config = getApiConfig();
+      if (!config.baseUrl) return true; // Skip if no API configured
 
       // Simple connectivity check
-      const response = await fetch(`${apiUrl}/health`, {
+      const response = await fetch(`${config.baseUrl}${apiEndpoints.health}`, {
         method: 'GET',
         timeout: 5000,
       } as RequestInit);
