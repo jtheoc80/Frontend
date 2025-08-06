@@ -13,6 +13,7 @@ import {
   Order,
   DashboardStats
 } from '../types/valve';
+import { getApiConfig, apiEndpoints, getDefaultHeaders, StandardApiResponse } from '../config/api';
 
 // Mock manufacturer database
 const AUTHORIZED_MANUFACTURERS = [
@@ -147,13 +148,121 @@ let orders: Order[] = [
 ];
 
 class ValveApiService {
-  private baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+  private config = getApiConfig();
+  
+  constructor() {
+    // Validate configuration on initialization
+    const configErrors = this.validateConfig();
+    if (configErrors.length > 0 && this.config.debugLogging) {
+      console.warn('API Configuration issues:', configErrors);
+    }
+  }
+
+  /**
+   * Validate API configuration
+   */
+  private validateConfig(): string[] {
+    const errors: string[] = [];
+    
+    if (!this.config.baseUrl) {
+      errors.push('API base URL is required');
+    }
+    
+    return errors;
+  }
 
   /**
    * Simulate API delay for realistic testing
    */
   private delay(ms: number = 1000): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Make HTTP request to backend API with retry logic
+   */
+  private async makeRequest<T>(endpoint: string, options: RequestInit = {}): Promise<StandardApiResponse<T>> {
+    const url = `${this.config.baseUrl}${endpoint}`;
+    const defaultHeaders = getDefaultHeaders();
+
+    let lastError: Error | null = null;
+    
+    for (let attempt = 0; attempt <= this.config.retryAttempts; attempt++) {
+      try {
+        if (this.config.debugLogging) {
+          console.log(`API Request [Attempt ${attempt + 1}/${this.config.retryAttempts + 1}]:`, {
+            url,
+            method: options.method || 'GET',
+            headers: { ...defaultHeaders, ...options.headers }
+          });
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
+
+        const response = await fetch(url, {
+          ...options,
+          headers: {
+            ...defaultHeaders,
+            ...options.headers,
+          },
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        
+        if (this.config.debugLogging) {
+          console.log('API Response:', result);
+        }
+
+        return result;
+      } catch (error) {
+        lastError = error as Error;
+        
+        if (this.config.debugLogging) {
+          console.warn(`API Request failed [Attempt ${attempt + 1}]:`, error);
+        }
+
+        // Don't retry on the last attempt
+        if (attempt < this.config.retryAttempts) {
+          // Exponential backoff: wait longer between retries
+          await this.delay(Math.pow(2, attempt) * 1000);
+        }
+      }
+    }
+
+    // If all retries failed and mock data is enabled, fall back to mock
+    if (this.config.enableMockData) {
+      if (this.config.debugLogging) {
+        console.warn(`All API attempts failed for ${endpoint}, using mock data:`, lastError);
+      }
+      return this.handleMockFallback<T>(endpoint, options);
+    }
+    
+    throw lastError || new Error(`API call to ${endpoint} failed after ${this.config.retryAttempts + 1} attempts`);
+  }
+
+  /**
+   * Handle fallback to mock data when API fails
+   */
+  private handleMockFallback<T>(endpoint: string, options: RequestInit): StandardApiResponse<T> {
+    // Return a standard mock response indicating fallback mode
+    return {
+      success: false,
+      message: `Mock fallback not implemented for ${endpoint}`,
+      errors: ['API unavailable, mock fallback needed'],
+      metadata: {
+        timestamp: new Date().toISOString(),
+        requestId: `mock-${Date.now()}`
+      }
+    } as StandardApiResponse<T>;
   }
 
   /**
@@ -174,6 +283,33 @@ class ValveApiService {
    * Validate manufacturer authentication
    */
   async validateManufacturer(manufacturerId: string, walletAddress?: string): Promise<ApiResponse<ManufacturerAuth>> {
+    // Try real API first if mock data is disabled
+    if (!this.config.enableMockData) {
+      try {
+        const response = await this.makeRequest<ManufacturerAuth>(apiEndpoints.manufacturers.validate, {
+          method: 'POST',
+          body: JSON.stringify({ 
+            manufacturerId, 
+            walletAddress,
+            timestamp: new Date().toISOString()
+          })
+        });
+        
+        // Convert StandardApiResponse to ApiResponse format
+        return {
+          success: response.success,
+          data: response.data,
+          message: response.message,
+          errors: response.errors
+        };
+      } catch (error) {
+        if (this.config.debugLogging) {
+          console.error('Real API call failed, falling back to mock data:', error);
+        }
+      }
+    }
+
+    // Mock implementation (fallback or when mock data is enabled)
     await this.delay(500);
 
     const manufacturer = AUTHORIZED_MANUFACTURERS.find(m => m.id === manufacturerId);
@@ -270,6 +406,29 @@ class ValveApiService {
    * Tokenize a new valve
    */
   async tokenizeValve(request: TokenizeValveRequest): Promise<TokenizeValveResponse> {
+    // Try real API first if mock data is disabled
+    if (!this.useMockData) {
+      try {
+        const response = await this.makeRequest<TokenizeValveResponse>('/valves/tokenize', {
+          method: 'POST',
+          body: JSON.stringify({
+            ...request,
+            timestamp: new Date().toISOString()
+          })
+        });
+        
+        // If successful, simulate token increment for mock tracking
+        if (response.success) {
+          this.simulateTokenIncrement();
+        }
+        
+        return response;
+      } catch (error) {
+        console.error('Real API tokenization failed, falling back to mock:', error);
+      }
+    }
+
+    // Mock implementation (fallback or when mock data is enabled)
     await this.delay(2000); // Simulate blockchain transaction time
 
     try {
@@ -338,9 +497,32 @@ class ValveApiService {
   }
 
   /**
+   * Simulate token increment for mock data tracking
+   */
+  private simulateTokenIncrement(): void {
+    // This can be used to sync with blockchain service mock data
+    if (typeof window !== 'undefined' && (window as any).blockchainService) {
+      (window as any).blockchainService.simulateTokenizeValve();
+    }
+  }
+
+  /**
    * Get list of manufacturers (for dropdown/selection)
    */
   async getManufacturers(): Promise<ApiResponse<typeof AUTHORIZED_MANUFACTURERS>> {
+    // Try real API first if mock data is disabled
+    if (!this.useMockData) {
+      try {
+        const response = await this.makeRequest<ApiResponse<typeof AUTHORIZED_MANUFACTURERS>>('/manufacturers', {
+          method: 'GET'
+        });
+        return response;
+      } catch (error) {
+        console.error('Real API manufacturers call failed, falling back to mock:', error);
+      }
+    }
+
+    // Mock implementation (fallback or when mock data is enabled)
     await this.delay(300);
     
     return {
@@ -371,6 +553,19 @@ class ValveApiService {
    * Get dashboard statistics
    */
   async getDashboardStats(): Promise<ApiResponse<DashboardStats>> {
+    // Try real API first if mock data is disabled
+    if (!this.useMockData) {
+      try {
+        const response = await this.makeRequest<ApiResponse<DashboardStats>>('/dashboard/stats', {
+          method: 'GET'
+        });
+        return response;
+      } catch (error) {
+        console.error('Real API dashboard stats failed, falling back to mock:', error);
+      }
+    }
+
+    // Mock implementation (fallback or when mock data is enabled)
     await this.delay(300);
 
     const stats: DashboardStats = {

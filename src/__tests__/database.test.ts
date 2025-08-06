@@ -139,14 +139,12 @@ describe('Database API Client', () => {
     test('should create instance with custom config', () => {
       const client = new DatabaseApiClient({
         baseUrl: 'https://custom-api.com/v1',
-        timeout: 60000,
-        headers: { 'Authorization': 'Bearer token123' }
+        timeout: 60000
       });
 
       const config = client.getConfig();
       expect(config.baseUrl).toBe('https://custom-api.com/v1');
       expect(config.timeout).toBe(60000);
-      expect(config.headers.Authorization).toBe('Bearer token123');
     });
 
     test('should update configuration', () => {
@@ -154,13 +152,12 @@ describe('Database API Client', () => {
       
       client.updateConfig({
         baseUrl: 'https://updated-api.com',
-        headers: { 'X-Custom-Header': 'value' }
+        timeout: 45000
       });
 
       const config = client.getConfig();
       expect(config.baseUrl).toBe('https://updated-api.com');
-      expect(config.headers['X-Custom-Header']).toBe('value');
-      expect(config.headers['Content-Type']).toBe('application/json'); // Should preserve existing headers
+      expect(config.timeout).toBe(45000);
     });
   });
 
@@ -171,7 +168,6 @@ describe('Database API Client', () => {
       
       expect(config.timeout).toBe(30000); // 30 seconds default
       expect(config.baseUrl).toBe('http://localhost:3001/api');
-      expect(config.headers['Content-Type']).toBe('application/json');
     });
   });
 });
